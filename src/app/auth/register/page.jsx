@@ -5,7 +5,9 @@ import { signUpSchema } from "@/schema/userSchema";
 import { Button, Input, Spinner, Typography } from "@material-tailwind/react";
 import axios from "axios";
 import { EyeIcon, EyeOffIcon, InfoIcon } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
@@ -28,6 +30,7 @@ const Register = () => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+  const router = useRouter();
   // const handelInputChange = async (event) => {
   //   const { value, name } = event.target;
   //   setFormData({ ...formData, [name]: value });
@@ -76,7 +79,13 @@ const Register = () => {
       const { data } = await axios.post(`/api/register`, formData);
 
       if (data.status || data.token) {
+        await signIn("credentials", {
+          redirect: false,
+          email: formData.email,
+          password: formData.password,
+        });
         toast.success(<Translate>Registered successfully</Translate>);
+        router.push(`/`);
       } else {
         toast.error(<Translate>{data.message}</Translate>);
       }

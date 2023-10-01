@@ -71,7 +71,10 @@ const Login = () => {
 
   const handleRememberUser = () => {
     if (isRememberedUser) {
-      localStorage.setItem("current-user", JSON.stringify({ email, password }));
+      localStorage.setItem(
+        "current-user",
+        JSON.stringify({ email: formData.email, password: formData.password }),
+      );
     } else {
       localStorage.removeItem("current-user");
     }

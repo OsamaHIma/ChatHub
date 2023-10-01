@@ -17,7 +17,7 @@ const authOptions = {
             password,
           },
         );
-        console.log("user",user)
+        // console.log("user",user)
         if (!user) {
           throw new Error("No user provided for sing in");
         }
