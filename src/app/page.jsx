@@ -54,7 +54,7 @@ const Home = () => {
     getAllMsgs();
     console.log("host", process.env.BASE_URL);
     if (user) {
-      socket.current = io(process.env.BASE_URL || "http://localhost:5000/");
+      socket.current = io(process.env.BASE_URL || "https://chathub-api.onrender.com");
       socket.current.emit("add-user", user._id);
     }
   }, [user]);
