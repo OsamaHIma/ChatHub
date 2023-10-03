@@ -84,8 +84,8 @@ const Login = () => {
     const user = JSON.parse(localStorage.getItem("current-user"));
     if (!user) return;
     setIsRememberedUser(true);
-    setEmail(user.email);
-    setPassword(user.password);
+    formData.email = user.email;
+    formData.password = user.password;
   }, []);
 
   return (

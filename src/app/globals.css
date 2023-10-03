@@ -12,15 +12,24 @@
   scroll-behavior: smooth !important;
 }
 
+::-webkit-scrollbar {
+  width: 11px;
+  /* @apply bg-slate-100 dark:bg-gray-800 ; */
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-500 rounded-lg;
+}
+
 .paddings {
   padding: 1.5rem;
 }
 
 .innerWidth {
   width: 100%;
-  /* background-color: #4b5563; */
+  /* background: rgb(68, 89, 224) */
 }
 
-/* aside.EmojiPickerReact.epr-main{
-  @apply !absolute top-0 dark:!bg-gray-800;
-} */
+:is(.dark .react-loading-skeleton) {
+  --base-color: #9c9c9c !important;
+  --highlight-color: #ebeaea;
+}

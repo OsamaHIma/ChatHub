@@ -37,7 +37,7 @@ const Footer = () => {
       className="relative py-3 bg-stone-100 dark:bg-gray-800"
     >
       <div className="bg-gradient-to-b from-stone-200 to-transparent dark:from-gray-900 w-full h-44 absolute -top-4 left-0"></div>
-      <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+      <div className="mx-auto w-full max-w-screen-xl px-4 pt-6 lg:pt-8">
         <div className="md:flex md:justify-between items-center">
           <div className="mb-6 md:mb-0 z-10">
             <Link href="/">

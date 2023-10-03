@@ -30,14 +30,14 @@ const ChatInput = ({ handleSendMsg }) => {
       setMsg("");
     }
   };
-  
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-5 flex items-center gap-5"
+      className="mb-5 flex min-w-[15.5rem] items-center gap-5"
       noValidate
     >
-      <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
+      <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
         <div className="flex">
           <input
             type="file"
@@ -64,7 +64,6 @@ const ChatInput = ({ handleSendMsg }) => {
             unmount: { y: 25 },
           }}
         >
-          {" "}
           <MenuHandler>
             <IconButton
               variant="text"
@@ -95,11 +94,7 @@ const ChatInput = ({ handleSendMsg }) => {
         />
 
         <IconButton variant="text" className="rounded-full" type="submit">
-          {/* {isSending ? (
-                <Loader2Icon className="inline-block mx-2 animate-spin text-green-400" />
-              ) : ( */}
           <Send size={23} className=" inline-block dark:text-slate-50" />
-          {/* )} */}
         </IconButton>
       </div>
     </form>

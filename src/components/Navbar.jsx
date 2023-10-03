@@ -66,7 +66,7 @@ const Navbar = () => {
               width={300}
               height={300}
               priority
-              className="w-32 md:w-[300px]"
+              className="w-26 md:w-[200px]"
               alt="logo"
             />
           </Link>
