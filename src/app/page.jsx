@@ -20,7 +20,7 @@ const Home = () => {
   const [allMessages, setAllMessages] = useState([]);
   const [search, setSearch] = useState("");
   const socket = useRef();
- 
+
   const getAllUsers = async () => {
     try {
       if (user) {
@@ -50,13 +50,12 @@ const Home = () => {
   // };
 
   useEffect(() => {
-    getAllUsers();
-    getAllMsgs();
-    console.log("host", process.env.BASE_URL);
     if (user) {
       socket.current = io(process.env.BASE_URL || "https://chathub-api.onrender.com");
       socket.current.emit("add-user", user._id);
     }
+    getAllUsers();
+    getAllMsgs();
   }, [user]);
 
   const handelChangeChat = (index, contact) => {
@@ -82,24 +81,25 @@ const Home = () => {
                   className="block w-full rounded-full bg-gray-100 py-2 pl-10 pr-3 text-gray-900 focus:bg-white focus:outline-none focus:ring-0"
                 />
               </div>
-              {users.map((user, index) => {
-                const messages = allMessages.filter(
-                  (message) => message.sender === user._id,
-                );
-                const lastMessage = messages[messages.length - 1];
+              {allMessages &&
+                users.map((user, index) => {
+                  const messages = allMessages.filter(
+                    (message) => message.sender === user._id,
+                  );
+                  const lastMessage = messages[messages.length - 1];
 
-                return (
-                  <Contacts
-                    key={index}
-                    contact={user}
-                    handelChangeChat={handelChangeChat}
-                    selectedUser={selectedUser}
-                    search={search}
-                    lastMessage={lastMessage}
-                    index={index}
-                  />
-                );
-              })}
+                  return (
+                    <Contacts
+                      key={index}
+                      contact={user}
+                      handelChangeChat={handelChangeChat}
+                      selectedUser={selectedUser}
+                      search={search}
+                      lastMessage={lastMessage}
+                      index={index}
+                    />
+                  );
+                })}
             </section>
           ) : (
             <>
@@ -117,10 +117,7 @@ const Home = () => {
               <UserCircle2 size={32} />
               <p className="text-gray-400">@{chat.username}</p>
             </div>
-            <Messages
-              currentChat={chat}
-              socket={socket}
-            />
+            <Messages currentChat={chat} socket={socket} />
           </section>
         ) : (
           <section className="welcome-section mx-auto hidden flex-col items-center justify-center gap-5 lg:flex">

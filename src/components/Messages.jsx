@@ -42,13 +42,13 @@ const Messages = ({ currentChat, socket }) => {
     // const newMessage = { sender: "me", text: msg };
     // setMessages([...messages, newMessage]);
     socket.current.emit("send-msg", {
-      from: user._id,
       to: currentChat._id,
+      from: user._id,
       msg,
     });
     await axios.post("/api/addmsg", {
-      from: user._id,
       to: currentChat._id,
+      from: user._id,
       message: msg,
     });
    
@@ -66,7 +66,7 @@ const Messages = ({ currentChat, socket }) => {
   }, []);
 
   useEffect(() => {
-    arrivalMessages && setMessages((prev) => [...prev], arrivalMessages);
+    arrivalMessages && setMessages((prev) => [...prev, arrivalMessages]);
   }, [arrivalMessages]);
 
   useEffect(() => {
