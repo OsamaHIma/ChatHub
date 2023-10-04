@@ -137,7 +137,7 @@ const Messages = ({ currentChat, socket }) => {
         <div className="max-w-1/2 relative mr-4 rounded-lg bg-green-400 bg-opacity-60 px-6 py-4">
           <p className="whitespace-normal break-all">{message.message}</p>
           <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1">
-            <p className="text-xs text-gray-200">{time}</p>
+            <p className="text-xs text-gray-400">{time}</p>
             <CheckCheck
               className={`${message.seen ? "text-blue-500" : "text-gray-400"} `}
               size={17}
