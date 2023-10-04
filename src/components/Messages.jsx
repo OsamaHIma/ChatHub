@@ -42,17 +42,20 @@ const Messages = ({ currentChat, socket }) => {
   }, [currentChat]);
 
   const sendMessage = async (msg) => {
-    socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: user._id,
-      date: Date.now(),
-      msg,
-    });
-    await axios.post("/api/addmsg", {
+    const { data } = await axios.post("/api/addmsg", {
       to: currentChat._id,
       from: user._id,
       date: Date.now(),
       message: msg,
+    });
+
+    socket.current.emit("send-msg", {
+      _id: data.id,
+      to: currentChat._id,
+      from: user._id,
+      date: Date.now(),
+      msg,
+      ...data,
     });
 
     const msgs = [...messages];
@@ -60,11 +63,45 @@ const Messages = ({ currentChat, socket }) => {
     setMessages(msgs);
   };
 
+  // useEffect(() => {
+  //   if (socket.current) {
+  //     socket.current.on("msg-receive", (msg) => {
+  //       setArrivalMessages({ fromSelf: false, message: msg });
+  //     });
+  //     notificationSound.play();
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-receive", (msg) => {
-        setArrivalMessages({ fromSelf: false, message: msg });
+        const updatedMessages = messages.map((message) => {
+          if (message._id === msg._id) {
+            return { ...message, seen: true };
+          }
+          return message;
+        });
+
+        setArrivalMessages({ fromSelf: false, message: msg.msg });
+        setMessages(updatedMessages);
+        // Emit an event to notify the sender that the message has been seen
+        socket.current.emit("msg-seen", msg._id);
         notificationSound.play();
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-seen", (messageId) => {
+        const updatedMessages = messages.map((message) => {
+          if (message._id === messageId) {
+            return { ...message, seen: true };
+          }
+          return message;
+        });
+
+        setMessages(updatedMessages);
       });
     }
   }, []);
@@ -101,7 +138,10 @@ const Messages = ({ currentChat, socket }) => {
           <p className="whitespace-normal break-all">{message.message}</p>
           <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1">
             <p className="text-xs text-gray-200">{time}</p>
-            {message.seen && <CheckCheck className="text-blue-500" size={17} />}
+            <CheckCheck
+              className={`${message.seen ? "text-blue-500" : "text-gray-400"} `}
+              size={17}
+            />
           </div>
         </div>
       </div>
@@ -113,7 +153,7 @@ const Messages = ({ currentChat, socket }) => {
         className="relative mt-4 flex flex-col justify-between"
         // style={{ height: "695px" }}
       >
-        <div className="relative !h-[70vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
+        <div className="hide-scroll-bar relative h-[75vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
           {loading && (
             <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
           )}

@@ -17,9 +17,11 @@
   /* @apply bg-slate-100 dark:bg-gray-800 ; */
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-indigo-500 rounded-lg;
+  @apply rounded-lg bg-indigo-500;
 }
-
+.hide-scroll-bar::-webkit-scrollbar {
+  width: 0px !important;
+}
 .paddings {
   padding: 1.5rem;
 }

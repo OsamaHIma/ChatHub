@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
     if (session) {
       setToken(session.user.token);
       setUser(session.user.user);
-      console.log(session);
+      // console.log(session);
     }
   }, [session]);
   const value = useMemo(() => {

@@ -54,6 +54,8 @@ const Home = () => {
       socket.current = io(
         process.env.BASE_URL || "https://chathub-api.onrender.com",
       );
+      // "https://chathub-api.onrender.com"
+      // "http://localhost:5000/"
       socket.current.emit("add-user", user._id);
     }
     getAllUsers();
@@ -67,11 +69,11 @@ const Home = () => {
 
   return (
     <main className="paddings innerWidth mt-24 flex flex-col items-center justify-center gap-4 py-16 md:my-24">
-      <div className="paddings flex h-screen w-full flex-col gap-5 rounded-lg bg-gray-100 shadow dark:bg-slate-800 lg:flex-row">
+      <div className="flex h-screen w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
         {/* Contacts */}
         <div className="Contacts flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (
-            <section className="flex flex-col gap-3">
+            <section className="flex flex-col gap-3 pt-4 md:pt-0">
               <div className="relative w-full">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <Search className="text-indigo-500" />
@@ -120,7 +122,7 @@ const Home = () => {
         </div>
 
         {chat ? (
-          <section className="innerWidth">
+          <section className="innerWidth lg:flex-1">
             <div className="flex items-center gap-3">
               <UserCircle2 size={32} />
               <p className="text-gray-400">@{chat.username}</p>
