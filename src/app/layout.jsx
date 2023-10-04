@@ -9,6 +9,9 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/x-icon" href="/logoTab.svg" />
+      </head>
       <body className="bg-slate-200 text-gray-950 ltr:!font-poppins rtl:!font-cairo dark:bg-gray-900 dark:text-slate-100">
         <Providers>{children}</Providers>
       </body>

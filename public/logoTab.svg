@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="64" height="64" viewBox="0 0 64 64" xml:space="preserve">
+<desc>Created with Fabric.js 3.6.6</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 -45 -1)"  >
+<g style="" vector-effect="non-scaling-stroke"   >
+		<g transform="matrix(0.37 0 0 0.37 78.13 33.54)"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(68,89,224); fill-rule: nonzero; opacity: 1;"  x="-74.195" y="-74.195" rx="0" ry="0" width="148.39" height="148.39" />
+</g>
+		<g transform="matrix(0.37 0 0 0.37 75.34 30.76)"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(58,75,185); fill-rule: nonzero; opacity: 0.5;"  x="-74.195" y="-74.195" rx="0" ry="0" width="148.39" height="148.39" />
+</g>
+		<g transform="matrix(0.73 0 0 0.73 78.74 34.14)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;"  transform=" translate(-54.02, -51.15)" d="M 48.183 72.318 v -9.152 H 36.865 c -8.175 0 -13.973 -6.427 -13.973 -14.182 v -8.942 C 22.893 32.147 28.9 26 36.865 26 h 34.231 c 7.895 0 14.042 6.218 14.042 14.042 v 8.942 c 0 7.755 -5.938 14.182 -14.042 14.182 h -5.03 L 54.959 75.112 c -0.769 0.838 -1.816 1.188 -2.795 1.188 c -0.419 0 -0.979 -0.141 -1.467 -0.28 C 49.3 75.322 48.183 73.994 48.183 72.318 z M 30.717 40.042 v 8.942 c 0 3.633 2.585 6.288 6.148 6.288 h 12.994 c 2.166 0 3.911 1.816 3.911 3.982 v 8.384 L 63.831 56.25 c 0.629 -0.699 1.747 -0.979 2.795 -0.979 h 4.471 c 3.493 0 6.148 -2.515 6.148 -6.288 v -8.942 c 0 -3.632 -2.725 -6.147 -6.148 -6.147 H 36.865 c -1.747 0 -3.215 0.559 -4.332 1.746 C 31.275 36.758 30.717 38.225 30.717 40.042 z" stroke-linecap="round" />
+</g>
+</g>
+</g>
+</svg>

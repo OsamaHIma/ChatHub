@@ -51,7 +51,9 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      socket.current = io(process.env.BASE_URL || "https://chathub-api.onrender.com");
+      socket.current = io(
+        process.env.BASE_URL || "https://chathub-api.onrender.com",
+      );
       socket.current.emit("add-user", user._id);
     }
     getAllUsers();
@@ -87,7 +89,13 @@ const Home = () => {
                     (message) => message.sender === user._id,
                   );
                   const lastMessage = messages[messages.length - 1];
-
+                  // lastMessage &&
+                  //   new Notification("ChatHub", {
+                  //     body: `${user.name}:\n ${lastMessage.content}`,
+                  //     icon: "/logoTab.svg",
+                  //     vibrate: [200, 100, 200],
+                  //     sound: "/notification_sound.mp3",
+                  //   });
                   return (
                     <Contacts
                       key={index}
