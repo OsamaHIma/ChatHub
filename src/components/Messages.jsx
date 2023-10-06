@@ -13,7 +13,7 @@ import { Howl } from "howler";
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
-  const [arrivalMessages, setArrivalMessages] = useState(null);
+  const [arrivalMessages, setArrivalMessages] = useState([]);
   const [loading, setIsLoading] = useState(false);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
   const getAllMsgBetweenTowUsers = async () => {
@@ -74,8 +74,12 @@ const Messages = ({ currentChat, socket }) => {
           return message;
         });
 
-        setArrivalMessages({ fromSelf: false, message: msg.msg });
-        setMessages(updatedMessages);
+        // setMessages(updatedMessages);
+        // setArrivalMessages();
+        setMessages([
+          ...updatedMessages,
+          { fromSelf: false, message: msg.msg },
+        ]);
         // Emit an event to notify the sender that the message has been seen
         socket.current.emit("msg-seen", msg._id);
         notificationSound.play();
@@ -83,28 +87,26 @@ const Messages = ({ currentChat, socket }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-seen", (messageId) => {
-        const updatedMessages = messages.map((message) => {
-          if (message._id === messageId) {
-            return { ...message, seen: true };
-          }
-          return message;
-        });
+  // useEffect(() => {
+  //   if (socket.current) {
+  //     socket.current.on("msg-seen", (messageId) => {
+  //       const updatedMessages = messages.map((message) => {
+  //         if (message._id === messageId) {
+  //           return { ...message, seen: true };
+  //         }
+  //         return message;
+  //       });
 
-        setMessages(updatedMessages);
-      });
-    }
-  }, []);
+  //       setMessages(updatedMessages);
+  //     });
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    arrivalMessages && setMessages((prev) => [...prev, arrivalMessages]);
-  }, [arrivalMessages]);
-
-  useEffect(() => {
-    getAllMsgBetweenTowUsers();
-  }, [currentChat]);
+  // useEffect(() => {
+  //   if (arrivalMessages) {
+  //     setMessages([...messages, arrivalMessages]);
+  //   }
+  // }, [arrivalMessages]);
 
   const ComingMessage = ({ message }) => {
     const time = moment(message.date).format("hh:mm a");
@@ -141,14 +143,12 @@ const Messages = ({ currentChat, socket }) => {
   };
   return (
     <section className="flex flex-col justify-between gap-7 overflow-y-auto">
-      <div
-        className="relative mt-4 flex flex-col justify-between"
-      >
-        <div className="relative h-[75vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
+      <div className="relative mt-4 flex flex-col justify-between">
+        <div className="relative h-[77vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[75vh]">
           {loading && (
             <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
           )}
-          {/* <ScrollableFeed> */}
+          <ScrollableFeed>
             {messages.length > 0 &&
               messages.map((message, index) =>
                 message.fromSelf ? (
@@ -157,7 +157,7 @@ const Messages = ({ currentChat, socket }) => {
                   <ComingMessage key={index} message={message} />
                 ),
               )}
-          {/* </ScrollableFeed> */}
+          </ScrollableFeed>
         </div>
       </div>
       <ChatInput handleSendMsg={sendMessage} />

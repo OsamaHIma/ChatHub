@@ -114,7 +114,7 @@ const Footer = () => {
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2023{" "}
             <Link href="#" className="hover:underline">
-              Tumor Scan™
+              ChatHub™
             </Link>
             . <Translate>All Rights Reserved</Translate>.
           </span>
@@ -163,7 +163,7 @@ const Footer = () => {
         <DialogBody divider>
           <p className="my-3 dark:text-gray-50">
             <Translate>
-              At &quot;Tumor Scan&quot;, we are committed to protecting your
+              At &quot;ChatHub&quot;, we are committed to protecting your
               privacy and ensuring the security of your personal information.
               This Privacy Policy outlines how we collect, use, and safeguard
               the information you provide to us through our website
@@ -246,7 +246,7 @@ const Footer = () => {
           </li>
           <p className="my-3 dark:text-gray-50">
             <Translate>
-              By using the &quot;Tumor Scan&quot; website and providing your
+              By using the &quot;ChatHub&quot; website and providing your
               personal information, you consent to the collection, use, and
               disclosure of your information as described in this Privacy Policy
             </Translate>
