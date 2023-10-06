@@ -147,18 +147,14 @@ const Navbar = () => {
                 <>
                   <Link href="/">
                     <MenuItem
-                      className={`my-3 ${
-                        scrolled ? "text-slate-100" : "text-gray-900"
-                      } text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                      className={`my-3 text-center hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <Translate>Chat</Translate>
                     </MenuItem>
                   </Link>
                   <Link href="/account">
                     <MenuItem
-                      className={`my-3 ${
-                        scrolled ? "text-slate-100" : "text-gray-900"
-                      } text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                      className={`my-3 text-center hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <Translate>Account</Translate>
                     </MenuItem>
