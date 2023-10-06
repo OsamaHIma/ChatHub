@@ -89,13 +89,6 @@ const Home = () => {
                     (message) => message.sender === user._id,
                   );
                   const lastMessage = messages[messages.length - 1];
-                  // lastMessage &&
-                  //   new Notification("ChatHub", {
-                  //     body: `${user.name}:\n ${lastMessage.content}`,
-                  //     icon: "/logoTab.svg",
-                  //     vibrate: [200, 100, 200],
-                  //     sound: "/notification_sound.mp3",
-                  //   });
                   return (
                     <Contacts
                       key={index}
@@ -121,24 +114,26 @@ const Home = () => {
 
         {chat ? (
           <section className="innerWidth lg:flex-1">
-            <div className="flex items-center gap-3">
-              {chat.avatar ? (
-                <img
-                  alt="User avatar"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${chat.avatar}`}
-                  className="max-w-[3rem] rounded-full"
-                />
-              ) : (
-                <UserCircle2 size={48} />
-              )}
-              <p className="text-gray-400">@{chat.username}</p>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-3">
+                {chat.avatar ? (
+                  <img
+                    alt="User avatar"
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${chat.avatar}`}
+                    className="max-w-[3rem] rounded-full"
+                  />
+                ) : (
+                  <UserCircle2 size={48} />
+                )}
+                <p className="text-gray-400">@{chat.username}</p>
+              </div>
+              <p
+                onClick={handleOpenUserProfileOpen}
+                className="mt-2 cursor-pointer text-sm text-gray-400 underline-offset-4 hover:underline"
+              >
+                <Translate>click here to view the profile</Translate>
+              </p>
             </div>
-            <p
-              onClick={handleOpenUserProfileOpen}
-              className="mt-2 cursor-pointer text-sm text-gray-400 underline-offset-4 hover:underline"
-            >
-              <Translate>click here to view the profile</Translate>
-            </p>
             <Messages currentChat={chat} socket={socket} />
             <UserProfile
               open={openUserProfile}

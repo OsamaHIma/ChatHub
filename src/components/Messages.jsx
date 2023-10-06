@@ -7,8 +7,8 @@ import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
 import { CheckCheck } from "lucide-react";
-import { Howl } from "howler";
 import ScrollableFeed from "react-scrollable-feed";
+import { Howl } from "howler";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -145,20 +145,20 @@ const Messages = ({ currentChat, socket }) => {
         className="relative mt-4 flex flex-col justify-between"
         // style={{ height: "695px" }}
       >
-        <div className="hide-scroll-bar relative h-[75vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
+        <div className="relative h-[75vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
           {loading && (
             <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
           )}
-          {messages.length > 0 &&
-            messages.map((message, index) => (
-              <ScrollableFeed>
+          <ScrollableFeed>
+            {messages.length > 0 &&
+              messages.map((message, index) =>
                 message.fromSelf ? (
-                <SendMessage key={index} message={message} />
+                  <SendMessage key={index} message={message} />
                 ) : (
-                <ComingMessage key={index} message={message} />
+                  <ComingMessage key={index} message={message} />
                 ),
-              </ScrollableFeed>
-            ))}
+              )}
+          </ScrollableFeed>
         </div>
       </div>
       <ChatInput handleSendMsg={sendMessage} />

@@ -31,7 +31,7 @@ const ChatInput = ({ handleSendMsg }) => {
 
   const formatCodeBlocks = (message) => {
     const codeRegex = /```([\s\S]+?)```/g;
-    const formattedMessage = message.replace(codeRegex, '<code>$1</code>');
+    const formattedMessage = message.replace(codeRegex, "<code>$1</code>");
     return formattedMessage;
   };
 
@@ -48,13 +48,7 @@ const ChatInput = ({ handleSendMsg }) => {
     >
       <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
         <div className="flex">
-          <input
-            type="file"
-            // accept="image/*"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            // onChange={(e) => setSelectedImage(e.target.files[0])}
-          />
+          <input type="file" ref={fileInputRef} style={{ display: "none" }} />
 
           <IconButton
             variant="text"
@@ -78,7 +72,6 @@ const ChatInput = ({ handleSendMsg }) => {
               variant="text"
               className="relative rounded-full"
               type="button"
-              //   onClick={handelEmojiPickerToggle}
             >
               <SmileIcon className="inline-block dark:text-slate-50" />
             </IconButton>
