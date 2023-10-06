@@ -13,8 +13,8 @@ import { Howl } from "howler";
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
-  const [arrivalMessages, setArrivalMessages] = useState([]);
   const [loading, setIsLoading] = useState(false);
+  const [arrivalMessages, setArrivalMessages] = useState(null);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
   const getAllMsgBetweenTowUsers = async () => {
     if (currentChat) {
@@ -39,14 +39,14 @@ const Messages = ({ currentChat, socket }) => {
     getAllMsgBetweenTowUsers();
   }, [currentChat]);
 
-  const sendMessage = async (msg) => {
+  const sendMessage = async (message) => {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
       {
         to: currentChat._id,
         from: user._id,
         date: Date.now(),
-        message: msg,
+        message,
       },
     );
 
@@ -55,58 +55,29 @@ const Messages = ({ currentChat, socket }) => {
       to: currentChat._id,
       from: user._id,
       date: Date.now(),
-      msg,
+      message,
       ...data,
     });
 
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg });
+    msgs.push({ fromSelf: true, message });
     setMessages(msgs);
   };
 
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-receive", (msg) => {
-        // const updatedMessages = messages.map((message) => {
-        //   if (message._id === msg._id) {
-        //     return { ...message, seen: true };
-        //   }
-        //   return message;
-        // });
-
-        // setMessages(updatedMessages);
-        // setArrivalMessages();
-        setMessages([
-          ...messages,
-          { fromSelf: false, message: msg.msg },
-        ]);
+        setArrivalMessages({ fromSelf: false, message: msg.message });
         // Emit an event to notify the sender that the message has been seen
-        // socket.current.emit("msg-seen", msg._id);
+        socket.current.emit("msg-seen", msg._id);
         notificationSound.play();
       });
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on("msg-seen", (messageId) => {
-  //       const updatedMessages = messages.map((message) => {
-  //         if (message._id === messageId) {
-  //           return { ...message, seen: true };
-  //         }
-  //         return message;
-  //       });
-
-  //       setMessages(updatedMessages);
-  //     });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (arrivalMessages) {
-  //     setMessages([...messages, arrivalMessages]);
-  //   }
-  // }, [arrivalMessages]);
+  useEffect(() => {
+    arrivalMessages && setMessages((prev) => [...prev, arrivalMessages]);
+  }, [arrivalMessages]);
 
   const ComingMessage = ({ message }) => {
     const time = moment(message.date).format("hh:mm a");

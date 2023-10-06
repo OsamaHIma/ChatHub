@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Send, SmileIcon, PaperclipIcon } from "lucide-react";
+import { Loader2Icon, Send, SmileIcon, PaperclipIcon } from "lucide-react";
 import {
   IconButton,
   Textarea,
@@ -10,6 +10,8 @@ import {
   MenuHandler,
 } from "@material-tailwind/react";
 import Picker from "emoji-picker-react";
+import { toast } from "react-toastify";
+import { Translate } from "translate-easy";
 
 const ChatInput = ({ handleSendMsg }) => {
   const [msg, setMsg] = useState("");
@@ -29,17 +31,6 @@ const ChatInput = ({ handleSendMsg }) => {
     }
   };
 
-  const formatCodeBlocks = (message) => {
-    const codeRegex = /```([\s\S]+?)```/g;
-    const formattedMessage = message.replace(codeRegex, "<code>$1</code>");
-    return formattedMessage;
-  };
-
-  const handleMessageChange = (event) => {
-    const formattedMessage = formatCodeBlocks(event.target.value);
-    setMsg(formattedMessage);
-  };
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -48,7 +39,13 @@ const ChatInput = ({ handleSendMsg }) => {
     >
       <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
         <div className="flex">
-          <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+          <input
+            type="file"
+            // accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            // onChange={(e) => setSelectedImage(e.target.files[0])}
+          />
 
           <IconButton
             variant="text"
@@ -72,6 +69,7 @@ const ChatInput = ({ handleSendMsg }) => {
               variant="text"
               className="relative rounded-full"
               type="button"
+              //   onClick={handelEmojiPickerToggle}
             >
               <SmileIcon className="inline-block dark:text-slate-50" />
             </IconButton>
@@ -84,7 +82,7 @@ const ChatInput = ({ handleSendMsg }) => {
           rows={1}
           resize={true}
           value={msg}
-          onChange={handleMessageChange}
+          onChange={(e) => setMsg(e.target.value)}
           placeholder="Your Message"
           className="bg min-h-full !border-0 focus:border-transparent dark:text-gray-300 dark:placeholder:text-gray-400"
           containerProps={{
