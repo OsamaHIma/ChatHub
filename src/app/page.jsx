@@ -105,9 +105,9 @@ const Home = () => {
           ) : (
             <>
               <Skeleton height={40} borderRadius={99} />
-              <Skeleton height={135} />
-              <Skeleton height={135} />
-              <Skeleton height={135} />
+              <Skeleton height={155} />
+              <Skeleton height={155} />
+              <Skeleton height={155} />
             </>
           )}
         </div>

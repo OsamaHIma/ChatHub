@@ -11,7 +11,7 @@ const FullImage = ({ openFullImage, handleOpenImage, user }) => (
   <Dialog
     open={openFullImage}
     handler={handleOpenImage}
-    className="dark:bg-gray-800 !max-h-[95vh]"
+    className="dark:bg-gray-800 !max-h-[95vh] !overflow-hidden"
   >
     <DialogBody>
       <img
