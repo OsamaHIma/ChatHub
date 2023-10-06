@@ -103,10 +103,10 @@ const Messages = ({ currentChat, socket }) => {
           <p className="whitespace-normal break-all">{message.message}</p>
           <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1">
             <p className="text-xs text-gray-400">{time}</p>
-            <CheckCheck
+            {/* <CheckCheck
               className={`${message.seen ? "text-blue-500" : "text-gray-400"} `}
               size={17}
-            />
+            /> */}
           </div>
         </div>
       </div>
