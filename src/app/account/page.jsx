@@ -3,11 +3,11 @@ import { toast } from "react-toastify";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Translate } from "translate-easy";
-import { MailIcon, Plus } from "lucide-react";
+import { MailIcon, Plus, AtSign } from "lucide-react";
 import { Button, Input, Textarea } from "@material-tailwind/react";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const styles = {
   focused: {
@@ -188,6 +188,13 @@ const MyAccount = () => {
               className="inline-block text-indigo-500  ltr:mr-2 rtl:ml-2"
             />
             {user && user.email}
+          </p>
+          <p className="w-full rounded-tl-md rounded-tr-md bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
+            <AtSign
+              size={24}
+              className="inline-block text-indigo-500 ltr:mr-2 rtl:ml-2"
+            />
+            {user && user.username}
           </p>
         </div>
       </div>
