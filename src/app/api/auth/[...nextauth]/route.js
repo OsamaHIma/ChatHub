@@ -11,7 +11,7 @@ const authOptions = {
         const password = credentials.password;
 
         const { data: user } = await axios.post(
-          `${process.env.BASE_URL}/api/auth/login`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
           {
             email,
             password,
@@ -21,26 +21,28 @@ const authOptions = {
         if (!user) {
           throw new Error("No user provided for sing in");
         }
-        return { token: user.token, ...user };
+        return user;
       },
     }),
   ],
 
   callbacks: {
-    jwt({ token, user }) {
-      /* Step 1: update the token based on the user object update token for backend  */
-      if (user) {
-        token.token = user.token;
-        token.user = { ...user };
+    jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session };
       }
+      
+      if (user) {
+        return { ...token, ...user };
+      }
+      
       return token;
     },
     session({ session, token }) {
-      /* Step 2: update the session.user based on the token object update session for frontend */
-      if (token && session.user) {
-        session.user.token = token.token;
-        session.user = token.user;
+      if (token && token.user) {
+        session.user = token.user; // Update session.user with the updated user data
       }
+      
       return session;
     },
   },

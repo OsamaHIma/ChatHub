@@ -10,11 +10,9 @@ const Contacts = ({
   lastMessage,
   index,
 }) => {
-
   return (
     <article className="flex flex-col items-center gap-3">
-      {!contact.name.includes(search) ||
-      !contact.username.includes(search) ? null : (
+      {!contact.username.includes(search) ? null : (
         <div
           className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${
             selectedUser === index
@@ -23,7 +21,16 @@ const Contacts = ({
           }`}
           onClick={() => handelChangeChat(index, contact)}
         >
-          <UserCircle2 size={32} />
+          {contact.avatar ? (
+            <img
+              alt="User avatar"
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${contact.avatar}`}
+              className="max-w-[3rem] rounded-full"
+            />
+          ) : (
+            <UserCircle2 size={48} />
+          )}
+
           <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
             <p>{contact.name}</p>
             <p

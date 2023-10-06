@@ -35,3 +35,9 @@
   --base-color: #9c9c9c !important;
   --highlight-color: #ebeaea;
 }
+code {
+  white-space: pre-wrap;
+  background-color: #f7f7f7;
+  padding: 10px;
+  border-radius: 4px;
+}

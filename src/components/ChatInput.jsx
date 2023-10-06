@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Loader2Icon, Send, SmileIcon, PaperclipIcon } from "lucide-react";
+import { Send, SmileIcon, PaperclipIcon } from "lucide-react";
 import {
   IconButton,
   Textarea,
@@ -10,8 +10,6 @@ import {
   MenuHandler,
 } from "@material-tailwind/react";
 import Picker from "emoji-picker-react";
-import { toast } from "react-toastify";
-import { Translate } from "translate-easy";
 
 const ChatInput = ({ handleSendMsg }) => {
   const [msg, setMsg] = useState("");
@@ -29,6 +27,17 @@ const ChatInput = ({ handleSendMsg }) => {
       handleSendMsg(msg);
       setMsg("");
     }
+  };
+
+  const formatCodeBlocks = (message) => {
+    const codeRegex = /```([\s\S]+?)```/g;
+    const formattedMessage = message.replace(codeRegex, '<code>$1</code>');
+    return formattedMessage;
+  };
+
+  const handleMessageChange = (event) => {
+    const formattedMessage = formatCodeBlocks(event.target.value);
+    setMsg(formattedMessage);
   };
 
   return (
@@ -82,7 +91,7 @@ const ChatInput = ({ handleSendMsg }) => {
           rows={1}
           resize={true}
           value={msg}
-          onChange={(e) => setMsg(e.target.value)}
+          onChange={handleMessageChange}
           placeholder="Your Message"
           className="bg min-h-full !border-0 focus:border-transparent dark:text-gray-300 dark:placeholder:text-gray-400"
           containerProps={{

@@ -12,7 +12,7 @@ const RootLayout = ({ children }) => {
       <head>
         <link rel="icon" type="image/x-icon" href="/logoTab.svg" />
       </head>
-      <body className="bg-slate-200 text-gray-950 ltr:!font-poppins rtl:!font-cairo dark:bg-gray-900 dark:text-slate-100">
+      <body className="bg-stone-200 text-gray-900 ltr:!font-poppins rtl:!font-cairo dark:bg-gray-900 dark:text-slate-100">
         <Providers>{children}</Providers>
       </body>
     </html>

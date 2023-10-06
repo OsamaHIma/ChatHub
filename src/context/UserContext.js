@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (session) {
       setToken(session.user.token);
-      setUser(session.user.user);
+      setUser(session.user);
       // console.log(session);
     }
   }, [session]);

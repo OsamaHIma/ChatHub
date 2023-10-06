@@ -66,7 +66,7 @@ const Navbar = () => {
               width={300}
               height={300}
               priority
-              className="w-26 md:w-[200px]"
+              className="w-24 md:w-[200px]"
               alt="logo"
             />
           </Link>
@@ -81,8 +81,17 @@ const Navbar = () => {
               {user ? (
                 <>
                   <li>
-                    <Link href="/" className="text-stone-50">
+                    <Link href="/" className={`${
+                        scrolled ? "text-stone-50" : "text-gray-900"
+                      } dark:!text-stone-50 `}>
                       <Translate>Chat</Translate>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/account" className={`${
+                        scrolled ? "text-stone-50" : "text-gray-900"
+                      } dark:!text-stone-50 `}>
+                      <Translate>Account</Translate>
                     </Link>
                   </li>
                   <Button
@@ -136,9 +145,22 @@ const Navbar = () => {
             <MenuList className="w-[13rem] border-0 text-center text-stone-950 dark:bg-gray-800 dark:text-stone-50 lg:hidden">
               {user ? (
                 <>
-                  <Link href="/chat">
-                    <MenuItem className="my-3 text-center hover:!border-0 dark:hover:!bg-gray-100">
+                  <Link href="/">
+                    <MenuItem
+                      className={`my-3 ${
+                        scrolled ? "text-slate-100" : "text-gray-900"
+                      } text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                    >
                       <Translate>Chat</Translate>
+                    </MenuItem>
+                  </Link>
+                  <Link href="/account">
+                    <MenuItem
+                      className={`my-3 ${
+                        scrolled ? "text-slate-100" : "text-gray-900"
+                      } text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                    >
+                      <Translate>Account</Translate>
                     </MenuItem>
                   </Link>
                   <Button

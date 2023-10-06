@@ -21,7 +21,7 @@ const Messages = ({ currentChat, socket }) => {
       try {
         setIsLoading(true);
         const { data } = await axios.post(
-          "/api/get_all_msgs_between_tow_users",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
           {
             from: user._id,
             to: currentChat._id,
@@ -29,7 +29,6 @@ const Messages = ({ currentChat, socket }) => {
         );
         setIsLoading(false);
         setMessages(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }
@@ -42,12 +41,15 @@ const Messages = ({ currentChat, socket }) => {
   }, [currentChat]);
 
   const sendMessage = async (msg) => {
-    const { data } = await axios.post("/api/addmsg", {
-      to: currentChat._id,
-      from: user._id,
-      date: Date.now(),
-      message: msg,
-    });
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
+      {
+        to: currentChat._id,
+        from: user._id,
+        date: Date.now(),
+        message: msg,
+      },
+    );
 
     socket.current.emit("send-msg", {
       _id: data.id,

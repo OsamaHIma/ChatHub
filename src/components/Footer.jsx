@@ -34,7 +34,7 @@ const Footer = () => {
       whileInView="show"
       initial="hidden"
       viewport={{ once: true }}
-      className="relative py-3 bg-stone-100 dark:bg-gray-800"
+      className="relative py-3 bg-stone-50 dark:bg-gray-800"
     >
       <div className="bg-gradient-to-b from-stone-200 to-transparent dark:from-gray-900 w-full h-44 absolute -top-4 left-0"></div>
       <div className="mx-auto w-full max-w-screen-xl px-4 pt-6 lg:pt-8">

@@ -76,7 +76,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post(`/api/register`, formData);
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`, formData);
 
       if (data.status || data.token) {
         await signIn("credentials", {
@@ -134,16 +134,22 @@ const Register = () => {
               onChange={handelInputChange}
               error={error}
             />
-            {check && (
-              <Typography
-                variant="small"
-                color="gray"
-                className="mt-2 flex items-center gap-1 text-xs font-normal dark:text-gray-300 md:text-sm"
-              >
-                <InfoIcon className="-mt-px h-6 w-6 text-red-800 dark:text-red-500" />
-                <Translate>{check}</Translate>
-              </Typography>
-            )}
+            <Typography
+              variant="small"
+              color="gray"
+              className="mt-3 flex items-center gap-1 text-xs font-normal dark:text-gray-300 md:text-sm"
+            >
+              <InfoIcon className="-mt-px h-5 w-5 text-red-800 dark:text-red-500" />
+              <Translate>CAN'T BE CHANGED LATER!</Translate>
+            </Typography>
+            <Typography
+              variant="small"
+              color="gray"
+              className="mt-3 flex items-center gap-1 text-xs font-normal dark:text-gray-300 md:text-sm"
+            >
+              <InfoIcon className="-mt-px h-5 w-5 text-yellow-800 dark:text-yellow-500" />
+              <Translate>No spaces or special characters are allowed</Translate>
+            </Typography>
           </div>
           <Input
             color="indigo"

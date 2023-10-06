@@ -37,7 +37,7 @@ const ThemeSelector = () => {
         // ref={containerRef}
       >
         <MenuItem
-          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-gray-600"
+          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-indigo-500 dark:hover:!bg-gray-600"
           // className="cursor-pointer rounded-t-md px-8 pb-2 pt-4 text-stone-900 bg-stone-200 dark:text-stone-100 transition-all ease-in-out hover:!bg-indigo-600 dark:bg-stone-900 hover:text-stone-300 active:!bg-indigo-3"
           onClick={() => setTheme("dark")}
         >
@@ -45,7 +45,7 @@ const ThemeSelector = () => {
           <span>Dark</span>
         </MenuItem>
         <MenuItem
-          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-gray-600"
+          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-indigo-500 dark:hover:!bg-gray-600"
           // className="cursor-pointer py-2 pl-8 text-stone-900 bg-stone-200 dark:text-stone-100 transition-all ease-in-out hover:!bg-indigo-600 dark:bg-stone-900 hover:text-stone-300 active:!bg-indigo-500"
           onClick={() => setTheme("light")}
         >
@@ -53,7 +53,7 @@ const ThemeSelector = () => {
           <span>Light</span>
         </MenuItem>
         <MenuItem
-          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-gray-600"
+          className="dark:text-stone-400 hover:!text-slate-100 hover:!bg-indigo-500 dark:hover:!bg-gray-600"
           // className="cursor-pointer rounded-b-md pb-4 pl-8 pt-2 text-stone-900 bg-stone-200 dark:text-stone-100 transition-all ease-in-out hover:!bg-indigo-600 dark:bg-stone-900 hover:text-stone-300 active:!bg-indigo-500"
           onClick={() => setTheme("system")}
         >
