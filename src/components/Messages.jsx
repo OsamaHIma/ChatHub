@@ -67,21 +67,21 @@ const Messages = ({ currentChat, socket }) => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-receive", (msg) => {
-        const updatedMessages = messages.map((message) => {
-          if (message._id === msg._id) {
-            return { ...message, seen: true };
-          }
-          return message;
-        });
+        // const updatedMessages = messages.map((message) => {
+        //   if (message._id === msg._id) {
+        //     return { ...message, seen: true };
+        //   }
+        //   return message;
+        // });
 
         // setMessages(updatedMessages);
         // setArrivalMessages();
         setMessages([
-          ...updatedMessages,
+          ...messages,
           { fromSelf: false, message: msg.msg },
         ]);
         // Emit an event to notify the sender that the message has been seen
-        socket.current.emit("msg-seen", msg._id);
+        // socket.current.emit("msg-seen", msg._id);
         notificationSound.play();
       });
     }
