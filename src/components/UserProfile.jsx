@@ -11,13 +11,13 @@ const FullImage = ({ openFullImage, handleOpenImage, user }) => (
   <Dialog
     open={openFullImage}
     handler={handleOpenImage}
-    className="dark:bg-gray-800"
+    className="dark:bg-gray-800 !max-h-[95vh]"
   >
     <DialogBody>
       <img
         alt="User avatar"
         src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${user.avatar}`}
-        className="w-full object-cover object-center"
+        className="w-full h-screen object-cover object-center"
       />
     </DialogBody>
 
