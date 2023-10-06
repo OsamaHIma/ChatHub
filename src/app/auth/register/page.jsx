@@ -31,21 +31,6 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
   const router = useRouter();
-  // const handelInputChange = async (event) => {
-  //   const { value, name } = event.target;
-  //   setFormData({ ...formData, [name]: value });
-  //   if (name == "username" || name === "email") {
-  //     const { data } = await axios.post(
-  //       "http://localhost:5000/api/auth/check",
-  //       { username: formData.username, email: formData.email },
-  //     );
-  //     if (!data.status) {
-  //       setCheck(data.message);
-  //     } else {
-  //       setCheck("");
-  //     }
-  //   }
-  // };
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
