@@ -40,12 +40,14 @@ const Messages = ({ currentChat, socket }) => {
   }, [currentChat]);
 
   const sendMessage = async (message) => {
+    const time = Date.now();
+
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
       {
         to: currentChat._id,
         from: user._id,
-        date: Date.now(),
+        date: time,
         message,
       },
     );
@@ -54,7 +56,7 @@ const Messages = ({ currentChat, socket }) => {
       _id: data.id,
       to: currentChat._id,
       from: user._id,
-      date: Date.now(),
+      date: time,
       message,
       ...data,
     });
