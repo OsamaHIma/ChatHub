@@ -120,7 +120,8 @@ const Home = () => {
                   <img
                     alt="User avatar"
                     src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${chat.avatar}`}
-                    className="max-w-[3rem] rounded-full"
+                    className="max-w-[3rem] cursor-pointer rounded-full"
+                    onClick={handleOpenUserProfileOpen}
                   />
                 ) : (
                   <UserCircle2 size={48} />
