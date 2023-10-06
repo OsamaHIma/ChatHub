@@ -143,13 +143,12 @@ const Messages = ({ currentChat, socket }) => {
     <section className="flex flex-col justify-between gap-7 overflow-y-auto">
       <div
         className="relative mt-4 flex flex-col justify-between"
-        style={{ height: "500px" }}
       >
         <div className="relative h-[75vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50">
           {loading && (
             <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
           )}
-          <ScrollableFeed>
+          {/* <ScrollableFeed> */}
             {messages.length > 0 &&
               messages.map((message, index) =>
                 message.fromSelf ? (
@@ -158,7 +157,7 @@ const Messages = ({ currentChat, socket }) => {
                   <ComingMessage key={index} message={message} />
                 ),
               )}
-          </ScrollableFeed>
+          {/* </ScrollableFeed> */}
         </div>
       </div>
       <ChatInput handleSendMsg={sendMessage} />
