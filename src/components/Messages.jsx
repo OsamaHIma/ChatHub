@@ -7,8 +7,8 @@ import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
 import { CheckCheck } from "lucide-react";
-import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
+import ScrollableFeed from "react-scrollable-feed";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -37,7 +37,6 @@ const Messages = ({ currentChat, socket }) => {
 
   useEffect(() => {
     getAllMsgBetweenTowUsers();
-    // setIsSeen(true);
   }, [currentChat]);
 
   const sendMessage = async (msg) => {
@@ -64,15 +63,6 @@ const Messages = ({ currentChat, socket }) => {
     msgs.push({ fromSelf: true, message: msg });
     setMessages(msgs);
   };
-
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on("msg-receive", (msg) => {
-  //       setArrivalMessages({ fromSelf: false, message: msg });
-  //     });
-  //     notificationSound.play();
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (socket.current) {
@@ -159,16 +149,16 @@ const Messages = ({ currentChat, socket }) => {
           {loading && (
             <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
           )}
-          <ScrollableFeed>
-            {messages.length > 0 &&
-              messages.map((message, index) =>
+          {messages.length > 0 &&
+            messages.map((message, index) => (
+              <ScrollableFeed>
                 message.fromSelf ? (
-                  <SendMessage key={index} message={message} />
+                <SendMessage key={index} message={message} />
                 ) : (
-                  <ComingMessage key={index} message={message} />
+                <ComingMessage key={index} message={message} />
                 ),
-              )}
-          </ScrollableFeed>
+              </ScrollableFeed>
+            ))}
         </div>
       </div>
       <ChatInput handleSendMsg={sendMessage} />
