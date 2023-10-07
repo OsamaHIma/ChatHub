@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     setLoading(false);
-    await signOut();
+    signOut();
     setLoading(true);
   };
 

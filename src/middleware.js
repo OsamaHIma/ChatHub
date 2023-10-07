@@ -7,7 +7,7 @@ export async function middleware(req) {
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!session) {
-    if (pathname === "/" ) {
+    if (pathname === "/" || pathname === "/account" ) {
       return NextResponse.redirect(new URL("/auth/register", req.url));
     }
   }

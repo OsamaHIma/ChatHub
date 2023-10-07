@@ -69,8 +69,8 @@ const Register = () => {
           email: formData.email,
           password: formData.password,
         });
-        toast.success(<Translate>Registered successfully</Translate>);
         router.push(`/account`);
+        toast.success(<Translate>Registered successfully</Translate>);
       } else {
         toast.error(<Translate>{data.message}</Translate>);
       }

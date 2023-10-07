@@ -155,11 +155,18 @@ const MyAccount = () => {
         >
           <input {...getInputProps()} />
           {imagePath ? (
+            // <img
+            //   src={imagePath}
+            //   alt=""
+            //   className="h-full w-full rounded-full object-cover"
+            // />
+            <div className="h-full w-full overflow-hidden rounded-full">
             <img
+              alt="User avatar"
               src={imagePath}
-              alt=""
-              className="h-full w-full rounded-full object-cover"
+              class="object-contain w-full "
             />
+          </div>
           ) : (
             <div
               className={`flex h-full w-full items-center justify-center rounded-full ${isDragReject ? "!bg-red-500" : "!bg-gray-200"

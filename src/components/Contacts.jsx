@@ -10,6 +10,7 @@ const Contacts = ({
   lastMessage,
   index,
 }) => {
+
   return (
     <article className="flex flex-col items-center gap-3">
       {!contact.username.includes(search) ? null : (
