@@ -90,7 +90,7 @@ const Login = () => {
 
   return (
     <MotionLayout>
-      <section className="paddings innerWidth my-32 py-16 text-center">
+      <section className="paddings innerWidth py-16 text-center">
         <h1 className="my-7 text-2xl font-bold md:text-5xl">
           <Translate>Log In</Translate> <LogIn className="inline" />{" "}
         </h1>

@@ -22,23 +22,8 @@ import { signOut } from "next-auth/react";
 
 const Navbar = () => {
   const { user } = useUser();
-  const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop > 30) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleSignOut = async () => {
     setLoading(false);
@@ -48,9 +33,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={` ${
-        scrolled && " bg-stone-400/50 backdrop-blur-md"
-      } h-wrapper fixed top-0 z-20 w-full text-stone-100 transition-all ease-in`}
+      className={` w-full text-stone-100 transition-all ease-in`}
     >
       <motion.div
         variants={navVariants}
@@ -81,16 +64,12 @@ const Navbar = () => {
               {user ? (
                 <>
                   <li>
-                    <Link href="/" className={`${
-                        scrolled ? "text-stone-50" : "text-gray-900"
-                      } dark:!text-stone-50 `}>
+                    <Link href="/" className={`text-gray-700 dark:text-stone-50 `}>
                       <Translate>Chat</Translate>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/account" className={`${
-                        scrolled ? "text-stone-50" : "text-gray-900"
-                      } dark:!text-stone-50 `}>
+                    <Link href="/account" className={`text-gray-700 dark:text-stone-50 `}>
                       <Translate>Account</Translate>
                     </Link>
                   </li>

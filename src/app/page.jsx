@@ -66,7 +66,7 @@ const Home = () => {
   };
 
   return (
-    <main className="paddings innerWidth mt-24 flex flex-col items-center justify-center gap-4 py-16 md:my-24">
+    <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
       <div className="flex h-screen w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
         {/* Contacts */}
         <div className="Contacts flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">

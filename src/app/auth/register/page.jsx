@@ -82,7 +82,7 @@ const Register = () => {
 
   return (
     <MotionLayout>
-      <section className="paddings innerWidth py-16 !pt-32 text-center">
+      <section className="paddings innerWidth py-16 text-center">
         <h1 className="my-7 text-2xl font-bold md:text-5xl">
           <Translate>Sing UP</Translate>
         </h1>

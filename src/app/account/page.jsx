@@ -141,7 +141,7 @@ const MyAccount = () => {
   }, [imagePath]);
 
   return (
-    <div className="container mt-24 px-10 py-12">
+    <div className="container px-10 py-12">
       <h1 className="mb-6 text-3xl font-bold">
         <Translate>Account Information</Translate>
       </h1>
