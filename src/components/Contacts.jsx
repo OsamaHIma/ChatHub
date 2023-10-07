@@ -24,7 +24,7 @@ const Contacts = ({
           {contact.avatar ? (
             <img
               alt="User avatar"
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${contact.avatar}`}
+              src={`${contact.avatar}`}
               className="max-w-[3rem] rounded-full"
             />
           ) : (

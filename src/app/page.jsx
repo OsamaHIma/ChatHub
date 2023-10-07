@@ -119,7 +119,7 @@ const Home = () => {
                 {chat.avatar ? (
                   <img
                     alt="User avatar"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${chat.avatar}`}
+                    src={`${chat.avatar}`}
                     className="max-w-[3rem] cursor-pointer rounded-full"
                     onClick={handleOpenUserProfileOpen}
                   />

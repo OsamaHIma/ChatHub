@@ -38,7 +38,7 @@ const MyAccount = () => {
     if (currentUser) {
       setUser(currentUser);
       setImagePath(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${currentUser.avatar}`,
+        `${currentUser.avatar}`,
       );
     }
   }, [currentUser]);
@@ -162,9 +162,8 @@ const MyAccount = () => {
             />
           ) : (
             <div
-              className={`flex h-full w-full items-center justify-center rounded-full ${
-                isDragReject ? "!bg-red-500" : "!bg-gray-200"
-              } text-xl font-bold text-gray-500`}
+              className={`flex h-full w-full items-center justify-center rounded-full ${isDragReject ? "!bg-red-500" : "!bg-gray-200"
+                } text-xl font-bold text-gray-500`}
             >
               {user?.name && (
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-xl font-bold text-gray-500 shadow">
@@ -204,6 +203,7 @@ const MyAccount = () => {
       <div className="grid gap-8 lg:grid-cols-2">
         <Input
           color="indigo"
+          className={`${isEditing && "dark:text-gray-300"}`}
           label={<Translate>Name</Translate>}
           name="name"
           value={user && user.name}
@@ -212,6 +212,7 @@ const MyAccount = () => {
         />
         <Input
           color="indigo"
+          className={`${isEditing && "dark:text-gray-300"}`}
           label={<Translate>Email</Translate>}
           name="email"
           value={user && user.email}
@@ -220,6 +221,7 @@ const MyAccount = () => {
         />
         <Textarea
           color="indigo"
+          className={`${isEditing && "dark:text-gray-300"}`}
           label={<Translate>About</Translate>}
           name="about"
           value={user && user.about}
@@ -246,6 +248,7 @@ const MyAccount = () => {
             <Button
               disabled={loading || !changesMade}
               color="indigo"
+              className={`${isEditing && "dark:text-gray-300"}`}
               onClick={handleSaveChanges}
             >
               <Translate>Save Changes</Translate>

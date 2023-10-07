@@ -16,7 +16,7 @@ const FullImage = ({ openFullImage, handleOpenImage, user }) => (
     <DialogBody>
       <img
         alt="User avatar"
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${user.avatar}`}
+        src={`${user.avatar}`}
         className="w-full h-screen object-cover object-center"
       />
     </DialogBody>
@@ -39,7 +39,7 @@ const UserProfile = ({ user, open, handleOpen }) => {
           {user.avatar && (
             <img
               alt="User avatar"
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/uploads/${user.avatar}`}
+              src={`${user.avatar}`}
               className="max-w-[6rem] cursor-pointer rounded-full"
               onClick={handleOpenImage}
             />
