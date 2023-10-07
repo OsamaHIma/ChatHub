@@ -37,12 +37,13 @@ const UserProfile = ({ user, open, handleOpen }) => {
       <Dialog open={open} handler={handleOpen} className="dark:bg-gray-800">
         <DialogHeader className="flex flex-wrap items-center gap-3">
           {user.avatar && (
-            <img
-              alt="User avatar"
-              src={`${user.avatar}`}
-              className="max-w-[6rem] cursor-pointer rounded-full"
-              onClick={handleOpenImage}
-            />
+            <div className="max-w-[6rem] max-h-[6rem] cursor-pointer  overflow-hidden rounded-full" onClick={handleOpenImage}>
+              <img
+                alt="User avatar"
+                src={`${user.avatar}`}
+                class="object-contain w-full"
+              />
+            </div>
           )}
           <h1 className="text-3xl dark:text-gray-200">
             <Translate>{user.name}'s Profile</Translate>

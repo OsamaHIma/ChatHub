@@ -83,16 +83,21 @@ const Home = () => {
                   className="block w-full rounded-full bg-gray-100 py-2 pl-10 pr-3 text-gray-900 focus:bg-white focus:outline-none focus:ring-0"
                 />
               </div>
+              {/* message.users && message.users[1] === user._id */}
               {allMessages &&
-                users.map((user, index) => {
+                users.map((contact, index) => {
                   const messages = allMessages.filter(
-                    (message) => message.sender === user._id,
+                    (message) => {
+                      if (message.users[0] === contact._id) {
+                      return  message.users[1] === user._id
+                      }
+                    },
                   );
                   const lastMessage = messages[messages.length - 1];
                   return (
                     <Contacts
                       key={index}
-                      contact={user}
+                      contact={contact}
                       handelChangeChat={handelChangeChat}
                       selectedUser={selectedUser}
                       search={search}
@@ -117,12 +122,13 @@ const Home = () => {
             <div className="flex justify-between">
               <div className="flex items-center gap-3">
                 {chat.avatar ? (
-                  <img
-                    alt="User avatar"
-                    src={`${chat.avatar}`}
-                    className="max-w-[3rem] cursor-pointer rounded-full"
-                    onClick={handleOpenUserProfileOpen}
-                  />
+                  <div className="max-w-[3rem] max-h-[3rem] cursor-pointer overflow-hidden rounded-full" onClick={handleOpenUserProfileOpen}>
+                    <img
+                      alt="User avatar"
+                      src={`${chat.avatar}`}
+                      class="object-contain w-full"
+                    />
+                  </div>
                 ) : (
                   <UserCircle2 size={48} />
                 )}
