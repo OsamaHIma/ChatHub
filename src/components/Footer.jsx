@@ -57,13 +57,13 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <Link href="/upload" className="hover:underline">
-                    <Translate>Upload</Translate>
+                  <Link href="/" className="hover:underline">
+                    <Translate>Chat</Translate>
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:underline">
-                    <Translate>Dashboard</Translate>
+                  <Link href="/account" className="hover:underline">
+                    <Translate>Account</Translate>
                   </Link>
                 </li>
               </ul>
