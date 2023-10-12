@@ -41,7 +41,7 @@ const UserProfile = ({ user, open, handleOpen }) => {
               <img
                 alt="User avatar"
                 src={`${user.avatar}`}
-                class="object-contain w-full"
+                className="object-contain w-full"
               />
             </div>
           )}

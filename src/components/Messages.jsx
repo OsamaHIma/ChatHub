@@ -10,8 +10,6 @@ import { CheckCheck } from "lucide-react";
 import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
 
-
-
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
@@ -79,7 +77,6 @@ const Messages = ({ currentChat, socket }) => {
     }
   }, []);
 
-
   useEffect(() => {
     arrivalMessages && setMessages((prev) => [...prev, arrivalMessages]);
   }, [arrivalMessages]);
@@ -87,7 +84,7 @@ const Messages = ({ currentChat, socket }) => {
   const ComingMessage = ({ message }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
-      <div className="mb-8 flex" >
+      <div className="mb-8 flex">
         <div className="max-w-1/2 relative ml-4 rounded-lg bg-gray-700 px-6 py-4">
           <p className="whitespace-normal break-all text-white">
             <Translate>{message.message}</Translate>
@@ -118,26 +115,28 @@ const Messages = ({ currentChat, socket }) => {
     );
   };
   return (
-    <section className="flex flex-col justify-between gap-7 overflow-y-auto">
-      <div className="relative mt-4 flex flex-col justify-between">
-        <div className="relative hide-scroll-bar h-[77vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
-          {loading && (
-            <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
-          )}
-          <ScrollableFeed>
-            {messages.length > 0 &&
-              messages.map((message, index) =>
-                message.fromSelf ? (
-                  <SendMessage key={index} message={message} />
-                ) : (
-                  <ComingMessage key={index} message={message} />
-                ),
-              )}
-          </ScrollableFeed>
+    <>
+      <section className="flex flex-col justify-between gap-7 overflow-y-auto">
+        <div className="relative mt-4 flex flex-col justify-between">
+          <div className="hide-scroll-bar relative h-[77vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
+            {loading && (
+              <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
+            )}
+            <ScrollableFeed>
+              {messages.length > 0 &&
+                messages.map((message, index) =>
+                  message.fromSelf ? (
+                    <SendMessage key={index} message={message} />
+                  ) : (
+                    <ComingMessage key={index} message={message} />
+                  ),
+                )}
+            </ScrollableFeed>
+          </div>
         </div>
-      </div>
-      <ChatInput handleSendMsg={sendMessage} />
-    </section>
+      </section>
+      <ChatInput socket={socket} handleSendMsg={sendMessage} />
+    </>
   );
 };
 

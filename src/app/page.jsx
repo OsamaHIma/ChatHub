@@ -8,10 +8,10 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Translate } from "translate-easy";
-import { Search, UserCircle2 } from "lucide-react";
+import { Search } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { io } from "socket.io-client";
-import UserProfile from "@/components/UserProfile";
+import ChatSection from "@/components/ChatSection";
 
 const Home = () => {
   const { user } = useUser();
@@ -20,9 +20,8 @@ const Home = () => {
   const [chat, setChat] = useState(null);
   const [allMessages, setAllMessages] = useState([]);
   const [search, setSearch] = useState("");
-  const [openUserProfile, setOpenUserProfile] = useState(false);
   const socket = useRef();
-  const handleOpenUserProfileOpen = () => setOpenUserProfile(!openUserProfile);
+
   const getAllUsers = async () => {
     try {
       if (user) {
@@ -83,16 +82,13 @@ const Home = () => {
                   className="block w-full rounded-full bg-gray-100 py-2 pl-10 pr-3 text-gray-900 focus:bg-white focus:outline-none focus:ring-0"
                 />
               </div>
-              {/* message.users && message.users[1] === user._id */}
               {allMessages &&
                 users.map((contact, index) => {
-                  const messages = allMessages.filter(
-                    (message) => {
-                      if (message.users[0] === contact._id) {
-                      return  message.users[1] === user._id
-                      }
-                    },
-                  );
+                  const messages = allMessages.filter((message) => {
+                    if (message.users[0] === contact._id) {
+                      return message.users[1] === user._id;
+                    }
+                  });
                   const lastMessage = messages[messages.length - 1];
                   return (
                     <Contacts
@@ -118,36 +114,7 @@ const Home = () => {
         </div>
 
         {chat ? (
-          <section className="innerWidth lg:flex-1">
-            <div className="flex justify-between">
-              <div className="flex items-center gap-3">
-                {chat.avatar ? (
-                  <div className="max-w-[3rem] max-h-[3rem] cursor-pointer overflow-hidden rounded-full" onClick={handleOpenUserProfileOpen}>
-                    <img
-                      alt="User avatar"
-                      src={`${chat.avatar}`}
-                      class="object-contain w-full"
-                    />
-                  </div>
-                ) : (
-                  <UserCircle2 size={48} />
-                )}
-                <p className="text-gray-400">@{chat.username}</p>
-              </div>
-              <p
-                onClick={handleOpenUserProfileOpen}
-                className="mt-2 cursor-pointer text-sm text-gray-400 underline-offset-4 hover:underline"
-              >
-                <Translate>click here to view the profile</Translate>
-              </p>
-            </div>
-            <Messages currentChat={chat} socket={socket} />
-            <UserProfile
-              open={openUserProfile}
-              handleOpen={handleOpenUserProfileOpen}
-              user={chat}
-            />
-          </section>
+          <ChatSection chat={chat} socket={socket} />
         ) : (
           <section className="welcome-section mx-auto hidden flex-col items-center justify-center gap-5 lg:flex">
             <Image

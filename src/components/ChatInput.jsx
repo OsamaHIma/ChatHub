@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Loader2Icon, Send, SmileIcon, PaperclipIcon } from "lucide-react";
+import { Send, SmileIcon, PaperclipIcon } from "lucide-react";
 import {
   IconButton,
   Textarea,
@@ -10,12 +10,11 @@ import {
   MenuHandler,
 } from "@material-tailwind/react";
 import Picker from "emoji-picker-react";
-import { toast } from "react-toastify";
-import { Translate } from "translate-easy";
+import { useUser } from "@/context/UserContext";
 
-const ChatInput = ({ handleSendMsg }) => {
+const ChatInput = ({ handleSendMsg,socket }) => {
   const [msg, setMsg] = useState("");
-
+  const { user } = useUser();
   const handelEmojiPickerClick = (emoji, event) => {
     const emojiCount = event.detail || 1;
     const emojiString = emoji.emoji.repeat(emojiCount);
@@ -26,6 +25,7 @@ const ChatInput = ({ handleSendMsg }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
+      socket.current.emit("stop-typing", user._id);
       handleSendMsg(msg);
       setMsg("");
     }
@@ -34,7 +34,7 @@ const ChatInput = ({ handleSendMsg }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-5 flex min-w-[15.5rem] items-center gap-5"
+      className="mt-5 flex min-w-[15.5rem] items-center gap-5"
       noValidate
     >
       <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
@@ -82,7 +82,10 @@ const ChatInput = ({ handleSendMsg }) => {
           rows={1}
           resize={true}
           value={msg}
-          onChange={(e) => setMsg(e.target.value)}
+          onChange={(e) => {
+            socket.current.emit("typing", user._id);
+            setMsg(e.target.value);
+          }}
           placeholder="Your Message"
           className="bg min-h-full !border-0 focus:border-transparent dark:text-gray-300 dark:placeholder:text-gray-400"
           containerProps={{

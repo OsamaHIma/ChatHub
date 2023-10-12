@@ -164,7 +164,7 @@ const MyAccount = () => {
             <img
               alt="User avatar"
               src={imagePath}
-              class="object-contain w-full "
+              className="object-contain w-full "
             />
           </div>
           ) : (

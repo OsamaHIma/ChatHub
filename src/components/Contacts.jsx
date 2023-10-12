@@ -26,7 +26,7 @@ const Contacts = ({
               <img
                 alt="User avatar"
                 src={`${contact.avatar}`}
-                class="object-contain w-full "
+                className="object-contain w-full "
               />
             </div>
           ) : (
