@@ -14,14 +14,14 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
-  const [loading, setIsLoading] = useState(false);
+  // const [loading, setIsLoading] = useState(false);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
 
 
   const getAllMsgBetweenTowUsers = async (page) => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
         {
@@ -30,7 +30,7 @@ const Messages = ({ currentChat, socket }) => {
           page: page,
         },
       );
-      setIsLoading(false);
+      // setIsLoading(false);
       return data;
     } catch (error) {
       console.error(error);
@@ -79,6 +79,7 @@ const Messages = ({ currentChat, socket }) => {
       message,
       ...data,
     });
+
     setMessages([
       { fromSelf: true, message, _id: data.id, date: data.date },
       ...messages,
@@ -91,13 +92,6 @@ const Messages = ({ currentChat, socket }) => {
       // Emit an event to notify the sender that the message has been seen
       socket.current.emit("update-msg-seen", msg._id);
       notificationSound.play();
-    });
-    socket.current.on("msg-seen", (msgId) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === msgId ? { ...msg, seen: true } : msg,
-        ),
-      );
     });
   }
 
@@ -114,7 +108,7 @@ const Messages = ({ currentChat, socket }) => {
 
   useEffect(() => {
     refetch();
-  }, [currentChat]);
+  }, [currentChat,messages]);
 
   const ComingMessage = ({ message }) => {
     const time = moment(message.date).format("hh:mm a");
@@ -153,17 +147,17 @@ const Messages = ({ currentChat, socket }) => {
     <section className="mb-7 md:mb-0">
       <div className="flex flex-col justify-between gap-7 overflow-y-auto">
         <div className="relative mt-4 flex flex-col justify-between">
-          <Button variant="text" color="indigo" onClick={() => fetchNextPage()} className="absolute dark:text-slate-100 left-[30%] z-50" disabled={isFetchingNextPage}>
+          <Button variant="text" color="indigo" onClick={() => fetchNextPage()} className="!absolute max-w-fit -top-7 dark:text-slate-100 left-[30%] md:left-[35%] z-50" disabled={isFetchingNextPage}>
             {isFetchingNextPage ? (
-              <Spinner className="mx-auto" />
+              <Spinner color="green" className="mx-auto" />
             ) : (
-              <Translate>Load more old messages</Translate>
+              <Translate>Load more older messages</Translate>
             )}
           </Button>
           <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
-            {loading && (
-              <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
-            )}
+            {/* {loading && (
+              <Spinner scale={7} className="absolute left-[50%] top-[50%]" />
+            )} */}
             <ScrollableFeed>
               {messages.length > 0 &&
                 messages

@@ -1,5 +1,9 @@
-import { UserCircle2 } from "lucide-react";
+"use client";
+import { useUser } from "@/context/UserContext";
+import axios from "axios";
+import { CheckCheck, UserCircle2 } from "lucide-react";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import { Translate } from "translate-easy";
 
 const Contacts = ({
@@ -7,26 +11,50 @@ const Contacts = ({
   handelChangeChat,
   selectedUser,
   search,
-  lastMessage,
+  // lastMessage,
   index,
 }) => {
+  const { user } = useUser();
+  const [lastMessage, setLastMessage] = useState({});
+
+  const getAllMsgBetweenTowUsers = async () => {
+    try {
+      // setIsLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
+        {
+          from: user._id,
+          to: contact._id,
+          page: 1,
+        },
+      );
+      // setIsLoading(false);
+      setLastMessage(data[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getAllMsgBetweenTowUsers();
+  }, []);
 
   return (
     <article className="flex flex-col items-center gap-3">
-      {!contact.username.includes(search) ? null : (
+      {!contact.username.toLowerCase().includes(search) ? null : (
         <div
-          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${selectedUser === index
+          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${
+            selectedUser === index
               ? "bg-indigo-500 !text-gray-200"
               : "bg-slate-300 dark:bg-slate-700"
-            }`}
+          }`}
           onClick={() => handelChangeChat(index, contact)}
         >
           {contact.avatar ? (
-            <div className="max-w-[4.3rem] max-h-[4.3rem] overflow-hidden rounded-full">
+            <div className="max-h-[4.3rem] max-w-[4.3rem] overflow-hidden rounded-full">
               <img
                 alt="User avatar"
                 src={`${contact.avatar}`}
-                className="object-contain w-full "
+                className="w-full object-contain "
               />
             </div>
           ) : (
@@ -36,36 +64,48 @@ const Contacts = ({
           <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
             <p>{contact.name}</p>
             <p
-              className={`text-sm ${selectedUser === index
+              className={`text-sm ${
+                selectedUser === index
                   ? "text-slate-300"
                   : "text-gray-600 dark:text-gray-400"
-                } `}
+              } `}
             >
               @{contact.username}
             </p>
           </div>
           <div className="flex items-center justify-between gap-5">
             <p
-              className={`max-w-[5rem] ${selectedUser === index
+              className={`max-w-[5rem] ${
+                selectedUser === index
                   ? "text-gray-300"
                   : "text-gray-600 dark:text-gray-300"
-                } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
+              } flex items-center gap-2 truncate md:max-w-[9rem] lg:max-w-[10rem]`}
             >
               {lastMessage ? (
-                lastMessage.content
+                lastMessage.message
               ) : (
                 <Translate>Start A Chat</Translate>
+              )}
+
+              {lastMessage && lastMessage.fromSelf && (
+                <CheckCheck
+                  className={`${
+                    lastMessage.seen ? "text-blue-500" : "text-gray-400"
+                  } `}
+                  size={17}
+                />
               )}
             </p>
             {lastMessage && (
               <p
-                className={`text-sm ${selectedUser === index
+                className={`text-sm ${
+                  selectedUser === index
                     ? "text-slate-400"
                     : "text-gray-600 dark:text-gray-400"
-                  } `}
+                } `}
               >
                 <Translate>
-                  {moment(lastMessage.updatedAt).format("hh:mm a")}
+                  {moment(lastMessage.date).format("hh:mm a")}
                 </Translate>
               </p>
             )}
