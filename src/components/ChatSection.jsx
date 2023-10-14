@@ -10,7 +10,7 @@ const ChatSection = ({ chat, socket }) => {
   const [userStatus, setUserStatus] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const handleOpenUserProfileOpen = () => setOpenUserProfile(!openUserProfile);
-  useEffect(() => {
+  // useEffect(() => {
     if (chat) {
       socket.current.emit("update-user-status", chat._id);
       socket.current.on("user-status", (userStatus) => {
@@ -29,7 +29,7 @@ const ChatSection = ({ chat, socket }) => {
         if (userId === chat._id) setIsTyping(false);
       });
     }
-  }, [userStatus]);
+  // }, []);
   return (
     <section className="innerWidth lg:flex-1">
       <div className="flex justify-between">

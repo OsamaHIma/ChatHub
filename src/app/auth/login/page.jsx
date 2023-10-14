@@ -3,7 +3,7 @@
 import MotionLayout from "@/components/MotionLayout";
 import { loginUserSchema } from "@/schema/userSchema";
 import { Button, Checkbox, Input, Spinner } from "@material-tailwind/react";
-import { EyeIcon, EyeOffIcon, LogIn } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -92,7 +92,7 @@ const Login = () => {
     <MotionLayout>
       <section className="paddings innerWidth py-16 text-center">
         <h1 className="my-7 text-2xl font-bold md:text-5xl">
-          <Translate>Log In</Translate> <LogIn className="inline" />{" "}
+          <Translate>Log In</Translate>
         </h1>
         <p className="text-gray-400 ">
           <Translate>

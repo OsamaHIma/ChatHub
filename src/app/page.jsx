@@ -105,7 +105,7 @@ const Home = () => {
             </section>
           ) : (
             <>
-              <Skeleton height={40} borderRadius={99} />
+              <Skeleton height={40} borderRadius={99} className="mt-4" />
               <Skeleton height={155} />
               <Skeleton height={155} />
               <Skeleton height={155} />

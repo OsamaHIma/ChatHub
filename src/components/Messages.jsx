@@ -5,10 +5,11 @@ import { Translate } from "translate-easy";
 import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
-import { Spinner } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import { CheckCheck } from "lucide-react";
 import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -16,28 +17,46 @@ const Messages = ({ currentChat, socket }) => {
   const [loading, setIsLoading] = useState(false);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
-  const getAllMsgBetweenTowUsers = async () => {
-    if (currentChat) {
-      try {
-        setIsLoading(true);
-        const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
-          {
-            from: user._id,
-            to: currentChat._id,
-          },
-        );
-        setIsLoading(false);
-        setMessages(data);
-      } catch (error) {
-        console.error(error);
-      }
+
+
+  const getAllMsgBetweenTowUsers = async (page) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
+        {
+          from: user._id,
+          to: currentChat._id,
+          page: page,
+        },
+      );
+      setIsLoading(false);
+      return data;
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  useEffect(() => {
-    getAllMsgBetweenTowUsers();
-  }, [currentChat]);
+  const { data, fetchNextPage, isFetchingNextPage, refetch, hasNextPage } =
+    useInfiniteQuery(
+      ["query"],
+      async ({ pageParam = 1 }) => {
+        const response = await getAllMsgBetweenTowUsers(pageParam);
+        return response;
+      },
+      {
+        getNextPageParam: (_, page) => {
+          return page.length + 1;
+        },
+        initialData: {
+          pages: async () => {
+            const response = await getAllMsgBetweenTowUsers(1);
+            return response;
+          },
+          pageParams: [1],
+        },
+      },
+    );
 
   const sendMessage = async (message) => {
     const time = Date.now();
@@ -60,26 +79,42 @@ const Messages = ({ currentChat, socket }) => {
       message,
       ...data,
     });
-
-    const msgs = [...messages];
-    msgs.push({ fromSelf: true, message });
-    setMessages(msgs);
+    setMessages([
+      { fromSelf: true, message, _id: data.id, date: data.date },
+      ...messages,
+    ]);
   };
 
-  useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-receive", (msg) => {
-        setArrivalMessages({ fromSelf: false, message: msg.message });
-        // Emit an event to notify the sender that the message has been seen
-        socket.current.emit("msg-seen", msg._id);
-        notificationSound.play();
-      });
-    }
-  }, []);
+  if (socket.current) {
+    socket.current.on("msg-receive", (msg) => {
+      setArrivalMessages({ fromSelf: false, message: msg.message });
+      // Emit an event to notify the sender that the message has been seen
+      socket.current.emit("update-msg-seen", msg._id);
+      notificationSound.play();
+    });
+    socket.current.on("msg-seen", (msgId) => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === msgId ? { ...msg, seen: true } : msg,
+        ),
+      );
+    });
+  }
 
   useEffect(() => {
-    arrivalMessages && setMessages((prev) => [...prev, arrivalMessages]);
+    arrivalMessages && setMessages((prev) => [arrivalMessages, ...prev]);
   }, [arrivalMessages]);
+
+
+  useEffect(() => {
+    if (data.pages.length > 0) {
+      setMessages(data?.pages.flatMap((page) => page));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentChat]);
 
   const ComingMessage = ({ message }) => {
     const time = moment(message.date).format("hh:mm a");
@@ -115,28 +150,38 @@ const Messages = ({ currentChat, socket }) => {
     );
   };
   return (
-    <>
-      <section className="flex flex-col justify-between gap-7 overflow-y-auto">
+    <section className="mb-7 md:mb-0">
+      <div className="flex flex-col justify-between gap-7 overflow-y-auto">
         <div className="relative mt-4 flex flex-col justify-between">
-          <div className="hide-scroll-bar relative h-[77vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
+          <Button variant="text" color="indigo" onClick={() => fetchNextPage()} className="absolute dark:text-slate-100 left-[30%] z-50" disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? (
+              <Spinner className="mx-auto" />
+            ) : (
+              <Translate>Load more old messages</Translate>
+            )}
+          </Button>
+          <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
             {loading && (
               <Spinner scale={7} className="absolute left-[50%] top-[50%] " />
             )}
             <ScrollableFeed>
               {messages.length > 0 &&
-                messages.map((message, index) =>
-                  message.fromSelf ? (
-                    <SendMessage key={index} message={message} />
-                  ) : (
-                    <ComingMessage key={index} message={message} />
-                  ),
-                )}
+                messages
+                  .slice()
+                  .reverse()
+                  .map((message, index) =>
+                    message.fromSelf ? (
+                      <SendMessage key={index} message={message} />
+                    ) : (
+                      <ComingMessage key={index} message={message} />
+                    ),
+                  )}
             </ScrollableFeed>
           </div>
         </div>
-      </section>
+      </div>
       <ChatInput socket={socket} handleSendMsg={sendMessage} />
-    </>
+    </section>
   );
 };
 
