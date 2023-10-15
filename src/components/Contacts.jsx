@@ -30,6 +30,15 @@ const Contacts = ({
       );
       // setIsLoading(false);
       setLastMessage(data[0]);
+      console.log(data[0])
+      if (!data[0].fromSelf && !data[0].seen) {
+        new Notification("New Message", {
+          body: `${data[0].message}\n ${moment(data[0].date).format("hh:mm a")}`,
+          icon: "/logoTab.svg",
+          vibrate: [200, 100, 200],
+          sound: "/notification_sound.mp3",
+        });
+      }
     } catch (error) {
       console.error(error);
     }

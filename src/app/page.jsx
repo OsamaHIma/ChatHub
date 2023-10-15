@@ -46,12 +46,14 @@ const Home = () => {
     setSelectedUser(index);
     setChat(contact);
   };
-
+  useEffect(() => {
+    Notification.requestPermission();
+  }, []);
   return (
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
       <div className="flex h-screen w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
         {/* Contacts */}
-        <div className="Contacts flex max-h-[95vh] flex-col gap-3 overflow-y-auto hide-scroll-bar lg:max-h-full lg:flex-[0.5] ">
+        <div className="Contacts hide-scroll-bar flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (
             <section className="flex flex-col gap-3 pt-4 md:pt-0">
               <div className="relative w-full">
