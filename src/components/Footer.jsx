@@ -130,7 +130,7 @@ const Footer = () => {
 
               <span className="sr-only">Twitter page</span>
             </Link>
-            <Link href="#">
+            <Link href="https://github.com/osamaHIma">
               <Github className="text-gray-500 transition-colors duration-500 hover:text-gray-700 dark:hover:text-white" />
               <span className="sr-only">GitHub account</span>
             </Link>

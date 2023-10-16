@@ -47,7 +47,18 @@ const Home = () => {
     setChat(contact);
   };
   useEffect(() => {
-    Notification.requestPermission();
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        // Handle permission granted
+      } else if (permission === 'denied') {
+        console.log('Notification permission denied.');
+        // Handle permission denied
+      } else {
+        console.log('Notification permission dismissed.');
+        // Handle permission dismissed
+      }
+    });
   }, []);
   return (
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
@@ -108,7 +119,7 @@ const Home = () => {
               <span className="text-indigo-500">{user && user.username}</span>!
             </h1>
             <p className="text-xl font-semibold capitalize md:text-3xl">
-              <Translate>Select a chat to start messaging</Translate>
+              <Translate>Select a contact to start messaging</Translate>
             </p>
           </section>
         )}
