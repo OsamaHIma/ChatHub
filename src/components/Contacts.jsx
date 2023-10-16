@@ -83,20 +83,7 @@ const Contacts = ({
             </p>
           </div>
           <div className="flex items-center justify-between gap-5">
-            <p
-              className={`max-w-[5rem] ${
-                selectedUser === index
-                  ? "text-gray-300"
-                  : "text-gray-600 dark:text-gray-300"
-              } flex items-center gap-2 truncate md:max-w-[9rem] lg:max-w-[10rem]`}
-            >
-              {lastMessage ? (
-                lastMessage.message
-              ) : (
-                <Translate>Start A Chat</Translate>
-              )}
-
-              {lastMessage && lastMessage.fromSelf && (
+<div class name="flex items-center gap-2">{lastMessage && lastMessage.fromSelf && (
                 <CheckCheck
                   className={`${
                     lastMessage.seen ? "text-blue-500" : "text-gray-400"
@@ -104,7 +91,20 @@ const Contacts = ({
                   size={17}
                 />
               )}
+            <p
+              className={`max-w-[5rem] ${
+                selectedUser === index
+                  ? "text-gray-300"
+                  : "text-gray-600 dark:text-gray-300"
+              } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
+            >
+              {lastMessage ? (
+                lastMessage.message
+              ) : (
+                <Translate>Start A Chat</Translate>
+              )}
             </p>
+</div>
             {lastMessage && (
               <p
                 className={`text-sm ${
