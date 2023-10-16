@@ -49,7 +49,7 @@ const Contacts = ({
 
   return (
     <article className="flex flex-col items-center gap-3">
-      {!contact.username.toLowerCase().includes(search) ? null : (
+      {!contact.username.toLowerCase().includes(search.toLowerCase()) ? null : (
         <div
           className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${
             selectedUser === index
