@@ -49,7 +49,7 @@ const Contacts = ({
 
   return (
     <article className="flex flex-col items-center gap-3">
-      {!contact.username.toLowerCase().includes(search) ? null : (
+      {!contact.username.toLowerCase().includes(search.toLowerCase()) ? null : (
         <div
           className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${
             selectedUser === index
@@ -83,20 +83,21 @@ const Contacts = ({
             </p>
           </div>
           <div className="flex items-center justify-between gap-5">
+<div class name="flex items-center gap-2">
             <p
               className={`max-w-[5rem] ${
                 selectedUser === index
                   ? "text-gray-300"
                   : "text-gray-600 dark:text-gray-300"
-              } flex items-center gap-2 truncate md:max-w-[9rem] lg:max-w-[10rem]`}
+              } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
             >
               {lastMessage ? (
                 lastMessage.message
               ) : (
                 <Translate>Start A Chat</Translate>
               )}
-
-              {lastMessage && lastMessage.fromSelf && (
+            </p>
+{lastMessage && lastMessage.fromSelf && (
                 <CheckCheck
                   className={`${
                     lastMessage.seen ? "text-blue-500" : "text-gray-400"
@@ -104,7 +105,7 @@ const Contacts = ({
                   size={17}
                 />
               )}
-            </p>
+</div>
             {lastMessage && (
               <p
                 className={`text-sm ${
