@@ -136,10 +136,10 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index}>
+        <ContextMenuTrigger id={index} holdToDisplay={0.3}>
           <div
             className="relative mb-8 flex">
-            <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-6 py-4">
+            <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1">
@@ -178,9 +178,12 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index}>
-          <div className="mb-8 relative max-w-full flex flex-row-reverse">
-            <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-6 py-4">
+        <ContextMenuTrigger id={index} holdToDisplay={0.3}>
+          <div className="mb-8 relative max-w-full flex flex-row-reverse"
+          //  onTouchStart={handleLongPressStart}
+          //  onTouchEnd={handleLongPressEnd}
+           >
+            <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1">
@@ -212,7 +215,7 @@ const Messages = ({ currentChat, socket }) => {
             Reply
           </MenuItem>
         </ContextMenu>
-
+        
       </>
     );
   };
@@ -233,7 +236,7 @@ const Messages = ({ currentChat, socket }) => {
               <Translate>Load more older messages</Translate>
             )}
           </Button>
-          <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 p-6 dark:bg-slate-900/50 md:h-[70vh]">
+          <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 py-6 px-1 dark:bg-slate-900/50 md:h-[70vh]">
             {loading && (
               <Spinner scale={7} className="absolute left-[50%] top-[50%]" />
             )}
