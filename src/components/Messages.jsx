@@ -161,7 +161,7 @@ const Messages = ({ currentChat, socket }) => {
 
         <ContextMenu
           id={index}
-           className="!z-[100]"
+           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
         // className="border-1 rounded-lg p-3 dark:bg-gray-700"
         >
           <MenuItem
@@ -170,6 +170,14 @@ const Messages = ({ currentChat, socket }) => {
           >
             Reply
           </MenuItem>
+            {/* <CopyToClipboard text={message.message}> */}
+            <MenuItem
+            onClick={async () => await navigator.clipboard.writeText(message.message)}
+              className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+            >
+              Copy
+            </MenuItem>
+          {/* </CopyToClipboard> */}
         </ContextMenu>
       </>
     );
@@ -179,10 +187,8 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index} holdToDisplay={3} >
+        <ContextMenuTrigger id={index} holdToDisplay={900} >
           <div className="mb-8 relative max-w-full flex flex-row-reverse"
-          //  onTouchStart={handleLongPressStart}
-          //  onTouchEnd={handleLongPressEnd}
            >
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
               {
@@ -207,9 +213,7 @@ const Messages = ({ currentChat, socket }) => {
         </ContextMenuTrigger>
         <ContextMenu
           id={index}
-           className="!z-[100]"
-
-        // className="border-1 rounded-lg p-3 dark:bg-gray-700"
+           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
         >
           <MenuItem
             className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
@@ -217,6 +221,12 @@ const Messages = ({ currentChat, socket }) => {
           >
             Reply
           </MenuItem>
+            <MenuItem
+            onClick={async () => await navigator.clipboard.writeText(message.message)}
+              className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+            >    
+              Copy     
+            </MenuItem>
         </ContextMenu>
         
       </>

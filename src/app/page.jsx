@@ -17,6 +17,7 @@ const Home = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [chat, setChat] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [search, setSearch] = useState("");
   const socket = useRef();
 
@@ -42,6 +43,16 @@ const Home = () => {
     getAllUsers();
   }, [user]);
 
+  useEffect(() => {
+    if (window.innerWidth < 960 && chat) {
+      console.log(true)
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+      console.log(false)
+    }
+  }, [chat]);
+
   const handelChangeChat = (index, contact) => {
     setSelectedUser(index);
     setChat(contact);
@@ -59,15 +70,19 @@ const Home = () => {
         // Handle permission dismissed
       }
     });
+    console.log(window.innerWidth)
+    console.log(isMobile)
+
   }, []);
+
   return (
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
-      <div className="flex h-screen w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
+      <div className="flex w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
         {/* Contacts */}
-        <div className="Contacts hide-scroll-bar flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
+        <div className="Contacts hide-scroll-bar flex !max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (
-            <section className="flex flex-col gap-3 pt-4 md:pt-0">
-              <div className="relative w-full">
+            <>
+              <div className="relative w-full mt-4">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <Search className="text-indigo-500" />
                 </div>
@@ -78,20 +93,21 @@ const Home = () => {
                   className="block w-full rounded-full bg-gray-100 py-2 pl-10 pr-3 text-gray-900 focus:bg-white focus:outline-none focus:ring-0"
                 />
               </div>
-              {users.map((contact, index) => {
-                return (
-                  <Contacts
-                    key={index}
-                    contact={contact}
-                    handelChangeChat={handelChangeChat}
-                    selectedUser={selectedUser}
-                    search={search}
-                    // lastMessage={lastMessage}
-                    index={index}
-                  />
-                );
-              })}
-            </section>
+              <section className={`flex ${isMobile ? "flex-row" : "flex-col"} gap-3 md:pt-0`}>
+                {users.map((contact, index) => {
+                  return (
+                    <Contacts
+                      key={index}
+                      contact={contact}
+                      handelChangeChat={handelChangeChat}
+                      selectedUser={selectedUser}
+                      search={search}
+                      index={index}
+                    />
+                  );
+                })}
+              </section>
+            </>
           ) : (
             <>
               <Skeleton height={40} borderRadius={99} className="mt-4" />
