@@ -142,7 +142,7 @@ const Messages = ({ currentChat, socket }) => {
             <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-6 py-4">
               {
                 message.replyToMessage && (
-                  <div className="max-w-xs mb-1">
+                  <div className="max-w-[13rem] md:max-w-xs mb-1">
                     <p className="p-3 truncate bg-green-500/70 rounded-md text-gray-100">
                       {message.replyToMessage.content}
                     </p>
@@ -183,7 +183,7 @@ const Messages = ({ currentChat, socket }) => {
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-6 py-4">
               {
                 message.replyToMessage && (
-                  <div className="max-w-xs mb-1">
+                  <div className="max-w-[13rem] md:max-w-xs mb-1">
                     <p className="p-3 truncate bg-green-500/70 rounded-md text-gray-100">
                       {message.replyToMessage.content}
                     </p>
