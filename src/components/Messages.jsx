@@ -136,7 +136,7 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index} holdToDisplay={0.3}>
+        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={1}>
           <div
             className="relative mb-8 flex">
             <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
@@ -161,6 +161,7 @@ const Messages = ({ currentChat, socket }) => {
 
         <ContextMenu
           id={index}
+           className="!z-[100]"
         // className="border-1 rounded-lg p-3 dark:bg-gray-700"
         >
           <MenuItem
@@ -178,7 +179,7 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index} holdToDisplay={0.3}>
+        <ContextMenuTrigger id={index} holdToDisplay={1} >
           <div className="mb-8 relative max-w-full flex flex-row-reverse"
           //  onTouchStart={handleLongPressStart}
           //  onTouchEnd={handleLongPressEnd}
@@ -206,6 +207,8 @@ const Messages = ({ currentChat, socket }) => {
         </ContextMenuTrigger>
         <ContextMenu
           id={index}
+           className="!z-[100]"
+           
         // className="border-1 rounded-lg p-3 dark:bg-gray-700"
         >
           <MenuItem
