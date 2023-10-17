@@ -6,16 +6,17 @@ import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Button, Spinner } from "@material-tailwind/react";
-import { CheckCheck, Reply } from "lucide-react";
+import { CheckCheck, ClipboardCopy, Reply } from "lucide-react";
 import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app } from "@/lib/firebase";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
-  const [loading, setIsLoading] = useState(false);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [isRelyingToMessage, setIsRelyingToMessage] = useState(null);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
@@ -39,24 +40,6 @@ const Messages = ({ currentChat, socket }) => {
       console.error(error);
     }
   };
-  const getMsgBetweenTowUsersWhenLoaded = async (page) => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
-        {
-          from: user._id,
-          to: currentChat._id,
-          page: page,
-        },
-      );
-      setIsLoading(false);
-      console.log(data)
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const { data, fetchNextPage, isFetchingNextPage, refetch } =
     useInfiniteQuery(
@@ -71,7 +54,7 @@ const Messages = ({ currentChat, socket }) => {
         },
         initialData: {
           pages: async () => {
-            const response = await getMsgBetweenTowUsersWhenLoaded(1);
+            const response = await getAllMsgBetweenTowUsers(1);
             return response;
           },
           pageParams: [1],
@@ -107,11 +90,48 @@ const Messages = ({ currentChat, socket }) => {
       { fromSelf: true, message, _id: data.id, date: data.date },
       ...messages,
     ]);
+    setIsRelyingToMessage(null)
+  };
+
+  const sendFile = async (file) => {
+    const time = Date.now();
+    const storage = getStorage();
+    const fileRef = ref(storage, file.name);
+    await uploadBytes(fileRef, file);
+    const fileURL = await getDownloadURL(fileRef);
+
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
+      {
+        to: currentChat._id,
+        from: user._id,
+        date: time,
+        message: file.name,
+        fileURL,
+        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null
+      },
+    );
+
+    socket.current.emit("send-msg", {
+      _id: data.id,
+      to: currentChat._id,
+      from: user._id,
+      date: time,
+      message: file.name,
+      fileURL,
+      replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
+      ...data,
+    });
+
+    setMessages([
+      { fromSelf: true, message: fileURL, _id: data.id, date: data.date },
+      ...messages,
+    ]);
   };
 
   if (socket.current) {
     socket.current.on("msg-receive", (msg) => {
-      setArrivalMessages({ fromSelf: false, message: msg.message });
+      setArrivalMessages({ fromSelf: false, message: msg.message, fileURL: msg.fileURL });
       // Emit an event to notify the sender that the message has been seen
       socket.current.emit("update-msg-seen", msg._id);
       notificationSound.play();
@@ -132,21 +152,40 @@ const Messages = ({ currentChat, socket }) => {
     refetch();
   }, [currentChat, messages]);
 
+  const handelReplyMessageClick = (id) => {
+    if (!id) return;
+    const targetMessage = document.getElementById(id);
+    if (targetMessage) {
+      targetMessage.scrollIntoView({ behavior: "smooth" });
+      targetMessage.classList.add("highlighted"); 
+  
+      setTimeout(() => {
+        targetMessage.classList.remove("highlighted");
+      }, 3000);
+    }
+  };
+  
+
   const ComingMessage = ({ message, index }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
         <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900} >
           <div
-            className="relative mb-8 flex">
+            className="relative mb-8 flex" id={message._id}>
             <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
               {
                 message.replyToMessage && (
-                  <div className="max-w-[13rem] md:max-w-xs mb-1">
-                    <p className="p-3 truncate bg-green-500/70 rounded-md text-gray-100">
+                  <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
+                    <p className={`p-3 truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `}>
                       {message.replyToMessage.content}
                     </p>
                   </div>
+                )
+              }
+              {
+                message.fileURL && (
+                  <a href={message.fileURL} className="text-blue-500 cursor-pointer">File</a>
                 )
               }
               <p className="whitespace-normal break-all text-white">
@@ -161,22 +200,23 @@ const Messages = ({ currentChat, socket }) => {
 
         <ContextMenu
           id={index}
-           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
+          className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
         // className="border-1 rounded-lg p-3 dark:bg-gray-700"
         >
           <MenuItem
-            className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+            className="cursor-pointer flex items-center gap-3 z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
             onClick={() => setIsRelyingToMessage(message)}
           >
-            Reply
+            <Reply /> <span>Reply</span>
           </MenuItem>
-            {/* <CopyToClipboard text={message.message}> */}
-            <MenuItem
+          {/* <CopyToClipboard text={message.message}> */}
+          <MenuItem
             onClick={async () => await navigator.clipboard.writeText(message.message)}
-              className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
-            >
-              Copy
-            </MenuItem>
+            className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+          >
+            <ClipboardCopy />
+            <span>Copy</span>
+          </MenuItem>
           {/* </CopyToClipboard> */}
         </ContextMenu>
       </>
@@ -188,13 +228,13 @@ const Messages = ({ currentChat, socket }) => {
     return (
       <>
         <ContextMenuTrigger id={index} holdToDisplay={900} >
-          <div className="mb-8 relative max-w-full flex flex-row-reverse"
-           >
+          <div className="mb-8 relative max-w-full flex flex-row-reverse" id={message._id}
+          >
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
               {
                 message.replyToMessage && (
-                  <div className="max-w-[13rem] md:max-w-xs mb-1">
-                    <p className="p-3 truncate bg-green-500/70 rounded-md text-gray-100">
+                  <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
+                    <p className={`p-3 truncate ${message.replyToMessage.sender === user._id ? "bg-green-500/70" : "bg-gray-700"}  rounded-md text-gray-100`}>
                       {message.replyToMessage.content}
                     </p>
                   </div>
@@ -213,22 +253,24 @@ const Messages = ({ currentChat, socket }) => {
         </ContextMenuTrigger>
         <ContextMenu
           id={index}
-           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
+          className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
         >
           <MenuItem
-            className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+            className="cursor-pointer flex items-center gap-3 z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
             onClick={() => setIsRelyingToMessage(message)}
           >
-            Reply
+            <Reply />
+            <span>Reply</span>
           </MenuItem>
-            <MenuItem
+          <MenuItem
             onClick={async () => await navigator.clipboard.writeText(message.message)}
-              className="cursor-pointer z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
-            >    
-              Copy     
-            </MenuItem>
+            className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+          >
+            <ClipboardCopy />
+            <span>Copy</span>
+          </MenuItem>
         </ContextMenu>
-        
+
       </>
     );
   };
@@ -250,11 +292,8 @@ const Messages = ({ currentChat, socket }) => {
             )}
           </Button>
           <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 py-6 px-1 dark:bg-slate-900/50 md:h-[70vh]">
-            {loading && (
-              <Spinner scale={7} className="absolute left-[50%] top-[50%]" />
-            )}
             <ScrollableFeed>
-              {messages.length > 0 &&
+              {messages.length > 0 ?
                 messages
                   .slice()
                   .reverse()
@@ -272,12 +311,12 @@ const Messages = ({ currentChat, socket }) => {
                         message={message}
                       />
                     ),
-                  )}
+                  ) : (<Spinner scale={7} className="absolute left-[50%] top-[50%]" />)}
             </ScrollableFeed>
           </div>
         </div>
       </div>
-      <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
+      <ChatInput socket={socket} handleSendMsg={sendMessage} handleSendFile={sendFile} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
     </section>
   );
 };

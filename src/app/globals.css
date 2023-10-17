@@ -41,3 +41,19 @@ code {
   padding: 10px;
   border-radius: 4px;
 }
+@keyframes flash {
+  0% {
+    @apply bg-green-500/30 /* Set the desired background color */
+  }
+  50% {
+    background-color: transparent; /* Set the desired background color */
+  }
+  100% {
+    @apply bg-green-500/30 /* Set the desired background color */
+  }
+}
+
+.highlighted {
+  @apply py-2 rounded-md;
+  animation: flash 0.9s linear 4; /* Flash animation for 0.2 seconds, 4 times */
+}

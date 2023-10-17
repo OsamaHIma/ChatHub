@@ -12,28 +12,38 @@ import {
 import Picker from "emoji-picker-react";
 import { useUser } from "@/context/UserContext";
 
-const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage }) => {
+const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage, handleSendFile }) => {
   const [msg, setMsg] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const { user } = useUser();
+  const fileInputRef = useRef(null);
+  const textAreaRef = useRef(null);
+
   const handelEmojiPickerClick = (emoji, event) => {
     const emojiCount = event.detail || 1;
     const emojiString = emoji.emoji.repeat(emojiCount);
     setMsg((prevMsg) => prevMsg + emojiString);
   };
-
-  const fileInputRef = useRef(null);
-  const textAreaRef = useRef(null);
+  const handelFileInputClick = () => {
+    if (selectedFile) {
+      setSelectedFile(null)
+    } else {
+      fileInputRef.current.click()
+    }
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (msg.length > 0) {
+    if (msg.length > 0 || selectedFile) {
       socket.current.emit("stop-typing", user._id);
       handleSendMsg(msg);
-      setIsRelyingToMessage(null)
+      selectedFile && handleSendFile(selectedFile);
+      // setIsRelyingToMessage(null)
       setMsg("");
     }
   };
+
   useEffect(() => {
-   
+
     if (isRelyingToMessage) {
       textAreaRef.current.getElementsByTagName("textarea")[0].focus();
     }
@@ -74,18 +84,18 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
               // accept="image/*"
               ref={fileInputRef}
               style={{ display: "none" }}
-            // onChange={(e) => setSelectedImage(e.target.files[0])}
+              onChange={(e) => setSelectedFile(e.target.files[0])}
             />
 
             <IconButton
               variant="text"
+              title={selectedFile ? "Cancel sending the file" : "Send a file"}
               className="relative rounded-full"
-              onClick={() => fileInputRef.current.click()}
+              onClick={handelFileInputClick}
             >
-              {/* {selectedImage && (
-                          <div className="absolute inset-0 -top-1 h-3 w-3 rounded-full bg-green-600"></div>
-                        )} */}
-              <PaperclipIcon className="dark:text-stone-300" />
+              {
+                selectedFile ? <X className="dark:text-stone-300" /> : <PaperclipIcon className="dark:text-stone-300" />
+              }
             </IconButton>
           </div>
           <Menu
@@ -99,6 +109,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
                 variant="text"
                 className="relative rounded-full"
                 type="button"
+                title="Emoji picker"
               //   onClick={handelEmojiPickerToggle}
               >
                 <SmileIcon className="inline-block dark:text-slate-50" />
@@ -128,7 +139,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             }}
           />
 
-          <IconButton variant="text" className="rounded-full" type="submit">
+          <IconButton variant="text" className="rounded-full" type="submit" title="Send message">
             <Send size={23} className=" inline-block dark:text-slate-50" />
           </IconButton>
         </div>
