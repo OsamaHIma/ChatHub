@@ -240,7 +240,7 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger id={index} holdToDisplay={900} >
+        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900}  >
           <div className="mb-8 relative max-w-full flex flex-row-reverse py-2" id={message._id}
           >
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
