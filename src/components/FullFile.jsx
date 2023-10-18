@@ -5,10 +5,10 @@ const FullFile = ({ openFile, handleOpenFile, url }) => (
     <Dialog
         open={openFile}
         handler={handleOpenFile}
-        className="dark:bg-gray-800 !max-h-[95vh] !overflow-hidden"
+        className="dark:bg-gray-800 !max-h-[95vh] overflow-y-auto"
     >
         <DialogBody>
-            <a href={url}>
+            <a href={url} target="_blank">
                 <embed src={url}
                     className="w-full"
                 />
