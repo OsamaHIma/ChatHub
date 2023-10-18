@@ -5,8 +5,8 @@ import { Translate } from "translate-easy";
 import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
-import { Button, Spinner } from "@material-tailwind/react";
-import { CheckCheck, ClipboardCopy, Reply, Trash2Icon } from "lucide-react";
+import { Button, IconButton, Spinner } from "@material-tailwind/react";
+import { CheckCheck, ClipboardCopy, Download, Reply, Trash2Icon } from "lucide-react";
 import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "@/lib/firebase";
 import FullFile from "./FullFile";
+import Link from "next/link";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -67,40 +68,63 @@ const Messages = ({ currentChat, socket }) => {
       },
     );
 
-  const sendMessage = async (message) => {
+  const sendMessage = async (message, file) => {
     const time = Date.now();
 
+    // Upload the file
+    let fileURL = null;
+    if (file) {
+      const storage = getStorage();
+      const fileRef = ref(storage, file.name);
+      await uploadBytes(fileRef, file);
+      fileURL = await getDownloadURL(fileRef);
+    }
+
+    // Send the message
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
       {
         to: currentChat._id,
         from: user._id,
         date: time,
-        message,
-        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null
+        message: message || (file ? file.name : ''),
+        fileURL,
+        fileName: file ? file.name : '',
+        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
       },
     );
 
-    socket.current.emit("send-ms`g", {
+    // Emit the message to the socket
+    socket.current.emit("send-msg", {
       _id: data.id,
       to: currentChat._id,
       from: user._id,
       date: time,
-      message,
+      message: message || (file ? file.name : ''),
+      fileName: file ? file.name : '',
+      fileURL,
       replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
       ...data,
     });
 
+    // Update the messages state
     setMessages([
-      { fromSelf: true, message, _id: data.id, date: data.date },
+      {
+        fromSelf: true,
+        message: message || (file ? file.name : ''),
+        fileURL,
+        _id: data.id,
+        date: data.date,
+      },
       ...messages,
     ]);
-    setIsRelyingToMessage(null)
+
+    setIsRelyingToMessage(null);
   };
 
   const deleteMessage = async (id) => {
 
-    const { data } = await axios.post(
+    await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/deletemsg`,
       {
         id
@@ -110,41 +134,6 @@ const Messages = ({ currentChat, socket }) => {
     refetch()
   };
 
-  const sendFile = async (file) => {
-    const time = Date.now();
-    const storage = getStorage();
-    const fileRef = ref(storage, file.name);
-    await uploadBytes(fileRef, file);
-    const fileURL = await getDownloadURL(fileRef);
-
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
-      {
-        to: currentChat._id,
-        from: user._id,
-        date: time,
-        message: file.name,
-        fileURL,
-        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null
-      },
-    );
-
-    socket.current.emit("send-msg", {
-      _id: data.id,
-      to: currentChat._id,
-      from: user._id,
-      date: time,
-      message: file.name,
-      fileURL,
-      replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
-      ...data,
-    });
-
-    setMessages([
-      { fromSelf: true, message: file.name, fileURL, _id: data.id, date: data.date },
-      ...messages,
-    ]);
-  };
 
   if (socket.current) {
     socket.current.on("msg-receive", (msg) => {
@@ -189,6 +178,18 @@ const Messages = ({ currentChat, socket }) => {
         <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900} >
           <div
             className="relative mb-8 flex py-2" id={message._id}>
+               {
+              message.fileName && (
+                <IconButton className="rounded-full bg-gray-100 dark:bg-gray-900 !absolute -top-2 left-2 !outline-none" onClick={() => setIsRelyingToMessage(null)}>
+                  <Link
+                    href={message.fileURL}
+                    download={message.fileName}
+                    target="_blank"
+                  >
+                    <Download className="text-gray-900 dark:text-slate-50" />
+                  </Link>
+                </IconButton>
+              )}
             <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
               {
                 message.replyToMessage && (
@@ -201,7 +202,7 @@ const Messages = ({ currentChat, socket }) => {
               }
               {
                 message.fileURL && (
-                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md" />
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
               <p className="whitespace-normal break-all text-white">
@@ -243,6 +244,18 @@ const Messages = ({ currentChat, socket }) => {
         <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900}  >
           <div className="mb-8 relative max-w-full flex flex-row-reverse py-2" id={message._id}
           >
+            {
+              message.fileName && (
+                <IconButton className="rounded-full bg-gray-100 dark:bg-gray-900 !absolute -top-2 right-2 !outline-none" onClick={() => setIsRelyingToMessage(null)}>
+                  <Link
+                    href={message.fileURL}
+                    download={message.fileName}
+                    target="_blank"
+                  >
+                    <Download className="text-gray-900 dark:text-slate-50" />
+                  </Link>
+                </IconButton>
+              )}
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
               {
                 message.replyToMessage && (
@@ -255,7 +268,7 @@ const Messages = ({ currentChat, socket }) => {
               }
               {
                 message.fileURL && (
-                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md" />
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
               <p className="whitespace-normal break-all">{message.message}</p>
@@ -288,7 +301,7 @@ const Messages = ({ currentChat, socket }) => {
             <span>Copy</span>
           </MenuItem>
           <MenuItem
-            onClick={ () => deleteMessage(message._id)}
+            onClick={() => deleteMessage(message._id)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
           >
             <Trash2Icon />
@@ -343,7 +356,7 @@ const Messages = ({ currentChat, socket }) => {
           </div>
         </div>
       </div>
-      <ChatInput socket={socket} handleSendMsg={sendMessage} handleSendFile={sendFile} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
+      <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
     </section>
   );
 };

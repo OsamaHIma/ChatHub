@@ -14,7 +14,7 @@ import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
 
-const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage, handleSendFile }) => {
+const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage }) => {
   const [msg, setMsg] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const { user } = useUser();
@@ -26,6 +26,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
     const emojiString = emoji.emoji.repeat(emojiCount);
     setMsg((prevMsg) => prevMsg + emojiString);
   };
+
   const handelFileInputClick = () => {
     if (selectedFile) {
       setSelectedFile(null)
@@ -33,23 +34,21 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
       fileInputRef.current.click()
     }
   }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (msg.length > 0 || selectedFile) {
       socket.current.emit("stop-typing", user._id);
-      handleSendMsg(msg);
       if (selectedFile) {
         const maxSize = 17 * 1024 * 1024;
-
         if (selectedFile.size > maxSize) {
           toast.error(<Translate>File size exceeds the maximum limit of 17MB.</Translate>);
-          setSelectedFile(null)
-        } else {
-          handleSendFile(selectedFile);
+          setSelectedFile(null);
         }
       }
+      handleSendMsg(msg, selectedFile);
       setMsg("");
-      setSelectedFile(null)
+      setSelectedFile(null);
     }
   };
 
