@@ -11,6 +11,8 @@ import {
 } from "@material-tailwind/react";
 import Picker from "emoji-picker-react";
 import { useUser } from "@/context/UserContext";
+import { toast } from "react-toastify";
+import { Translate } from "translate-easy";
 
 const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage, handleSendFile }) => {
   const [msg, setMsg] = useState("");
@@ -36,9 +38,18 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
     if (msg.length > 0 || selectedFile) {
       socket.current.emit("stop-typing", user._id);
       handleSendMsg(msg);
-      selectedFile && handleSendFile(selectedFile);
-      // setIsRelyingToMessage(null)
+      if (selectedFile) {
+        const maxSize = 17 * 1024 * 1024;
+
+        if (selectedFile.size > maxSize) {
+          toast.error(<Translate>File size exceeds the maximum limit of 17MB.</Translate>);
+          setSelectedFile(null)
+        } else {
+          handleSendFile(selectedFile);
+        }
+      }
       setMsg("");
+      setSelectedFile(null)
     }
   };
 
@@ -82,6 +93,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             <input
               type="file"
               // accept="image/*"
+              maxlength="17000000"
               ref={fileInputRef}
               style={{ display: "none" }}
               onChange={(e) => setSelectedFile(e.target.files[0])}
@@ -89,7 +101,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
 
             <IconButton
               variant="text"
-              title={selectedFile ? "Cancel sending the file" : "Send a file"}
+              title={selectedFile ? "Cancel sending the file" : "Send a file max size 17 mbs"}
               className="relative rounded-full"
               onClick={handelFileInputClick}
             >

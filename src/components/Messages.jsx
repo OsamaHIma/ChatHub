@@ -6,13 +6,14 @@ import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Button, Spinner } from "@material-tailwind/react";
-import { CheckCheck, ClipboardCopy, Reply } from "lucide-react";
+import { CheckCheck, ClipboardCopy, Reply, Trash2Icon } from "lucide-react";
 import ScrollableFeed from "react-scrollable-feed";
 import { Howl } from "howler";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "@/lib/firebase";
+import FullFile from "./FullFile";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -20,10 +21,16 @@ const Messages = ({ currentChat, socket }) => {
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [isRelyingToMessage, setIsRelyingToMessage] = useState(null);
   const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
+  const [openFullFile, setOpenFullFile] = useState(false);
+  const [fileUrl, setFileUrl] = useState('');
+  const handleOpenFile = (e, url) => {
+    e.preventDefault();
+    setOpenFullFile(!openFullFile);
+    setFileUrl(url)
+  };
 
   const getAllMsgBetweenTowUsers = async (page) => {
     try {
-      // setIsLoading(true);
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/get_all_msgs_between_tow_users`,
         {
@@ -32,8 +39,6 @@ const Messages = ({ currentChat, socket }) => {
           page: page,
         },
       );
-      // setIsLoading(false);
-      console.log(data)
       return data;
 
     } catch (error) {
@@ -76,7 +81,7 @@ const Messages = ({ currentChat, socket }) => {
       },
     );
 
-    socket.current.emit("send-msg", {
+    socket.current.emit("send-ms`g", {
       _id: data.id,
       to: currentChat._id,
       from: user._id,
@@ -91,6 +96,18 @@ const Messages = ({ currentChat, socket }) => {
       ...messages,
     ]);
     setIsRelyingToMessage(null)
+  };
+
+  const deleteMessage = async (id) => {
+
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/deletemsg`,
+      {
+        id
+      },
+    );
+
+    refetch()
   };
 
   const sendFile = async (file) => {
@@ -124,7 +141,7 @@ const Messages = ({ currentChat, socket }) => {
     });
 
     setMessages([
-      { fromSelf: true, message: fileURL, _id: data.id, date: data.date },
+      { fromSelf: true, message: file.name, fileURL, _id: data.id, date: data.date },
       ...messages,
     ]);
   };
@@ -157,14 +174,13 @@ const Messages = ({ currentChat, socket }) => {
     const targetMessage = document.getElementById(id);
     if (targetMessage) {
       targetMessage.scrollIntoView({ behavior: "smooth" });
-      targetMessage.classList.add("highlighted"); 
-  
+      targetMessage.classList.add("highlighted");
+
       setTimeout(() => {
         targetMessage.classList.remove("highlighted");
       }, 3000);
     }
   };
-  
 
   const ComingMessage = ({ message, index }) => {
     const time = moment(message.date).format("hh:mm a");
@@ -172,7 +188,7 @@ const Messages = ({ currentChat, socket }) => {
       <>
         <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900} >
           <div
-            className="relative mb-8 flex" id={message._id}>
+            className="relative mb-8 flex py-2" id={message._id}>
             <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
               {
                 message.replyToMessage && (
@@ -185,7 +201,7 @@ const Messages = ({ currentChat, socket }) => {
               }
               {
                 message.fileURL && (
-                  <a href={message.fileURL} className="text-blue-500 cursor-pointer">File</a>
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-xs cursor-pointer rounded-md" />
                 )
               }
               <p className="whitespace-normal break-all text-white">
@@ -199,9 +215,8 @@ const Messages = ({ currentChat, socket }) => {
         </ContextMenuTrigger>
 
         <ContextMenu
-          id={index}
+          id={index && index}
           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
-        // className="border-1 rounded-lg p-3 dark:bg-gray-700"
         >
           <MenuItem
             className="cursor-pointer flex items-center gap-3 z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
@@ -209,7 +224,6 @@ const Messages = ({ currentChat, socket }) => {
           >
             <Reply /> <span>Reply</span>
           </MenuItem>
-          {/* <CopyToClipboard text={message.message}> */}
           <MenuItem
             onClick={async () => await navigator.clipboard.writeText(message.message)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
@@ -217,7 +231,6 @@ const Messages = ({ currentChat, socket }) => {
             <ClipboardCopy />
             <span>Copy</span>
           </MenuItem>
-          {/* </CopyToClipboard> */}
         </ContextMenu>
       </>
     );
@@ -228,7 +241,7 @@ const Messages = ({ currentChat, socket }) => {
     return (
       <>
         <ContextMenuTrigger id={index} holdToDisplay={900} >
-          <div className="mb-8 relative max-w-full flex flex-row-reverse" id={message._id}
+          <div className="mb-8 relative max-w-full flex flex-row-reverse py-2" id={message._id}
           >
             <div className="max-w-1/2 mr-4 rounded-lg bg-green-400 bg-opacity-60 px-4 py-3">
               {
@@ -238,6 +251,11 @@ const Messages = ({ currentChat, socket }) => {
                       {message.replyToMessage.content}
                     </p>
                   </div>
+                )
+              }
+              {
+                message.fileURL && (
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-xs cursor-pointer rounded-md" />
                 )
               }
               <p className="whitespace-normal break-all">{message.message}</p>
@@ -252,7 +270,7 @@ const Messages = ({ currentChat, socket }) => {
           </div>
         </ContextMenuTrigger>
         <ContextMenu
-          id={index}
+          id={index && index}
           className="!z-[100] bg-gray-200 dark:bg-gray-700 p-3 rounded-lg flex flex-col gap-3"
         >
           <MenuItem
@@ -269,13 +287,22 @@ const Messages = ({ currentChat, socket }) => {
             <ClipboardCopy />
             <span>Copy</span>
           </MenuItem>
+          <MenuItem
+            onClick={ () => deleteMessage(message._id)}
+            className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
+          >
+            <Trash2Icon />
+            <span>Delete</span>
+          </MenuItem>
         </ContextMenu>
 
       </>
     );
   };
+
   return (
     <section className="mb-7 md:mb-0">
+      <FullFile openFile={openFullFile} url={fileUrl} handleOpenFile={handleOpenFile} />
       <div className="flex flex-col justify-between gap-7 overflow-y-auto">
         <div className="relative mt-4 flex flex-col justify-between">
           <Button
