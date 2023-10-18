@@ -201,7 +201,7 @@ const Messages = ({ currentChat, socket }) => {
               }
               {
                 message.fileURL && (
-                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-xs cursor-pointer rounded-md" />
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md" />
                 )
               }
               <p className="whitespace-normal break-all text-white">
@@ -255,7 +255,7 @@ const Messages = ({ currentChat, socket }) => {
               }
               {
                 message.fileURL && (
-                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-xs cursor-pointer rounded-md" />
+                  <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md" />
                 )
               }
               <p className="whitespace-normal break-all">{message.message}</p>
