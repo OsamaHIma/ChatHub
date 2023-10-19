@@ -54,6 +54,6 @@ code {
 }
 
 .highlighted {
-  @apply rounded-md;
-  animation: flash 0.9s linear 4; /* Flash animation for 0.2 seconds, 4 times */
+  @apply rounded-lg;
+  animation: flash 0.9s linear 4;
 }

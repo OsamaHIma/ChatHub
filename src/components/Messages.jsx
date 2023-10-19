@@ -118,7 +118,6 @@ const Messages = ({ currentChat, socket }) => {
       },
       ...messages,
     ]);
-
     setIsRelyingToMessage(null);
   };
 

@@ -53,6 +53,7 @@ const Navbar = () => {
               alt="logo"
             />
           </Link>
+        <img src="/palestine.svg" className="shadow bg-indigo-600/40 dark:bg-transparent transition-all ease-in-out duration-500 p-2 rounded-lg max-w-[4.7rem] right-5 top-2" />
         </div>
         <section className="flex items-center gap-2 md:gap-4">
           {/* Theme menu */}
