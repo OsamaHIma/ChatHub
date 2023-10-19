@@ -45,11 +45,9 @@ const Home = () => {
 
   useEffect(() => {
     if (window.innerWidth < 960 && chat) {
-      console.log(true)
       setIsMobile(true)
     } else {
       setIsMobile(false)
-      console.log(false)
     }
   }, [chat]);
 
@@ -70,8 +68,6 @@ const Home = () => {
         // Handle permission dismissed
       }
     });
-    console.log(window.innerWidth)
-    console.log(isMobile)
 
   }, []);
 

@@ -93,7 +93,7 @@ const MyAccount = () => {
       }
     } catch (error) {
       toast.error(`Failed to update user information. ${error.massage}`);
-      console.log(error);
+      console.error(error);
     }
     setIsLoading(false);
   };
