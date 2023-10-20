@@ -1,9 +1,11 @@
 "use client";
 import { useUser } from "@/context/UserContext";
+import { Badge } from "@material-tailwind/react";
 import axios from "axios";
-import { CheckCheck, UserCircle2 } from "lucide-react";
+import { CheckCheck, CheckCircle, CheckIcon, UserCircle2, Verified } from "lucide-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { connect } from "socket.io-client";
 import { Translate } from "translate-easy";
 
 const Contacts = ({
@@ -30,14 +32,14 @@ const Contacts = ({
       );
       // setIsLoading(false);
       setLastMessage(data[0]);
-      // if (!data[0].fromSelf && !data[0].seen) {
-      //   new Notification("New Message", {
-      //     body: `${data[0].message}\n ${moment(data[0].date).format("hh:mm a")}`,
-      //     icon: "/logoTab.svg",
-      //     vibrate: [200, 100, 200],
-      //     sound: "/notification_sound.mp3",
-      //   });
-      // }
+      if (!data[0].fromSelf && !data[0].seen) {
+        new Notification("New Message", {
+          body: `${data[0].message}\n ${moment(data[0].date).format("hh:mm a")}`,
+          icon: "/logoTab.svg",
+          vibrate: [200, 100, 200],
+          sound: "/notification_sound.mp3",
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -51,29 +53,39 @@ const Contacts = ({
       {!contact.username.toLowerCase().includes(search.toLowerCase()) ? null : (
         <div
           className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${selectedUser === index
-              ? "bg-indigo-500 !text-gray-200"
-              : "bg-slate-300 dark:bg-slate-700"
+            ? "bg-indigo-500 !text-gray-200"
+            : "bg-slate-300 dark:bg-slate-700"
             }`}
           onClick={() => handelChangeChat(index, contact)}
         >
-          {contact.avatar ? (
-            <div className="max-h-[4.3rem] max-w-[4.3rem] overflow-hidden rounded-full">
-              <img
-                alt="User avatar"
-                src={`${contact.avatar}`}
-                className="w-full object-contain "
-              />
-            </div>
-          ) : (
-            <UserCircle2 size={48} />
-          )}
-
+          <div className="flex items-center gap-3">
+            {contact.avatar ? (
+              <Badge
+                content={<CheckIcon className="h-4 w-4 text-white" strokeWidth={2.5} />}
+                className={`${contact.isAdmin ? "absolute" : "hidden"} bg-gradient-to-tr from-blue-400 to-blue-600 border-2 border-white shadow-lg shadow-black/20`}
+              >
+                <div className="max-h-[4.3rem] max-w-[4.3rem] overflow-hidden rounded-full">
+                  <img
+                    alt="User avatar"
+                    src={`${contact.avatar}`}
+                    className="w-full object-contain "
+                  />
+                </div>
+              </Badge>
+            ) : (
+              <UserCircle2 size={48} />
+            )}
+            {/* {contact.username =="osama" && <CheckCircle className="text-blue-500" size={32} /> } */}
+          </div>
+          {contact.username === "osama" && (<div className="flex items-center gap-3">
+            <p className="text-xs">This the official account</p>
+            <Verified size={21} className="text-blue-500" /></div>)}
           <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
             <p>{contact.name}</p>
             <p
               className={`text-sm ${selectedUser === index
-                  ? "text-slate-300"
-                  : "text-gray-600 dark:text-gray-400"
+                ? "text-slate-300"
+                : "text-gray-600 dark:text-gray-400"
                 } `}
             >
               @{contact.username}
@@ -83,8 +95,8 @@ const Contacts = ({
             <div className="flex items-center gap-2">
               <p
                 className={`max-w-[5rem] ${selectedUser === index
-                    ? "text-gray-300"
-                    : "text-gray-600 dark:text-gray-300"
+                  ? "text-gray-300"
+                  : "text-gray-600 dark:text-gray-300"
                   } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
               >
                 {lastMessage ? (
@@ -104,8 +116,8 @@ const Contacts = ({
             {lastMessage && (
               <p
                 className={`text-sm ${selectedUser === index
-                    ? "text-slate-400"
-                    : "text-gray-600 dark:text-gray-400"
+                  ? "text-slate-400"
+                  : "text-gray-600 dark:text-gray-400"
                   } `}
               >
                 <Translate>

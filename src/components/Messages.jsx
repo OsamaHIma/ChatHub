@@ -177,7 +177,7 @@ const Messages = ({ currentChat, socket }) => {
         <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900} >
           <div
             className="relative mb-8 flex py-2" id={message._id}>
-               {
+            {
               message.fileName && (
                 <IconButton className="rounded-full bg-gray-100 dark:bg-gray-900 !absolute -top-2 left-2 !outline-none" onClick={() => setIsRelyingToMessage(null)}>
                   <Link
@@ -321,7 +321,7 @@ const Messages = ({ currentChat, socket }) => {
             variant="text"
             color="indigo"
             onClick={() => fetchNextPage()}
-            className="!absolute -top-7 left-[30%] z-50 max-w-fit dark:text-slate-100 md:left-[35%]"
+            className="!absolute -top-7 left-[20%] z-50 max-w-fit dark:text-slate-100 md:left-[35%]"
             disabled={isFetchingNextPage}
           >
             {isFetchingNextPage ? (
@@ -332,7 +332,7 @@ const Messages = ({ currentChat, socket }) => {
           </Button>
           <div className="hide-scroll-bar relative h-[78vh] overflow-y-auto rounded-lg bg-slate-200/50 py-6 px-1 dark:bg-slate-900/50 md:h-[70vh]">
             <ScrollableFeed>
-              {messages.length > 0 ?
+              {messages.length > 0 &&
                 messages
                   .slice()
                   .reverse()
@@ -350,7 +350,8 @@ const Messages = ({ currentChat, socket }) => {
                         message={message}
                       />
                     ),
-                  ) : (<Spinner scale={7} className="absolute left-[50%] top-[50%]" />)}
+                  )}
+           
             </ScrollableFeed>
           </div>
         </div>
