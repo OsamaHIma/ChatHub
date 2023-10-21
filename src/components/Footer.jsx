@@ -33,9 +33,9 @@ const Footer = () => {
       whileInView="show"
       initial="hidden"
       viewport={{ once: true }}
-      className="relative bg-stone-50 py-3 dark:bg-gray-800"
+      className="relative bg-indigo-100 py-3 dark:bg-gray-800"
     >
-      <div className="absolute left-0 top-0 h-44 w-full bg-gradient-to-b from-stone-200 to-transparent dark:from-gray-900 md:-top-4"></div>
+      <div className="absolute left-0 top-0 h-44 w-full bg-gradient-to-b from-indigo-200 to-transparent dark:from-gray-900 md:-top-4"></div>
       <div className="mx-auto w-full max-w-screen-xl px-4 pt-6 lg:pt-8">
         <div className="items-center md:flex md:justify-between">
           <div className="z-10 mb-6 md:mb-0">
@@ -51,10 +51,10 @@ const Footer = () => {
           </div>
           <div className="z-10 grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
                 <Translate>Hot links</Translate>
               </h2>
-              <ul className="font-medium text-gray-500 dark:text-gray-400">
+              <ul className="font-medium text-gray-700 dark:text-gray-300">
                 <li className="mb-4">
                   <Link href="/" className="hover:underline">
                     <Translate>Chat</Translate>
@@ -68,10 +68,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
                 <Translate>Follow us</Translate>
               </h2>
-              <ul className="font-medium text-gray-500 dark:text-gray-400">
+              <ul className="font-medium text-gray-700 dark:text-gray-300">
                 <li className="mb-4">
                   <Link
                     href="https://github.com/osamaHIma"
@@ -91,10 +91,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
                 <Translate>Legal</Translate>
               </h2>
-              <ul className="font-medium text-gray-500 dark:text-gray-400">
+              <ul className="font-medium text-gray-700 dark:text-gray-300">
                 <li
                   className="mb-4 cursor-pointer hover:underline"
                   onClick={handelPrivacyModal}
@@ -113,7 +113,7 @@ const Footer = () => {
         </div>
         <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
+          <span className="text-sm text-gray-200 sm:text-center">
             © 2023{" "}
             <Link href="#" className="hover:underline">
               ChatHub™

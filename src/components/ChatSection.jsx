@@ -1,6 +1,6 @@
 import { Badge } from "@material-tailwind/react";
 import { UserCircle2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Translate } from "translate-easy";
 import Messages from "./Messages";
 import UserProfile from "./UserProfile";
@@ -10,7 +10,7 @@ const ChatSection = ({ chat, socket }) => {
   const [userStatus, setUserStatus] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const handleOpenUserProfileOpen = () => setOpenUserProfile(!openUserProfile);
-  // useEffect(() => {
+
     if (chat) {
       socket.current.emit("update-user-status", chat._id);
       socket.current.on("user-status", (userStatus) => {
@@ -29,7 +29,7 @@ const ChatSection = ({ chat, socket }) => {
         if (userId === chat._id) setIsTyping(false);
       });
     }
-  // }, []);
+
   return (
     <section className="innerWidth lg:flex-1">
       <div className="flex justify-between">

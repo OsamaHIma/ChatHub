@@ -53,7 +53,7 @@ const Navbar = () => {
               alt="logo"
             />
           </Link>
-        <img src="/palestine.svg" className="shadow bg-indigo-600/40 dark:bg-transparent transition-all ease-in-out duration-500 p-2 rounded-lg max-w-[4.7rem] right-5 top-2" />
+        <img src="/palestine.svg" className="shadow bg-indigo-600/40 dark:bg-transparent transition-all ease-in-out duration-500 p-2 rounded-lg w-[3rem]  md:w-[4.7rem] right-5 top-2" />
         </div>
         <section className="flex items-center gap-2 md:gap-4">
           {/* Theme menu */}
@@ -65,18 +65,20 @@ const Navbar = () => {
               {user ? (
                 <>
                   <li>
-                    <Link href="/" className={`text-gray-700 dark:text-stone-50 `}>
+                    <Link href="/" className={`text-stone-50 `}>
                       <Translate>Chat</Translate>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/account" className={`text-gray-700 dark:text-stone-50 `}>
+                    <Link href="/account" className={`text-stone-50 `}>
                       <Translate>Account</Translate>
                     </Link>
                   </li>
                   <Button
                     onClick={handleSignOut}
-                    className=" translation-all min-w-[5rem] max-w-[7rem] bg-indigo-600 ease-in-out hover:bg-indigo-700"
+                    variant="gradient"
+                    color="indigo"
+                    className=" translation-all min-w-[5rem] max-w-[7rem]"
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />
@@ -122,7 +124,7 @@ const Navbar = () => {
               </IconButton>
             </MenuHandler>
 
-            <MenuList className="w-[13rem] border-0 text-center text-stone-950 dark:bg-gray-800 dark:text-stone-50 lg:hidden">
+            <MenuList className="w-[13rem] border-0 text-center text-gray-800 dark:bg-gray-800 dark:text-stone-50 lg:hidden">
               {user ? (
                 <>
                   <Link href="/">
@@ -141,7 +143,9 @@ const Navbar = () => {
                   </Link>
                   <Button
                     onClick={handleSignOut}
-                    className=" translation-all min-w-[5rem] max-w-[7rem] bg-indigo-600 ease-in-out hover:bg-indigo-700"
+                    variant="gradient"
+                    color="indigo"
+                    className=" translation-all min-w-[5rem] max-w-[7rem]"
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />

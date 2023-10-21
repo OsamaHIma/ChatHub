@@ -21,8 +21,10 @@ const LanguageSelector = () => {
     <Menu className={`relative inline-block`}>
       <MenuHandler>
         <Button
-          className={`rounded-full flex items-center gap-3 text-slate-50 bg-indigo-500 px-3 py-2`}
+          className={`rounded-full flex items-center gap-3 text-slate-50 px-3 py-2`}
           type="button"
+          color="indigo"
+          variant="gradient"
         >
           <span className="ltr:mr-2 rtl:ml-2">
             <Translate translations={{ ar: "العربية" }}>
@@ -35,7 +37,7 @@ const LanguageSelector = () => {
           </div>
         </Button>
       </MenuHandler>
-      <MenuList dir="ltr" className="overflow-y-auto max-h-80 bg-stone-200 dark:bg-slate-800 border-0">
+      <MenuList dir="ltr" className="overflow-y-auto max-h-80 bg-gray-200 dark:bg-slate-800 border-0">
         {languages.length &&
           languages.map((language, index) => (
             <MenuItem

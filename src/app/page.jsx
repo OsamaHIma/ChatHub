@@ -73,7 +73,7 @@ const Home = () => {
 
   return (
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
-      <div className="flex w-full flex-col gap-5 rounded-lg bg-gray-100 px-3 shadow dark:bg-slate-800 md:p-4 lg:flex-row">
+      <div className="flex w-full flex-col gap-5 rounded-3xl bg-indigo-100/50 backdrop-blur-md px-3 shadow-inner dark:bg-slate-800/50 md:p-4 lg:flex-row">
         {/* Contacts */}
         <div className="Contacts hide-scroll-bar flex !max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (

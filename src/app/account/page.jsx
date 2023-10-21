@@ -155,11 +155,6 @@ const MyAccount = () => {
         >
           <input {...getInputProps()} />
           {imagePath ? (
-            // <img
-            //   src={imagePath}
-            //   alt=""
-            //   className="h-full w-full rounded-full object-cover"
-            // />
             <div className="h-full w-full overflow-hidden rounded-full">
             <img
               alt="User avatar"
@@ -195,7 +190,7 @@ const MyAccount = () => {
             />
             {user && user.email}
           </p>
-          <p className="w-full rounded-tl-md rounded-tr-md bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
+          <p className="w-full bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
             <AtSign
               size={24}
               className="inline-block text-indigo-500 ltr:mr-2 rtl:ml-2"

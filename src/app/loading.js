@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div
-      className="relative flex h-screen flex-col items-center justify-center bg-stone-200 dark:bg-primary-black"
+      className="relative flex h-screen flex-col items-center justify-center bg-indigo-100/60 backdrop-blur-x dark:bg-gray-900"
       dir="ltr"
     >
       <div className="gradient absolute top-20  h-80 w-80 bg-indigo-600/30 blur-[100px]" />

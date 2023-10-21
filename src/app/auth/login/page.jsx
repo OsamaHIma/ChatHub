@@ -90,24 +90,26 @@ const Login = () => {
 
   return (
     <MotionLayout>
-      <section className="paddings innerWidth py-16 text-center">
-        <h1 className="my-7 text-2xl font-bold md:text-5xl">
+      <section className="paddings relative innerWidth py-16 text-center overflow-hidden">
+        <div className="w-96 -z-10 h-72 left-14 md:left-5 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute" />
+        <div className="w-96 -z-10 h-72 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute right-7 bottom-5" />
+        <h1 className="my-7 text-indigo-50 text-2xl font-bold md:text-5xl">
           <Translate>Log In</Translate>
         </h1>
-        <p className="text-gray-400 ">
+        <p className="text-gray-100">
           <Translate>
-            Are you ready for more secure chat with no FPI in the middle?
+            Welcome back!
           </Translate>
         </p>
 
         <form
-          className="mx-auto mt-14 flex max-w-2xl flex-col gap-7 rounded-xl bg-slate-100 px-7 py-16 dark:bg-gray-800"
+          className="mx-auto my-10 flex max-w-2xl shadow-xl flex-col gap-7 rounded-xl backdrop-blur-2xl px-7 py-16"
           noValidate
           onSubmit={handelSubmit}
         >
           <Input
-            color="indigo"
-            className="text-stone-800 dark:text-gray-300"
+            color="white"
+            className="text-gray-300 focus:shadow-lg"
             size="lg"
             label={<Translate>Email</Translate>}
             type="email"
@@ -118,8 +120,8 @@ const Login = () => {
             error={error}
           />
           <Input
-            color="indigo"
-            className="text-stone-800 dark:text-gray-300"
+            color="white"
+            className="text-gray-300"
             size="lg"
             label={<Translate>Password</Translate>}
             type={showPassword ? "text" : "password"}
@@ -145,7 +147,7 @@ const Login = () => {
           <div className="flex h-full w-full items-center justify-between">
             <Checkbox
               label={
-                <div className="dark:text-gray-300">
+                <div className="text-gray-300">
                   <Translate>Remember Me</Translate>
                 </div>
               }
@@ -171,7 +173,8 @@ const Login = () => {
               })}
             </ol>
           )}
-          <Button type="submit" className="bg-indigo-600 " size="lg">
+          <Button type="submit" variant="gradient"
+            color="indigo" size="lg">
             {loading ? (
               <Spinner scale={1.7} className="mx-auto" />
             ) : (
@@ -182,7 +185,7 @@ const Login = () => {
             <Translate>No account? no problem</Translate>{" "}
             <Link
               href="/auth/register"
-              className="text-blue-500 underline-offset-4 hover:underline"
+              className="text-indigo-500 underline-offset-4 hover:underline"
             >
               <Translate>Register Now</Translate>
             </Link>{" "}

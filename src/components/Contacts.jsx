@@ -52,9 +52,9 @@ const Contacts = ({
     <article className="flex flex-col items-center gap-3 min-w-[13rem] ">
       {!contact.username.toLowerCase().includes(search.toLowerCase()) ? null : (
         <div
-          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600 ${selectedUser === index
+          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer ${selectedUser === index? "hover:bg-indigo-600 shadow-lg" : "hover:bg-slate-300 shadow-inner"}  dark:hover:bg-slate-600 ${selectedUser === index
             ? "bg-indigo-500 !text-gray-200"
-            : "bg-slate-300 dark:bg-slate-700"
+            : "bg-slate-200 dark:bg-slate-700"
             }`}
           onClick={() => handelChangeChat(index, contact)}
         >
@@ -75,10 +75,10 @@ const Contacts = ({
             ) : (
               <UserCircle2 size={48} />
             )}
-            {/* {contact.username =="osama" && <CheckCircle className="text-blue-500" size={32} /> } */}
+
           </div>
           {contact.username === "osama" && (<div className="flex items-center gap-3">
-            <p className="text-xs">This the official account</p>
+            <p className="text-xs"><Translate>This the official account</Translate></p>
             <Verified size={21} className="text-blue-500" /></div>)}
           <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
             <p>{contact.name}</p>
