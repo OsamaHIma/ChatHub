@@ -140,7 +140,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
               setMsg(e.target.value);
             }}
 
-            placeholder="Your Message"
+            // placeholder="Your Message"
             className="bg min-h-full !border-0 focus:border-transparent dark:text-gray-300 dark:placeholder:text-gray-400"
             containerProps={{
               className: "grid h-full",

@@ -21,7 +21,7 @@ const Messages = ({ currentChat, socket }) => {
   const [messages, setMessages] = useState([]);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [isRelyingToMessage, setIsRelyingToMessage] = useState(null);
-  const notificationSound = new Howl({ src: ["/chat.mp3"], volume: 0.5 });
+  const notificationSound = new Howl({ src: ["/chat.mp3"] });
   const [openFullFile, setOpenFullFile] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const handleOpenFile = (e, url) => {

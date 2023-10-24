@@ -244,7 +244,7 @@ const MyAccount = () => {
               }}
               color="red"
             >
-              <Translate>Cancel</Translate>
+              <Translate translations={{ar:"إالغاء"}}>Cancel</Translate>
             </Button>
 
             <Button

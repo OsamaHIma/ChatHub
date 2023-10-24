@@ -1,5 +1,6 @@
 "use client";
 
+import ForgotPassword from "@/components/ForgotPassword";
 import MotionLayout from "@/components/MotionLayout";
 import { loginUserSchema } from "@/schema/userSchema";
 import { Button, Checkbox, Input, Spinner } from "@material-tailwind/react";
@@ -7,8 +8,9 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 import { Translate } from "translate-easy";
 
 const Login = () => {
@@ -16,11 +18,21 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const socket = useRef(null);
   const [isRememberedUser, setIsRememberedUser] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
   const router = useRouter();
+  const handleOpenForgotPasswordModal = () => setOpenForgotPasswordModal((cur) => !cur);
+
+
+  useEffect(() => {
+    socket.current = io(process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("socket conntected")
+}, []);
+
   const handelInputChange = (event) => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -101,7 +113,7 @@ const Login = () => {
             Welcome back!
           </Translate>
         </p>
-
+        <ForgotPassword open={openForgotPasswordModal} socket={socket.current && socket} handleOpen={handleOpenForgotPasswordModal} />
         <form
           className="mx-auto my-10 flex max-w-2xl shadow-xl flex-col gap-7 rounded-xl backdrop-blur-2xl px-7 py-16"
           noValidate
@@ -144,18 +156,27 @@ const Login = () => {
               )
             }
           />
-          <div className="flex h-full w-full items-center justify-between">
-            <Checkbox
-              label={
-                <div className="text-gray-300">
-                  <Translate>Remember Me</Translate>
-                </div>
-              }
-              onChange={(e) => setIsRememberedUser(e.target.checked)}
-              checked={isRememberedUser}
-              value={isRememberedUser || ""}
-              id="remember-me"
-            />
+          <div className="flex items-center justify-between">
+            <div className="flex h-full w-full items-center justify-between">
+              <Checkbox
+                label={
+                  <div className="text-gray-300">
+                    <Translate>Remember Me</Translate>
+                  </div>
+                }
+                onChange={(e) => setIsRememberedUser(e.target.checked)}
+                checked={isRememberedUser}
+                value={isRememberedUser || ""}
+                id="remember-me"
+              />
+            </div>
+            <button
+              onClick={handleOpenForgotPasswordModal}
+              type="button"
+              className="text-indigo-500 whitespace-nowrap text-sm underline-offset-4 hover:underline"
+            >
+              <Translate>Forgot Password</Translate>
+            </button>
           </div>
           {error && (
             <ol className="mx-4 flex list-decimal flex-col gap-1 text-red-500 ltr:text-left rtl:text-right">
@@ -164,9 +185,10 @@ const Login = () => {
                   <li key={key} className="my-1">
                     *
                     <Translate>
-                      {err === "Request failed with status code 401"
+                      {/* {err === "Request failed with status code 401"
                         ? "Wrong Email Or Password"
-                        : err}
+                        : err} */}
+                      {err}
                     </Translate>
                   </li>
                 );
@@ -174,7 +196,7 @@ const Login = () => {
             </ol>
           )}
           <Button type="submit" variant="gradient"
-            color="indigo" size="lg">
+            color="indigo" size="lg" disabled={loading}>
             {loading ? (
               <Spinner scale={1.7} className="mx-auto" />
             ) : (

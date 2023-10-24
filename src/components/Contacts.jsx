@@ -31,6 +31,7 @@ const Contacts = ({
         },
       );
       // setIsLoading(false);
+      // console.log(data[0])
       setLastMessage(data[0]);
       if (!data[0].fromSelf && !data[0].seen) {
         new Notification("New Message", {

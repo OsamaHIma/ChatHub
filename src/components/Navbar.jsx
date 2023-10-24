@@ -42,6 +42,7 @@ const Navbar = () => {
         viewport={{ once: true }}
         className="h-container paddings innerWidth relative flex flex-nowrap items-center justify-between border-b-[3px] border-stone-300 dark:border-stone-700 md:justify-evenly"
       >
+
         <div className="flex items-center gap-3">
           <Link href="/">
             <Image
@@ -53,7 +54,10 @@ const Navbar = () => {
               alt="logo"
             />
           </Link>
-        <img src="/palestine.svg" className="shadow bg-indigo-600/40 dark:bg-transparent transition-all ease-in-out duration-500 p-2 rounded-lg w-[3rem]  md:w-[4.7rem] right-5 top-2" />
+          <div className="relative overflow-hidden rounded-lg">
+            <img src="/palestine.svg" className="shadow bg-indigo-600/40  dark:bg-transparent transition-all ease-in-out duration-500 p-2  w-[3rem]  md:w-[4.7rem] right-5 top-2" />
+            <div className="heigh-light" />
+          </div>
         </div>
         <section className="flex items-center gap-2 md:gap-4">
           {/* Theme menu */}
@@ -79,6 +83,7 @@ const Navbar = () => {
                     variant="gradient"
                     color="indigo"
                     className=" translation-all min-w-[5rem] max-w-[7rem]"
+                    disabled={loading}
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />
@@ -146,6 +151,7 @@ const Navbar = () => {
                     variant="gradient"
                     color="indigo"
                     className=" translation-all min-w-[5rem] max-w-[7rem]"
+                    disabled={loading}
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />

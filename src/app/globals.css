@@ -12,16 +12,24 @@
   scroll-behavior: smooth !important;
 }
 
+:root {
+
+  --glow-color: #f5f5f5;
+}
+
 ::-webkit-scrollbar {
   width: 11px;
   /* @apply bg-slate-100 dark:bg-gray-800 ; */
 }
+
 ::-webkit-scrollbar-thumb {
   @apply rounded-lg bg-indigo-500;
 }
+
 .hide-scroll-bar::-webkit-scrollbar {
   width: 0px !important;
 }
+
 .paddings {
   padding: 1.5rem;
 }
@@ -31,29 +39,63 @@
   /* background: rgb(68, 89, 224) */
 }
 
-:is(.dark .react-loading-skeleton) {
+.react-loading-skeleton {
+  --base-color: #dadada !important;
+  --highlight-color: #ffffff;
+}
+
+.dark .react-loading-skeleton {
   --base-color: #9c9c9c !important;
   --highlight-color: #ebeaea;
 }
+
+.dark {
+  --glow-color: #0fe66198;
+}
+
 code {
   white-space: pre-wrap;
   background-color: #f7f7f7;
   padding: 10px;
   border-radius: 4px;
 }
+
 @keyframes flash {
   0% {
-    @apply bg-green-500/30 /* Set the desired background color */
+    @apply bg-green-500/30;
   }
+
   50% {
-    background-color: transparent; /* Set the desired background color */
+    background-color: transparent;
   }
+
   100% {
-    @apply bg-green-500/30 /* Set the desired background color */
+    @apply bg-green-500/30;
   }
 }
 
 .highlighted {
   @apply rounded-lg;
   animation: flash 0.9s linear 4;
+}
+
+@keyframes glow {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.heigh-light {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(90deg, #eeeeee11, var(--glow-color), #eeeeee11);
+  transform: translateX(-100%);
+  animation: glow 7.5s normal ease-in-out infinite;
+  z-index: -1;
 }

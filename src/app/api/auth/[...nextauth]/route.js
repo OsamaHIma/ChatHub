@@ -10,18 +10,27 @@ const authOptions = {
         const email = credentials.email;
         const password = credentials.password;
 
-        const { data: user } = await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
-          {
-            email,
-            password,
-          },
-        );
-        // console.log("user",user)
-        if (!user) {
-          throw new Error("No user provided for sing in");
+        try {
+          const { data: user } = await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
+            {
+              email,
+              password,
+            }
+          );
+          
+          if (!user) {
+            throw new Error("No user provided for sign in");
+          }
+          
+          return user;
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            throw new Error(error.response.data.message);
+          } else {
+            throw new Error("An error occurred during login");
+          }
         }
-        return user;
       },
     }),
   ],

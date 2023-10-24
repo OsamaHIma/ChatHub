@@ -54,8 +54,8 @@ const ChatSection = ({ chat, socket }) => {
             )}
           </Badge>
           <div className="flex flex-col items-center">
-            <p className="text-gray-400">@{chat.username}</p>
-            <p className="text-xs text-gray-400">
+            <p className="dark:text-gray-400">@{chat.username}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {userStatus && (
                 <span className={`${isTyping ? "hidden" : "block"}`}>
                   <Translate>Online</Translate>

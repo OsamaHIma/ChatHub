@@ -4,10 +4,8 @@ import MotionLayout from "@/components/MotionLayout";
 import { signUpSchema } from "@/schema/userSchema";
 import { Button, Input, Spinner, Typography } from "@material-tailwind/react";
 import axios from "axios";
-import { EyeIcon, EyeOffIcon, InfoIcon } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { EyeIcon, EyeOffIcon, InfoIcon, MailOpen } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
@@ -22,7 +20,6 @@ const Register = () => {
   });
 
   const [error, setError] = useState(null);
-  const [check, setCheck] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,7 +27,6 @@ const Register = () => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-  const router = useRouter();
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -64,13 +60,10 @@ const Register = () => {
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`, formData);
 
       if (data.status || data.token) {
-        await signIn("credentials", {
-          redirect: false,
-          email: formData.email,
-          password: formData.password,
+        toast.success(<Translate>Registered successfully, Now please confirm your email address by clicking "Confirm Email" in the email that has been sent to you, if you can't see the email please check the spam emails</Translate>, {
+          icon: <MailOpen />,
+          position:"top-center"
         });
-        router.push(`/account`);
-        toast.success(<Translate>Registered successfully</Translate>);
       } else {
         toast.error(<Translate>{data.message}</Translate>);
       }
@@ -83,8 +76,8 @@ const Register = () => {
   return (
     <MotionLayout>
       <section className="paddings relative innerWidth py-16 text-center overflow-hidden">
-      <div className="w-96 -z-10 h-72 left-14 md:left-5 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute"/>
-        <div className="w-96 -z-10 h-72 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute right-7 bottom-5"/>
+        <div className="w-96 -z-10 h-72 left-14 md:left-5 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute" />
+        <div className="w-96 -z-10 h-72 md:h-96 bg-indigo-300/50 dark:bg-gray-800/50 rounded-3xl backdrop-blur-xl shadow-inner absolute right-7 bottom-5" />
         <h1 className="my-7 text-indigo-50 text-2xl font-bold md:text-5xl">
           <Translate>Sing UP</Translate>
         </h1>
@@ -208,8 +201,8 @@ const Register = () => {
               })}
             </ol>
           )}
-          <Button type="submit"  variant="gradient"
-                    color="indigo" size="lg">
+          <Button type="submit" variant="gradient"
+            color="indigo" size="lg" disabled={loading}>
             {loading ? (
               <Spinner scale={1.7} className="mx-auto" />
             ) : (
