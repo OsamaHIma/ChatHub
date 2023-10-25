@@ -97,7 +97,6 @@ const Home = () => {
                     handelChangeChat={handelChangeChat}
                     selectedUser={selectedUser}
                     search={search}
-                    // lastMessage={lastMessage}
                     index={index}
                   />
                 );

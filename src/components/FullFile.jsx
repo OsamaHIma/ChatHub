@@ -1,3 +1,4 @@
+'use client'
 import { Button, Dialog, DialogBody, DialogFooter } from "@material-tailwind/react";
 import { Translate } from "translate-easy";
 

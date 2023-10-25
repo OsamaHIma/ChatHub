@@ -1,3 +1,4 @@
+"use client"
 import { Badge } from "@material-tailwind/react";
 import { UserCircle2 } from "lucide-react";
 import { useState } from "react";

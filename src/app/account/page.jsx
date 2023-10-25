@@ -1,6 +1,6 @@
 "use client";
 import { toast } from "react-toastify";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Translate } from "translate-easy";
 import { MailIcon, Plus, AtSign } from "lucide-react";
