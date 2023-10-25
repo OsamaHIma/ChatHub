@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, SmileIcon, PaperclipIcon, Reply, X } from "lucide-react";
 import {
   IconButton,
@@ -12,18 +12,20 @@ import Picker from "emoji-picker-react";
 import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+
+import dynamic from "next/dynamic";
+
+
+import "react-quill/dist/quill.bubble.css";
 
 
 const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage }) => {
-
   const [msg, setMsg] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const { user } = useUser();
   const fileInputRef = useRef(null);
   const textAreaRef = useRef(null);
-
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
   const handelEmojiPickerClick = (emoji, event) => {
     const emojiCount = event.detail || 1;
     const emojiString = emoji.emoji.repeat(emojiCount);
@@ -135,7 +137,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
           </Menu>
           <ReactQuill
             ref={textAreaRef}
-            theme="snow"
+            theme="bubble"
             value={msg}
             onChange={(msg) => {
               socket.current.emit("typing", user._id);
@@ -143,7 +145,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             }}
 
             modules={{
-              syntax: true,
+              // syntax: true,
               toolbar: [
                 ['bold', 'italic', 'underline', 'strike', 'color', 'size', 'align', 'list', "link"], // toggled buttons
                 ['code-block', 'image', "video"], // code and image formats

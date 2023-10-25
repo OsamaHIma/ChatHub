@@ -2,10 +2,9 @@
 import { useUser } from "@/context/UserContext";
 import { Badge } from "@material-tailwind/react";
 import axios from "axios";
-import { CheckCheck, CheckCircle, CheckIcon, UserCircle2, Verified } from "lucide-react";
+import { CheckCheck, CheckIcon, UserCircle2, Verified } from "lucide-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { connect } from "socket.io-client";
 import { Translate } from "translate-easy";
 
 const Contacts = ({
@@ -13,7 +12,6 @@ const Contacts = ({
   handelChangeChat,
   selectedUser,
   search,
-  // lastMessage,
   index,
 }) => {
   const { user } = useUser();
@@ -33,7 +31,7 @@ const Contacts = ({
       // setIsLoading(false);
       // console.log(data[0])
       setLastMessage(data[0]);
-      if (!data[0].fromSelf && !data[0].seen) {
+      if (data[0] && !data[0].fromSelf && !data[0].seen) {
         new Notification("New Message", {
           body: `${data[0].message}\n ${moment(data[0].date).format("hh:mm a")}`,
           icon: "/logoTab.svg",

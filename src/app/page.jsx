@@ -11,13 +11,13 @@ import { Search } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import { io } from "socket.io-client";
 import ChatSection from "@/components/ChatSection";
+import MotionLayout from "@/components/MotionLayout";
 
 const Home = () => {
   const { user } = useUser();
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [chat, setChat] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
   const [search, setSearch] = useState("");
   const socket = useRef();
 
@@ -43,14 +43,6 @@ const Home = () => {
     getAllUsers();
   }, [user]);
 
-  // useEffect(() => {
-  //   if (window.innerWidth < 960 && chat) {
-  //     setIsMobile(true)
-  //   } else {
-  //     setIsMobile(false)
-  //   }
-  // }, [chat]);
-
   const handelChangeChat = (index, contact) => {
     setSelectedUser(index);
     setChat(contact);
@@ -72,10 +64,11 @@ const Home = () => {
   }, []);
 
   return (
+    <MotionLayout>
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
-      <div className="flex h-screen w-full flex-col gap-5 rounded-3xl  bg-indigo-100/50 px-3 shadow-inner dark:bg-slate-800/50 md:p-4 lg:flex-row">
+      <div className="flex h-screen md:h-[105vh] w-full flex-col gap-5 rounded-3xl  bg-indigo-100/50 px-3 shadow-inner dark:bg-slate-800/50 md:p-4 lg:flex-row">
         {/* Contacts */}
-        <div className="Contacts hide-scroll-bar flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
+        <div className="Contacts hide-scroll-bar flex max-h-[98vh] md:max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (
             <section className="flex flex-col gap-3 pt-4 md:pt-0">
               <div className="relative w-full">
@@ -135,6 +128,7 @@ const Home = () => {
         )}
       </div>
     </main>
+    </MotionLayout>
   );
 };
 export default Home;

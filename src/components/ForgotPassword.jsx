@@ -45,6 +45,19 @@ const ForgotPassword = ({ handleOpen, open, socket }) => {
     const verifyEmail = async () => {
         if (!email) return
         setErrMsg('')
+        try {
+            loginUserSchema.validateSync(
+                {
+                    email: email,
+                },
+
+                { abortEarly: false },
+            );
+        } catch (error) {
+            setErrMsg(error.errors);
+            toast.error(error);
+            return;
+        }
         setLoading(true);
 
         try {

@@ -8,6 +8,7 @@ import { Button, Input, Textarea } from "@material-tailwind/react";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import MotionLayout from "@/components/MotionLayout";
 
 const styles = {
   focused: {
@@ -141,6 +142,7 @@ const MyAccount = () => {
   }, [imagePath]);
 
   return (
+  <MotionLayout>
     <div className="container px-10 py-12">
       <h1 className="mb-6 text-3xl font-bold">
         <Translate>Account Information</Translate>
@@ -263,6 +265,7 @@ const MyAccount = () => {
         )}
       </div>
     </div>
+  </MotionLayout>
   );
 };
 
