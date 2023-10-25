@@ -210,7 +210,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <div className="whitespace-normal break-all" dangerouslySetInnerHTML={{ __html: message.message }} />
+              <div className="whitespace-normal break-all message" dangerouslySetInnerHTML={{ __html: message.message }} />
               <p className="absolute bottom-0 left-5 -mb-5 text-xs text-gray-400">
                 {time}
               </p>
@@ -274,7 +274,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <div className="whitespace-normal break-all" dangerouslySetInnerHTML={{ __html: message.message }} />
+              <div className="whitespace-normal break-all message" dangerouslySetInnerHTML={{ __html: message.message }} />
             </div>
             <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1 flex-nowrap">
               <p className="text-xs text-gray-400">{time}</p>

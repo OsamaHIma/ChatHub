@@ -26,7 +26,7 @@ const Providers = ({ children }) => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                toastClassName="dark:!bg-gray-800 dark:text-indigo-100 !z-[100]"
+                toastClassName="!bg-indigo-50 dark:!bg-gray-800 dark:text-indigo-100 !z-[100]"
               />
               <Navbar />
               <AnimatePresence

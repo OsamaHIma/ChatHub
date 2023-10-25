@@ -7,11 +7,12 @@ const FullFile = ({ openFile, handleOpenFile, url }) => (
         open={openFile}
         handler={handleOpenFile}
         className="dark:bg-gray-800 !max-h-[95vh] overflow-y-auto"
+        size="xs"
     >
         <DialogBody>
             <a href={url} target="_blank">
                 <embed src={url}
-                    className="w-full"
+                    className="max-w-full mx-auto rounded-lg"
                 />
             </a>
         </DialogBody>
