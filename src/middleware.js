@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { signOut } from "next-auth/react";
 
 export async function middleware(req) {
   const pathname = req.nextUrl.pathname;
@@ -14,6 +15,9 @@ export async function middleware(req) {
   if (session) {
     if (pathname === "/auth/register" || pathname === "/auth/login" ) {
       return NextResponse.redirect(new URL("/", req.url));
+    }
+    if(!session.user.isEmailConfirmed){
+      signOut();
     }
   }
 }
