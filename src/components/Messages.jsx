@@ -1,6 +1,6 @@
 "use client";
 import moment from "moment";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Translate } from "translate-easy";
 import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
+  const documentRef = useRef(null)
   const [messages, setMessages] = useState([]);
   const [arrivalMessages, setArrivalMessages] = useState(null);
   const [isRelyingToMessage, setIsRelyingToMessage] = useState(null);
@@ -151,6 +152,12 @@ const Messages = ({ currentChat, socket }) => {
   }
 
   useEffect(() => {
+    if (typeof document !== 'undefined') {
+      documentRef.current = document
+    }
+  }, [])
+
+  useEffect(() => {
     arrivalMessages && setMessages((prev) => [arrivalMessages, ...prev]);
   }, [arrivalMessages]);
 
@@ -166,8 +173,8 @@ const Messages = ({ currentChat, socket }) => {
 
   const handelReplyMessageClick = (id) => {
     if (!id) return;
-    const targetMessage = typeof document !== "undefined" &&
-      document.getElementById(id)
+    const targetMessage =
+      documentRef.current && documentRef.current.getElementById(id)
     if (targetMessage) {
       targetMessage.scrollIntoView({ behavior: "smooth" });
       targetMessage.classList.add("highlighted");
