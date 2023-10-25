@@ -166,7 +166,7 @@ const Messages = ({ currentChat, socket }) => {
 
   const handelReplyMessageClick = (id) => {
     if (!id) return;
-    const targetMessage = document.getElementById(id);
+    const targetMessage = document && document.getElementById(id);
     if (targetMessage) {
       targetMessage.scrollIntoView({ behavior: "smooth" });
       targetMessage.classList.add("highlighted");
