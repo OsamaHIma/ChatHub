@@ -35,7 +35,7 @@ const Footer = () => {
       viewport={{ once: true }}
       className="relative bg-indigo-100 py-3 mt-3 dark:bg-gray-800"
     >
-      <div className="absolute left-0 top-3 h-44 w-full bg-gradient-to-b from-indigo-200 to-transparent dark:from-gray-900 md:-top-4"></div>
+      <div className="absolute left-0 -top-1 h-44 w-full bg-gradient-to-b from-indigo-200 to-transparent dark:from-gray-900 md:-top-4"></div>
       <div className="mx-auto w-full max-w-screen-xl px-4 pt-6 lg:pt-8">
         <div className="items-center md:flex md:justify-between">
           <div className="z-10 mb-6 md:mb-0">
@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
           <div className="z-10 grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 <Translate>Hot links</Translate>
               </h2>
               <ul className="font-medium text-gray-700 dark:text-gray-300">
@@ -68,7 +68,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 <Translate>Follow us</Translate>
               </h2>
               <ul className="font-medium text-gray-700 dark:text-gray-300">
@@ -91,7 +91,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 <Translate>Legal</Translate>
               </h2>
               <ul className="font-medium text-gray-700 dark:text-gray-300">
