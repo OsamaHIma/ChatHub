@@ -43,13 +43,13 @@ const Home = () => {
     getAllUsers();
   }, [user]);
 
-  useEffect(() => {
-    if (window.innerWidth < 960 && chat) {
-      setIsMobile(true)
-    } else {
-      setIsMobile(false)
-    }
-  }, [chat]);
+  // useEffect(() => {
+  //   if (window.innerWidth < 960 && chat) {
+  //     setIsMobile(true)
+  //   } else {
+  //     setIsMobile(false)
+  //   }
+  // }, [chat]);
 
   const handelChangeChat = (index, contact) => {
     setSelectedUser(index);
@@ -73,12 +73,12 @@ const Home = () => {
 
   return (
     <main className="paddings innerWidth flex flex-col items-center justify-center gap-4 py-16">
-      <div className="flex w-full flex-col gap-5 rounded-3xl bg-indigo-100/50 backdrop-blur-md px-3 shadow-inner dark:bg-slate-800/50 md:p-4 lg:flex-row">
+      <div className="flex h-screen w-full flex-col gap-5 rounded-3xl  bg-indigo-100/50 px-3 shadow-inner dark:bg-slate-800/50 md:p-4 lg:flex-row">
         {/* Contacts */}
-        <div className="Contacts hide-scroll-bar flex !max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
+        <div className="Contacts hide-scroll-bar flex max-h-[95vh] flex-col gap-3 overflow-y-auto lg:max-h-full lg:flex-[0.5] ">
           {users.length > 0 ? (
-            <>
-              <div className="relative w-full mt-4">
+            <section className="flex flex-col gap-3 pt-4 md:pt-0">
+              <div className="relative w-full">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <Search className="text-indigo-500" />
                 </div>
@@ -89,21 +89,20 @@ const Home = () => {
                   className="block w-full rounded-full bg-gray-100 py-2 pl-10 pr-3 text-gray-900 focus:bg-white focus:outline-none focus:ring-0"
                 />
               </div>
-              <section className={`flex ${isMobile ? "flex-row" : "flex-col"} gap-3 md:pt-0`}>
-                {users.map((contact, index) => {
-                  return (
-                    <Contacts
-                      key={index}
-                      contact={contact}
-                      handelChangeChat={handelChangeChat}
-                      selectedUser={selectedUser}
-                      search={search}
-                      index={index}
-                    />
-                  );
-                })}
-              </section>
-            </>
+              {users.map((contact, index) => {
+                return (
+                  <Contacts
+                    key={index}
+                    contact={contact}
+                    handelChangeChat={handelChangeChat}
+                    selectedUser={selectedUser}
+                    search={search}
+                    // lastMessage={lastMessage}
+                    index={index}
+                  />
+                );
+              })}
+            </section>
           ) : (
             <>
               <Skeleton height={40} borderRadius={99} className="mt-4" />
@@ -131,7 +130,7 @@ const Home = () => {
               <span className="text-indigo-500">{user && user.username}</span>!
             </h1>
             <p className="text-xl font-semibold capitalize md:text-3xl">
-              <Translate>Select a contact to start messaging</Translate>
+              <Translate>Select a chat to start messaging</Translate>
             </p>
           </section>
         )}

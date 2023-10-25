@@ -53,7 +53,7 @@ const Contacts = ({
     <article className="flex flex-col items-center gap-3 min-w-[13rem] ">
       {!contact.username.toLowerCase().includes(search.toLowerCase()) ? null : (
         <div
-          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer ${selectedUser === index? "hover:bg-indigo-600 shadow-lg" : "hover:bg-slate-300 shadow-inner"}  dark:hover:bg-slate-600 ${selectedUser === index
+          className={`paddings flex w-full flex-col items-center gap-3 rounded-md transition-all duration-500 ease-in-out hover:cursor-pointer ${selectedUser === index ? "hover:bg-indigo-600 shadow-lg" : "hover:bg-slate-300 shadow-inner"}  dark:hover:bg-slate-600 ${selectedUser === index
             ? "bg-indigo-500 !text-gray-200"
             : "bg-slate-200 dark:bg-slate-700"
             }`}
@@ -94,18 +94,22 @@ const Contacts = ({
           </div>
           <div className="flex items-center justify-between gap-5">
             <div className="flex items-center gap-2">
-              <p
-                className={`max-w-[5rem] ${selectedUser === index
+              {lastMessage ? (
+                <div className={`max-w-[5rem] ${selectedUser === index
                   ? "text-gray-300"
                   : "text-gray-600 dark:text-gray-300"
-                  } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
-              >
-                {lastMessage ? (
-                  lastMessage.message
-                ) : (
+                  } truncate md:max-w-[9rem] lg:max-w-[10rem]`} dangerouslySetInnerHTML={{ __html: lastMessage.message }} />
+              ) : (
+                <p
+                  className={`max-w-[5rem] ${selectedUser === index
+                    ? "text-gray-300"
+                    : "text-gray-600 dark:text-gray-300"
+                    } truncate md:max-w-[9rem] lg:max-w-[10rem]`}
+                >
                   <Translate>Start A Chat</Translate>
-                )}
-              </p>
+                </p>
+              )}
+
               {lastMessage && lastMessage.fromSelf && (
                 <CheckCheck
                   className={`${lastMessage.seen ? "text-blue-500" : "text-gray-400"

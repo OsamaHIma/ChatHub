@@ -15,6 +15,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app } from "@/lib/firebase";
 import FullFile from "./FullFile";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const Messages = ({ currentChat, socket }) => {
   const { user } = useUser();
@@ -71,54 +72,60 @@ const Messages = ({ currentChat, socket }) => {
   const sendMessage = async (message, file) => {
     const time = Date.now();
 
-    // Upload the file
-    let fileURL = null;
-    if (file) {
-      const storage = getStorage();
-      const fileRef = ref(storage, file.name);
-      await uploadBytes(fileRef, file);
-      fileURL = await getDownloadURL(fileRef);
-    }
+    try {
+      // Upload the file
+      let fileURL = null;
+      if (file) {
+        const storage = getStorage();
+        const fileRef = ref(storage, file.name);
+        await uploadBytes(fileRef, file);
+        fileURL = await getDownloadURL(fileRef);
+      }
 
-    // Send the message
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
-      {
+      // Send the message
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/messages/addmsg`,
+        {
+          to: currentChat._id,
+          from: user._id,
+          date: time,
+          message: message || (file ? file.name : ''),
+          fileURL,
+          fileName: file ? file.name : '',
+          replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
+        },
+      );
+
+      // Emit the message to the socket
+      socket.current.emit("send-msg", {
+        _id: data.id,
         to: currentChat._id,
         from: user._id,
         date: time,
         message: message || (file ? file.name : ''),
-        fileURL,
         fileName: file ? file.name : '',
-        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
-      },
-    );
-
-    // Emit the message to the socket
-    socket.current.emit("send-msg", {
-      _id: data.id,
-      to: currentChat._id,
-      from: user._id,
-      date: time,
-      message: message || (file ? file.name : ''),
-      fileName: file ? file.name : '',
-      fileURL,
-      replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
-      ...data,
-    });
-
-    // Update the messages state
-    setMessages([
-      {
-        fromSelf: true,
-        message: message || (file ? file.name : ''),
         fileURL,
-        _id: data.id,
-        date: data.date,
-      },
-      ...messages,
-    ]);
-    setIsRelyingToMessage(null);
+        replyTo: isRelyingToMessage ? isRelyingToMessage._id : null,
+        ...data,
+      });
+
+      // Update the messages state
+      setMessages([
+        {
+          fromSelf: true,
+          message: message || (file ? file.name : ''),
+          fileURL,
+          _id: data.id,
+          date: data.date,
+        },
+        ...messages,
+      ]);
+      setIsRelyingToMessage(null);
+    } catch (error) {
+      // Display error toast notification
+      toast.error(`An error occurred while sending the message: ${error === "AxiosError: Request failed with status code 413" ? "File is too big to send it as a normal message attach it as a file instead" : error}`);
+      console.error(error);
+    }
   };
 
   const deleteMessage = async (id) => {
@@ -189,7 +196,7 @@ const Messages = ({ currentChat, socket }) => {
                   </Link>
                 </IconButton>
               )}
-            <div className="max-w-1/2 ml-4 rounded-lg bg-gray-700 px-4 py-3">
+            <div className="max-w-fit ml-4 rounded-lg text-gray-50 bg-gray-700 px-4 py-3">
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
@@ -204,9 +211,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <p className="whitespace-normal break-all text-white">
-                <Translate>{message.message}</Translate>
-              </p>
+              <div className="whitespace-normal break-all" dangerouslySetInnerHTML={{ __html: message.message }} />
               <p className="absolute bottom-0 left-5 -mb-5 text-xs text-gray-400">
                 {time}
               </p>
@@ -225,7 +230,7 @@ const Messages = ({ currentChat, socket }) => {
             <Reply /> <span>Reply</span>
           </MenuItem>
           <MenuItem
-            onClick={async () => await navigator.clipboard.writeText(message.message)}
+            onClick={async () => await navigator.clipboard.writeText(message.message.textContent || message.message)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
           >
             <ClipboardCopy />
@@ -270,7 +275,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <p className="whitespace-normal break-all">{message.message}</p>
+              <div className="whitespace-normal break-all" dangerouslySetInnerHTML={{ __html: message.message }} />
             </div>
             <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1 flex-nowrap">
               <p className="text-xs text-gray-400">{time}</p>
@@ -351,7 +356,7 @@ const Messages = ({ currentChat, socket }) => {
                       />
                     ),
                   )}
-           
+
             </ScrollableFeed>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Send, SmileIcon, PaperclipIcon, Reply, X } from "lucide-react";
 import {
   IconButton,
-  Textarea,
   Menu,
   MenuList,
   MenuHandler,
@@ -13,8 +12,12 @@ import Picker from "emoji-picker-react";
 import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 
 const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, setIsRelyingToMessage }) => {
+
   const [msg, setMsg] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const { user } = useUser();
@@ -53,11 +56,11 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   };
 
   useEffect(() => {
-
     if (isRelyingToMessage) {
-      textAreaRef.current.getElementsByTagName("textarea")[0].focus();
+      textAreaRef.current.focus();
     }
   }, [isRelyingToMessage]);
+
   return (
     <>
       {
@@ -92,7 +95,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             <input
               type="file"
               // accept="image/*"
-              maxlength="17000000"
+              maxLength="17000000"
               ref={fileInputRef}
               style={{ display: "none" }}
               onChange={(e) => setSelectedFile(e.target.files[0])}
@@ -130,26 +133,25 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
               <Picker onEmojiClick={handelEmojiPickerClick} />
             </MenuList>
           </Menu>
-          <Textarea
+          <ReactQuill
             ref={textAreaRef}
-            rows={1}
-            resize={true}
+            theme="snow"
             value={msg}
-            onChange={(e) => {
+            onChange={(msg) => {
               socket.current.emit("typing", user._id);
-              setMsg(e.target.value);
+              setMsg(msg)
             }}
 
-            // placeholder="Your Message"
-            className="bg min-h-full !border-0 focus:border-transparent dark:text-gray-300 dark:placeholder:text-gray-400"
-            containerProps={{
-              className: "grid h-full",
+            modules={{
+              syntax: true,
+              toolbar: [
+                ['bold', 'italic', 'underline', 'strike', 'color', 'size', 'align', 'list', "link"], // toggled buttons
+                ['code-block', 'image', "video"], // code and image formats
+                // other options
+              ],
             }}
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
+            className="!flex-1 z-[100] dark:text-gray-50"
           />
-
           <IconButton variant="text" className="rounded-full" type="submit" title="Send message">
             <Send size={23} className=" inline-block dark:text-slate-50" />
           </IconButton>

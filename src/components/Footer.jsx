@@ -33,9 +33,9 @@ const Footer = () => {
       whileInView="show"
       initial="hidden"
       viewport={{ once: true }}
-      className="relative bg-indigo-100 py-3 dark:bg-gray-800"
+      className="relative bg-indigo-100 py-3 mt-3 dark:bg-gray-800"
     >
-      <div className="absolute left-0 top-0 h-44 w-full bg-gradient-to-b from-indigo-200 to-transparent dark:from-gray-900 md:-top-4"></div>
+      <div className="absolute left-0 top-3 h-44 w-full bg-gradient-to-b from-indigo-200 to-transparent dark:from-gray-900 md:-top-4"></div>
       <div className="mx-auto w-full max-w-screen-xl px-4 pt-6 lg:pt-8">
         <div className="items-center md:flex md:justify-between">
           <div className="z-10 mb-6 md:mb-0">

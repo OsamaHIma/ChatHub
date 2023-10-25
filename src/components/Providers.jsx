@@ -26,14 +26,11 @@ const Providers = ({ children }) => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                // limit={1}
                 toastClassName="dark:!bg-gray-800 dark:text-indigo-100 !z-[100]"
               />
               <Navbar />
               <AnimatePresence
                 mode="wait"
-                // initial={false}
-                // onExitComplete={() => window.scrollTo(0, 0)}
               >
                 {children}
               </AnimatePresence>

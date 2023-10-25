@@ -53,13 +53,6 @@
   --glow-color: #0fe66198;
 }
 
-code {
-  white-space: pre-wrap;
-  background-color: #f7f7f7;
-  padding: 10px;
-  border-radius: 4px;
-}
-
 @keyframes flash {
   0% {
     @apply bg-green-500/30;
@@ -98,4 +91,12 @@ code {
   transform: translateX(-100%);
   animation: glow 7.5s normal ease-in-out infinite;
   z-index: -1;
+}
+
+.ql-toolbar.ql-snow{
+  @apply bg-gray-100/90
+}
+
+.ql-syntax {
+  white-space:pre-wrap ;
 }
