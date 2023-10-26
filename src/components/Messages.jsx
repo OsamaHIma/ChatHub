@@ -2,7 +2,7 @@
 import moment from "moment";
 import { useState, useEffect } from "react";
 import { Translate } from "translate-easy";
-import ChatInput from "./ChatInput";
+// import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Button, IconButton, Spinner } from "@material-tailwind/react";
@@ -180,7 +180,7 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900} >
+        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={700} >
           <div
             className="relative mb-8 flex py-2" id={message._id}>
             {
@@ -210,7 +210,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <div className="whitespace-normal break-all message" dangerouslySetInnerHTML={{ __html: message.message }} />
+              <div className="whitespace-normal break-all message no-select" dangerouslySetInnerHTML={{ __html: message.message }} />
               <p className="absolute bottom-0 left-5 -mb-5 text-xs text-gray-400">
                 {time}
               </p>
@@ -244,7 +244,7 @@ const Messages = ({ currentChat, socket }) => {
     const time = moment(message.date).format("hh:mm a");
     return (
       <>
-        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={900}  >
+        <ContextMenuTrigger className="!z-[100]" id={index} holdToDisplay={700}  >
           <div className="mb-8 relative max-w-full flex flex-row-reverse py-2" id={message._id}
           >
             {
@@ -274,7 +274,7 @@ const Messages = ({ currentChat, socket }) => {
                   <embed onClick={(e) => handleOpenFile(e, message.fileURL)} src={message.fileURL} className="max-w-[13rem] md:max-w-xs cursor-pointer rounded-md mb-2" />
                 )
               }
-              <div className="whitespace-normal break-all message" dangerouslySetInnerHTML={{ __html: message.message }} />
+              <div className="whitespace-normal break-all message no-select" dangerouslySetInnerHTML={{ __html: message.message }} />
             </div>
             <div className="absolute bottom-0 right-0 -mb-5 flex items-center gap-1 flex-nowrap">
               <p className="text-xs text-gray-400">{time}</p>
@@ -360,7 +360,7 @@ const Messages = ({ currentChat, socket }) => {
           </div>
         </div>
       </div>
-      <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
+      {/* <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} /> */}
     </section>
   );
 };

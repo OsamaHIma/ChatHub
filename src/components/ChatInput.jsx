@@ -1,6 +1,6 @@
 "use client";
 
-import {useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, SmileIcon, Reply, X, Folder } from "lucide-react";
 import {
   IconButton,
@@ -25,7 +25,8 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const { user } = useUser();
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef();
+
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const [openFullFile, setOpenFullFile] = useState(false);
@@ -38,6 +39,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   };
 
   const handelFileUpload = (e) => {
+    e.preventDefault();
     const file = e.target.files[0];
     setSelectedFile(file);
 
@@ -48,14 +50,15 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
         setPreviewUrl(reader.result);
       };
       reader.readAsDataURL(file);
+      handleOpenFile();
     }
-    handleOpenFile()
   }
 
   const handelFileInputClick = () => {
-    if (selectedFile) {
+    if (selectedFile || previewUrl) {
       setSelectedFile(null);
       setPreviewUrl(null);
+      fileInputRef.current.value = "";
       // handleOpenFile()
     } else {
       fileInputRef.current.click();
@@ -65,20 +68,24 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   const handleSubmit = (event) => {
     event.preventDefault();
     if (msg.length > 0 || selectedFile) {
-      handleOpenFile()
+      // handleOpenFile()
+
       socket.current.emit("stop-typing", user._id);
       if (selectedFile) {
         const maxSize = 17 * 1024 * 1024;
         if (selectedFile.size > maxSize) {
           toast.error(<Translate>File size exceeds the maximum limit of 17MB.</Translate>);
           setSelectedFile(null);
+
         }
       }
       handleSendMsg(msg, selectedFile);
       setMsg("");
       setSelectedFile(null);
+      setOpenFullFile(false)
     }
   };
+
 
   return (
     <>
@@ -153,6 +160,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             </MenuList>
           </Menu>
           <ReactQuill
+
             theme="bubble"
             value={msg}
             onChange={(msg) => {
