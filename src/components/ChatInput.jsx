@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {useMemo, useRef, useState } from "react";
 import { Send, SmileIcon, Reply, X, Folder } from "lucide-react";
 import {
   IconButton,
@@ -26,13 +26,10 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   const [previewUrl, setPreviewUrl] = useState(null);
   const { user } = useUser();
   const fileInputRef = useRef(null);
-  const textAreaRef = useRef(null);
-  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   const [openFullFile, setOpenFullFile] = useState(false);
   const handleOpenFile = () => setOpenFullFile(!openFullFile);
-
-
 
   const handelEmojiPickerClick = (emoji, event) => {
     const emojiCount = event.detail || 1;
@@ -43,7 +40,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   const handelFileUpload = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-  
+
     // Generate the preview URL
     if (file) {
       const reader = new FileReader();
@@ -58,7 +55,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
   const handelFileInputClick = () => {
     if (selectedFile) {
       setSelectedFile(null);
-      setPreviewUrl(null); 
+      setPreviewUrl(null);
       // handleOpenFile()
     } else {
       fileInputRef.current.click();
@@ -82,12 +79,6 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
       setSelectedFile(null);
     }
   };
-
-  useEffect(() => {
-    if (isRelyingToMessage) {
-      textAreaRef.current.focus();
-    }
-  }, [isRelyingToMessage]);
 
   return (
     <>
@@ -117,7 +108,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
         className={`${isRelyingToMessage ? "mt-1" : " mt-5"} relative flex min-w-[15.5rem] items-center gap-5`}
         noValidate
       >
-<PreviewUploadedFile openFile={openFullFile} url={previewUrl} handleOpenFile={handleOpenFile} file={selectedFile} handelSendFile={handleSubmit}/>
+        <PreviewUploadedFile openFile={openFullFile} url={previewUrl} handleOpenFile={handleOpenFile} file={selectedFile} handelSendFile={handleSubmit} />
         <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">
           <div className="flex">
             <input
@@ -162,7 +153,6 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
             </MenuList>
           </Menu>
           <ReactQuill
-            ref={textAreaRef}
             theme="bubble"
             value={msg}
             onChange={(msg) => {

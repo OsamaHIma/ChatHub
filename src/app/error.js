@@ -33,21 +33,20 @@ function Error({ errorMessage }) {
           <div className="mt-6 flex items-center gap-x-3">
             <Button
               onClick={handleGoBack}
-              variant="outline"
               className="flex w-1/2 items-center justify-center rtl:flex-row-reverse gap-x-2 text-sm dark:border-gray-700 text-gray-200 dark:hover:bg-gray-800 sm:w-auto"
             >
               <ArrowLeft />
 
-              <span><Translate translations={{ar:"عد للخلف"}}>Go back</Translate></span>
+              <span><Translate translations={{ ar: "عد للخلف" }}>Go back</Translate></span>
             </Button>
 
-            <Link href="/">
-              <Button className="bg-indigo-400 w-1/2 shrink-0 py-4 text-sm tracking-wide text-white sm:w-auto">
+            <Button className="bg-indigo-400 min-w-fit shrink-0 py-4 text-sm tracking-wide text-white sm:w-auto">
+              <Link href="/">
                 <Translate translations={{ ar: "عد للصفحة الرئيسية" }}>
                   Take me home
                 </Translate>
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
 
