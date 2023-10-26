@@ -2,7 +2,7 @@
 import moment from "moment";
 import { useState, useEffect } from "react";
 import { Translate } from "translate-easy";
-// import ChatInput from "./ChatInput";
+import ChatInput from "./ChatInput";
 import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { Button, IconButton, Spinner } from "@material-tailwind/react";
@@ -360,7 +360,7 @@ const Messages = ({ currentChat, socket }) => {
           </div>
         </div>
       </div>
-      {/* <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} /> */}
+      <ChatInput socket={socket} handleSendMsg={sendMessage} currentChat={currentChat} isRelyingToMessage={isRelyingToMessage} setIsRelyingToMessage={setIsRelyingToMessage} />
     </section>
   );
 };
