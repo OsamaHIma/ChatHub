@@ -2,7 +2,7 @@ import { object, string, bool } from "yup";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const usernameRegex = /^[a-zA-Z0-9_]+$/;
+const usernameRegex = /^[a-zA-Z0-9_-]+$/;
 
 export const loginUserSchema = object().shape({
   email: string()
