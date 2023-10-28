@@ -4,9 +4,10 @@ import MotionLayout from "@/components/MotionLayout";
 import { signUpSchema } from "@/schema/userSchema";
 import { Button, Input, Spinner, Typography } from "@material-tailwind/react";
 import axios from "axios";
-import { EyeIcon, EyeOffIcon, InfoIcon, MailOpen } from "lucide-react";
+import { generateUsername } from "friendly-username-generator";
+import { Dices, EyeIcon, EyeOffIcon, InfoIcon, MailOpen } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
 
@@ -18,7 +19,7 @@ const Register = () => {
     password: "",
     confirm_password: "",
   });
-
+  const usernameInputRef = useRef()
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +28,10 @@ const Register = () => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const generateRandomUserName = () => {
+    setFormData((prevState) => ({...prevState,  username: generateUsername() }))
+  }
 
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -62,7 +67,7 @@ const Register = () => {
       if (data.status || data.token) {
         toast.success(<Translate>Registered successfully, Now please confirm your email address by clicking "Confirm Email" in the email that has been sent to you, if you can't see the email please check the spam emails</Translate>, {
           icon: <MailOpen />,
-          position:"top-center"
+          position: "top-center"
         });
       } else {
         toast.error(<Translate>{data.message}</Translate>);
@@ -109,10 +114,14 @@ const Register = () => {
               className="text-gray-300"
               label={<Translate>User Name</Translate>}
               type="text"
+              value={formData.username}
               required
               name="username"
               onChange={handelInputChange}
               error={error}
+              icon={
+                <Dices className="transition-all ease-in-out duration-300 hover:text-gray-200 cursor-pointer" onClick={generateRandomUserName} />
+              }
             />
             <Typography
               variant="small"
@@ -157,12 +166,12 @@ const Register = () => {
                 showPassword ? (
                   <EyeIcon
                     onClick={toggleShowPassword}
-                    className=" cursor-pointer"
+                    className="transition-all ease-in-out duration-300 hover:text-gray-200 cursor-pointer"
                   />
                 ) : (
                   <EyeOffIcon
                     onClick={toggleShowPassword}
-                    className=" cursor-pointer"
+                    className="transition-all ease-in-out duration-300 hover:text-gray-200 cursor-pointer"
                   />
                 )
               }

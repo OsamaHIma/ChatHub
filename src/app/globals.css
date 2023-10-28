@@ -121,3 +121,7 @@
 .last-message .ql-syntax {
   @apply truncate;
 }
+[dir="rtl"] div[class^="grid place-items-center absolute"] {
+  right: unset;
+  left: 0.75rem !important;
+}

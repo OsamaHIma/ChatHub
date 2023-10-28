@@ -93,10 +93,12 @@ const Contacts = ({
           <div className="flex items-center justify-between gap-5">
             <div className="flex items-center gap-2">
               {lastMessage ? (
-                <div className={`max-w-[5rem] ${selectedUser === index
-                  ? "text-gray-300"
-                  : "text-gray-600 dark:text-gray-300"
-                  } truncate md:max-w-[9rem] lg:max-w-[10rem] last-message`} dangerouslySetInnerHTML={{ __html: lastMessage.message }} />
+                <>{lastMessage.fromSelf && "You:"}
+                  <div className={`max-w-[5rem] ${selectedUser === index
+                    ? "text-gray-300"
+                    : "text-gray-600 dark:text-gray-300"
+                    } truncate md:max-w-[9rem] lg:max-w-[10rem] last-message`} dangerouslySetInnerHTML={{ __html: lastMessage.message }} />
+                </>
               ) : (
                 <p
                   className={`max-w-[5rem] ${selectedUser === index
