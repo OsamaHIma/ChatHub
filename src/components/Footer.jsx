@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Translate } from "translate-easy";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Facebook, Github, Twitter } from "lucide-react";
-// import TermsModal from "./TermsModal";
+import { Facebook, Github, Linkedin } from "lucide-react";
 
 import {
   Button,
@@ -18,15 +17,11 @@ import { footerVariants } from "@/utils/motion";
 
 const Footer = () => {
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-  // // const [showTermsModal, setShowTermsModal] = useState(false);
 
   const handelPrivacyModal = () => {
     setShowPrivacyModal(!showPrivacyModal);
   };
 
-  // const handelTermsModal = () => {
-  // setShowTermsModal(!showTermsModal);
-  // };
   return (
     <motion.footer
       variants={footerVariants}
@@ -74,6 +69,7 @@ const Footer = () => {
               <ul className="font-medium text-gray-700 dark:text-gray-300">
                 <li className="mb-4">
                   <Link
+                    target="_blank"
                     href="https://github.com/osamaHIma"
                     className="hover:underline "
                   >
@@ -82,10 +78,11 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href="https://www.facebook.com/profile.php?id=100078254302916"
+                    target="_blank"
+                    href="https://www.linkedin.com/in/osama-ibrahim2002/"
                     className="hover:underline"
                   >
-                    Facebook
+                    LinkedIn
                   </Link>
                 </li>
               </ul>
@@ -113,7 +110,7 @@ const Footer = () => {
         </div>
         <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-200 sm:text-center">
+          <span className="text-sm text-gray-500 dark:text-gray-200 sm:text-center">
             © 2023{" "}
             <Link href="#" className="hover:underline">
               ChatHub™
@@ -121,16 +118,16 @@ const Footer = () => {
             . <Translate>All Rights Reserved</Translate>.
           </span>
           <div className="mt-4 flex gap-3 sm:mt-0 sm:justify-center">
-            <Link href="https://www.facebook.com/profile.php?id=100078254302916">
+            <Link target="_blank" href="https://www.facebook.com/profile.php?id=100078254302916">
               <Facebook className="text-gray-500 transition-colors duration-500 hover:text-gray-700 dark:hover:text-white" />
               <span className="sr-only">Facebook page</span>
             </Link>
-            <Link href="#">
-              <Twitter className="text-gray-500 transition-colors duration-500 hover:text-gray-700 dark:hover:text-white" />
+            <Link target="_blank" href="https://www.linkedin.com/in/osama-ibrahim2002/">
+              <Linkedin className="text-gray-500 transition-colors duration-500 hover:text-gray-700 dark:hover:text-white" />
 
-              <span className="sr-only">Twitter page</span>
+              <span className="sr-only">LinkedIn account</span>
             </Link>
-            <Link href="https://github.com/osamaHIma">
+            <Link target="_blank" href="https://github.com/osamaHIma">
               <Github className="text-gray-500 transition-colors duration-500 hover:text-gray-700 dark:hover:text-white" />
               <span className="sr-only">GitHub account</span>
             </Link>
@@ -244,7 +241,6 @@ const Footer = () => {
           </Button>
         </DialogFooter>
       </Dialog>
-      {/* <TermsModal open={showTermsModal} handleOpen={handelTermsModal} /> */}
     </motion.footer>
   );
 };
