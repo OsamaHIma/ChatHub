@@ -30,8 +30,7 @@ const Login = () => {
 
   useEffect(() => {
     socket.current = io(process.env.NEXT_PUBLIC_BASE_URL);
-    console.log("socket conntected")
-}, []);
+  }, []);
 
   const handelInputChange = (event) => {
     const { value, name } = event.target;
@@ -114,6 +113,17 @@ const Login = () => {
           </Translate>
         </p>
         <ForgotPassword open={openForgotPasswordModal} socket={socket.current && socket} handleOpen={handleOpenForgotPasswordModal} />
+        {/* <div className="mt-5 flex flex-col gap-7 w-full items-center justify-center ">
+          <Button variant="gradient" title="Sign in with Google" size="lg" className="w-72 flex items-center gap-3 justify-center" color="white" onClick={() => signIn("google")}>
+            Google
+            <img src="/google.svg" className="w-7" alt="google sign in" />
+          </Button>
+          <div className="flex items-center gap-3">
+            <div className="h-[3px] w-32 bg-gray-300 rounded-md" />
+            <p className="text-2xl text-gray-50">OR</p>
+            <div className="h-[3px] w-32 bg-gray-300 rounded-md" />
+          </div>
+        </div> */}
         <form
           className="mx-auto my-10 flex max-w-2xl shadow-xl flex-col gap-7 rounded-xl backdrop-blur-2xl px-7 py-16"
           noValidate

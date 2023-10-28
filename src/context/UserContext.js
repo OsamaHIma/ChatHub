@@ -10,9 +10,9 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (session) {
+      console.log(session);
       setToken(session.user.token);
       setUser(session.user);
-      // console.log(session);
     }
   }, [session]);
   const value = useMemo(() => {

@@ -16,7 +16,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Translate } from "translate-easy";
 import { ChevronLeft, EyeIcon, EyeOffIcon, InfoIcon } from "lucide-react";
-import { loginUserSchema } from "@/schema/userSchema";
+import { forgotPasswordSchema, loginUserSchema } from "@/schema/userSchema";
 
 const ForgotPassword = ({ handleOpen, open, socket }) => {
     // const socket = useRef(null);
@@ -46,7 +46,7 @@ const ForgotPassword = ({ handleOpen, open, socket }) => {
         if (!email) return
         setErrMsg('')
         try {
-            loginUserSchema.validateSync(
+            forgotPasswordSchema.validateSync(
                 {
                     email: email,
                 },

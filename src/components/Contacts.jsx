@@ -33,7 +33,7 @@ const Contacts = ({
       setLastMessage(data[0]);
       if (data[0] && !data[0].fromSelf && !data[0].seen) {
         new Notification("New Message", {
-          body: `${data[0].message}\n ${moment(data[0].date).format("hh:mm a")}`,
+          body: `New message from ${contact.username}\n ${moment(data[0].date).format("hh:mm a")}`,
           icon: "/logoTab.svg",
           vibrate: [200, 100, 200],
           sound: "/notification_sound.mp3",
@@ -96,7 +96,7 @@ const Contacts = ({
                 <div className={`max-w-[5rem] ${selectedUser === index
                   ? "text-gray-300"
                   : "text-gray-600 dark:text-gray-300"
-                  } truncate md:max-w-[9rem] lg:max-w-[10rem]`} dangerouslySetInnerHTML={{ __html: lastMessage.message }} />
+                  } truncate md:max-w-[9rem] lg:max-w-[10rem] last-message`} dangerouslySetInnerHTML={{ __html: lastMessage.message }} />
               ) : (
                 <p
                   className={`max-w-[5rem] ${selectedUser === index
