@@ -112,7 +112,7 @@ const Login = () => {
             Welcome back!
           </Translate>
         </p>
-        <ForgotPassword open={openForgotPasswordModal} socket={socket.current && socket} handleOpen={handleOpenForgotPasswordModal} />
+        <ForgotPassword open={openForgotPasswordModal} socket={socket.current && socket.current} handleOpen={handleOpenForgotPasswordModal} />
         {/* <div className="mt-5 flex flex-col gap-7 w-full items-center justify-center ">
           <Button variant="gradient" title="Sign in with Google" size="lg" className="w-72 flex items-center gap-3 justify-center" color="white" onClick={() => signIn("google")}>
             Google

@@ -30,8 +30,8 @@ const ForgotPassword = ({ handleOpen, open, socket }) => {
     const [isFirstStep, setIsFirstStep] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    if (socket.current) {
-        socket.current.on("user-resetPasswordClicked", userEmail => {
+    if (socket) {
+        socket.on("user-resetPasswordClicked", userEmail => {
             console.log(userEmail)
             if (userEmail === email) {
                 setActiveStep(2)
