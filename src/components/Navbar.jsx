@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { MenuIcon } from "lucide-react";
+import { LogInIcon, LogOutIcon, LucideUserCircle, MenuIcon, MessagesSquare, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -134,41 +134,47 @@ const Navbar = () => {
                 <>
                   <Link href="/">
                     <MenuItem
-                      className={`my-3 text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                      className={`my-3 text-center flex items-center gap-3 hover:!border-0 dark:hover:!bg-gray-100`}
                     >
-                      <Translate>Chat</Translate>
+                      <MessagesSquare className="text-indigo-500" />
+                      <Translate>Sign Out</Translate>  <Translate>Chat</Translate>
                     </MenuItem>
                   </Link>
                   <Link href="/account">
                     <MenuItem
-                      className={`my-3 text-center hover:!border-0 dark:hover:!bg-gray-100`}
+                      className={`my-3 text-center flex items-center gap-3  hover:!border-0 dark:hover:!bg-gray-100`}
                     >
-                      <Translate>Account</Translate>
+                      <LucideUserCircle className="text-indigo-500" />
+                      <Translate>Sign Out</Translate> <Translate>Account</Translate>
                     </MenuItem>
                   </Link>
                   <Button
                     onClick={handleSignOut}
                     variant="gradient"
                     color="indigo"
-                    className=" translation-all min-w-[5rem] max-w-[7rem]"
+                    className=" translation-all flex items-center gap-3  min-w-[5rem] max-w-[7rem]"
                     disabled={loading}
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />
                     ) : (
-                      <Translate>Sign Out</Translate>
+                      <div className="">
+                        <LogOutIcon className="text-indigo-500" />
+                        <Translate>Sign Out</Translate>
+                      </div>
                     )}
                   </Button>
                 </>
               ) : (
                 <>
                   <Link href="/auth/register">
-                    <MenuItem className="my-3 text-center hover:!border-0 dark:hover:!bg-gray-100">
-                      <Translate>Register</Translate>
+                    <MenuItem className="my-3 text-center flex items-center gap-3  hover:!border-0 dark:hover:!bg-gray-100">
+                      <UserPlus className="text-indigo-500" /> {" "} <Translate>Register</Translate>
                     </MenuItem>
                   </Link>
                   <Link href="/auth/login">
-                    <MenuItem className="my-3 text-center hover:!border-0 dark:hover:!bg-gray-100">
+                    <MenuItem className="my-3 text-center flex items-center gap-3  hover:!border-0 dark:hover:!bg-gray-100">
+                      <LogInIcon className="text-indigo-500" />
                       <Translate>Login</Translate>
                     </MenuItem>
                   </Link>

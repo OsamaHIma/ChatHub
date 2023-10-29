@@ -19,7 +19,6 @@ import { ChevronLeft, EyeIcon, EyeOffIcon, InfoIcon } from "lucide-react";
 import { forgotPasswordSchema, resetPasswordSchema } from "@/schema/userSchema";
 
 const ForgotPassword = ({ handleOpen, open, socket }) => {
-    // const socket = useRef(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm_password, setConfirm_password] = useState('');
@@ -31,8 +30,9 @@ const ForgotPassword = ({ handleOpen, open, socket }) => {
     const [isFirstStep, setIsFirstStep] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    if (socket) {
+    if (socket.current) {
         socket.current.on("user-resetPasswordClicked", userEmail => {
+            console.log(userEmail)
             if (userEmail === email) {
                 setActiveStep(2)
             }
