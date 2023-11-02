@@ -152,7 +152,7 @@ const Navbar = () => {
                     onClick={handleSignOut}
                     variant="gradient"
                     color="indigo"
-                    className=" translation-all flex items-center gap-3 min-w-fit md:min-w-[5rem] max-w-[7rem]"
+                    className=" translation-all flex items-center gap-3 min-w-[7rem] max-w-[9rem]"
                     disabled={loading}
                   >
                     {loading ? (
