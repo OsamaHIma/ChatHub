@@ -199,9 +199,9 @@ const Messages = ({ currentChat, socket }) => {
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
-                    <p className={`p-3 truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `}>
-                      {message.replyToMessage.content}
-                    </p>
+                    <p className={`p-3 truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
+                     
+                    
                   </div>
                 )
               }
