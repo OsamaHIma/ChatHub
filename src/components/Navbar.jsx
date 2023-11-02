@@ -137,7 +137,7 @@ const Navbar = () => {
                       className={`my-3 text-center flex items-center gap-3 hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <MessagesSquare className="text-indigo-500" />
-                      <Translate>Sign Out</Translate>  <Translate>Chat</Translate>
+                  <Translate>Chat</Translate>
                     </MenuItem>
                   </Link>
                   <Link href="/account">
@@ -145,7 +145,7 @@ const Navbar = () => {
                       className={`my-3 text-center flex items-center gap-3  hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <LucideUserCircle className="text-indigo-500" />
-                      <Translate>Sign Out</Translate> <Translate>Account</Translate>
+                    <Translate>Account</Translate>
                     </MenuItem>
                   </Link>
                   <Button
