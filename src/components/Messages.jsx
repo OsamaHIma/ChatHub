@@ -199,7 +199,7 @@ const Messages = ({ currentChat, socket }) => {
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
-                    <p className={`p-3 truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
+                    <p className={`p-3 max-h-[7rem] truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
                      
                     
                   </div>
@@ -263,9 +263,7 @@ const Messages = ({ currentChat, socket }) => {
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
-                    <p className={`p-3 truncate ${message.replyToMessage.sender === user._id ? "bg-green-500/70" : "bg-gray-700"}  rounded-md text-gray-100`}>
-                      {message.replyToMessage.content}
-                    </p>
+                   <p className={`p-3 max-h-[7rem] truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
                   </div>
                 )
               }
