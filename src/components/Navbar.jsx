@@ -152,13 +152,13 @@ const Navbar = () => {
                     onClick={handleSignOut}
                     variant="gradient"
                     color="indigo"
-                    className=" translation-all flex items-center gap-3 min-w-[7rem] max-w-[9rem]"
+                    className=" translation-all min-w-[7rem] max-w-[9rem]"
                     disabled={loading}
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />
                     ) : (
-                      <div className="">
+                      <div className="flex items-center gap-3">
                         <LogOutIcon className="text-indigo-50" />
                         <Translate>Sign Out</Translate>
                       </div>
