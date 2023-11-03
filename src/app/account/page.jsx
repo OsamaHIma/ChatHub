@@ -1,6 +1,6 @@
 "use client";
 import { toast } from "react-toastify";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Translate } from "translate-easy";
 import { MailIcon, Plus, AtSign } from "lucide-react";
@@ -9,6 +9,7 @@ import { useUser } from "@/context/UserContext";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import MotionLayout from "@/components/MotionLayout";
+import { io } from "socket.io-client";
 
 const styles = {
   focused: {
@@ -33,7 +34,29 @@ const MyAccount = () => {
   const [imagePath, setImagePath] = useState("");
   const [changesMade, setChangesMade] = useState(false);
   const { data: session, update } = useSession();
+  const socket = useRef();
 
+  const updateSession = async (updatedUser) => {
+    await update({
+      ...session,
+      user: {
+        ...updatedUser,
+      },
+    });
+  };
+
+  useEffect(() => {
+    socket.current = io(process.env.NEXT_PUBLIC_BASE_URL);
+    // socket.current.emit("add-user", currentUser._id);
+  }, []);
+
+  if (socket.current) {
+    socket.current.on("user-updateUserEmail", user => {
+      if (currentUser.username === user.username) {
+        updateSession(user)
+      }
+    });
+  }
   // Set token and user on session change
   useEffect(() => {
     if (currentUser) {
@@ -50,15 +73,6 @@ const MyAccount = () => {
       [name]: value,
     }));
     setChangesMade(true);
-  };
-
-  const updateSession = async (updatedUser) => {
-    await update({
-      ...session,
-      user: {
-        ...updatedUser,
-      },
-    });
   };
 
   // Save changes to user data
@@ -87,13 +101,18 @@ const MyAccount = () => {
         },
       );
       if (data.status) {
-        toast.success(data.message);
         updateSession(data.user);
         setIsEditing(false);
         setChangesMade(false);
+        toast.success(<Translate>{data.message}</Translate>);
+        data.isWaitingEmailConfirm && toast.success(<Translate>Please confirm your new email by clicking "Confirm email" button sent to the provided email address</Translate>)
+      } else if (!data.status && data.isWaitingEmailConfirm) {
+        toast.success(<Translate>{data.message}</Translate>)
+      } else if (!data.status) {
+        toast.error(<Translate>{data.message}</Translate>)
       }
     } catch (error) {
-      toast.error(`Failed to update user information. ${error.massage}`);
+      toast.error(`Failed to update user information. ${<Translate>{error.message}</Translate>}`);
       console.error(error);
     }
     setIsLoading(false);
@@ -142,130 +161,129 @@ const MyAccount = () => {
   }, [imagePath]);
 
   return (
-  <MotionLayout>
-    <div className="container px-10 py-12">
-      <h1 className="mb-6 text-3xl font-bold">
-        <Translate>Account Information</Translate>
-      </h1>
-      <div className="mb-8 flex items-center gap-3">
-        <div
-          {...getRootProps({
-            className: "dropzone relative h-20 w-20 ",
-            style,
-          })}
-          title="Upload your photo"
-        >
-          <input {...getInputProps()} />
-          {imagePath ? (
-            <div className="h-full w-full overflow-hidden rounded-full">
-            <img
-              alt="User avatar"
-              src={imagePath}
-              className="object-contain w-full "
-            />
+    <MotionLayout>
+      <div className="container px-10 py-12">
+        <h1 className="mb-6 text-3xl font-bold">
+          <Translate>Account Information</Translate>
+        </h1>
+        <div className="mb-8 flex items-center gap-3">
+          <div
+            {...getRootProps({
+              className: "dropzone relative h-20 w-20 ",
+              style,
+            })}
+            title="Upload your photo"
+          >
+            <input {...getInputProps()} />
+            {imagePath ? (
+              <div className="h-full w-full overflow-hidden rounded-full">
+                <img
+                  alt="User avatar"
+                  src={imagePath}
+                  className="object-contain w-full "
+                />
+              </div>
+            ) : (
+              <div
+                className={`flex h-full w-full items-center justify-center rounded-full ${isDragReject ? "!bg-red-500" : "!bg-gray-200"
+                  } text-xl font-bold text-gray-500`}
+              >
+                {user?.name && (
+                  <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-xl font-bold text-gray-500 shadow">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+            )}
+            {isEditing && (
+              <Plus
+                size={30}
+                className="absolute bottom-0 right-0 z-10 cursor-pointer rounded-full bg-indigo-500 p-1 text-gray-50"
+              />
+            )}
           </div>
-          ) : (
-            <div
-              className={`flex h-full w-full items-center justify-center rounded-full ${isDragReject ? "!bg-red-500" : "!bg-gray-200"
-                } text-xl font-bold text-gray-500`}
-            >
-              {user?.name && (
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-xl font-bold text-gray-500 shadow">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-          )}
-          {isEditing && (
-            <Plus
-              size={30}
-              className="absolute bottom-0 right-0 z-10 cursor-pointer rounded-full bg-indigo-500 p-1 text-gray-50"
-            />
-          )}
+          <div className="flex-1">
+            <h2 className="mb-2 text-2xl font-bold">{user && user.name}</h2>
+            <p className="w-full rounded-tl-md rounded-tr-md bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
+              <MailIcon
+                size={24}
+                className="inline-block text-indigo-500  ltr:mr-2 rtl:ml-2"
+              />
+              {user && user.email}
+            </p>
+            <p className="w-full bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
+              <AtSign
+                size={24}
+                className="inline-block text-indigo-500 ltr:mr-2 rtl:ml-2"
+              />
+              {user && user.username}
+            </p>
+          </div>
         </div>
-        <div className="flex-1">
-          <h2 className="mb-2 text-2xl font-bold">{user && user.name}</h2>
-          <p className="w-full rounded-tl-md rounded-tr-md bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
-            <MailIcon
-              size={24}
-              className="inline-block text-indigo-500  ltr:mr-2 rtl:ml-2"
-            />
-            {user && user.email}
-          </p>
-          <p className="w-full bg-indigo-50 px-4 py-2 text-gray-500 focus:outline-gray-200 dark:bg-slate-800 dark:text-slate-200">
-            <AtSign
-              size={24}
-              className="inline-block text-indigo-500 ltr:mr-2 rtl:ml-2"
-            />
-            {user && user.username}
-          </p>
+        <h3 className="mb-4 w-full rounded-md py-2 font-bold dark:text-slate-200">
+          <Translate>Personal Information:</Translate>
+        </h3>
+        <div className="grid gap-8 lg:grid-cols-2">
+          <Input
+            color="indigo"
+            className={`${isEditing && "dark:text-gray-300"}`}
+            label={<Translate>Name</Translate>}
+            name="name"
+            value={user && user.name}
+            onChange={onChangeInput}
+            disabled={!isEditing}
+          />
+          <Input
+            color="indigo"
+            className={`${isEditing && "dark:text-gray-300"}`}
+            label={<Translate>Email</Translate>}
+            name="email"
+            value={user && user.email}
+            onChange={onChangeInput}
+            disabled={!isEditing}
+          />
+          <Textarea
+            color="indigo"
+            className={`${isEditing && "dark:text-gray-300"}`}
+            label={<Translate>About</Translate>}
+            name="about"
+            value={user && user.about}
+            onChange={onChangeInput}
+            disabled={!isEditing}
+          />
         </div>
-      </div>
-      <h3 className="mb-4 w-full rounded-md py-2 font-bold dark:text-slate-200">
-        <Translate>Personal Information:</Translate>
-      </h3>
-      <div className="grid gap-8 lg:grid-cols-2">
-        <Input
-          color="indigo"
-          className={`${isEditing && "dark:text-gray-300"}`}
-          label={<Translate>Name</Translate>}
-          name="name"
-          value={user && user.name}
-          onChange={onChangeInput}
-          disabled={!isEditing}
-        />
-        <Input
-          color="indigo"
-          className={`${isEditing && "dark:text-gray-300"}`}
-          label={<Translate>Email</Translate>}
-          name="email"
-          value={user && user.email}
-          onChange={onChangeInput}
-          disabled={!isEditing}
-        />
-        <Textarea
-          color="indigo"
-          className={`${isEditing && "dark:text-gray-300"}`}
-          label={<Translate>About</Translate>}
-          name="about"
-          value={user && user.about}
-          onChange={onChangeInput}
-          disabled={!isEditing}
-        />
-      </div>
-      <div className="mt-3 flex justify-end">
-        {isEditing ? (
-          <>
-            <Button
-              disabled={loading}
-              className="ltr:mr-4 rtl:mr-4"
-              onClick={() => {
-                setIsEditing(false);
-                setChangesMade(false);
-                setImagePath("");
-              }}
-              color="red"
-            >
-              <Translate translations={{ar:"إالغاء"}}>Cancel</Translate>
-            </Button>
+        <div className="mt-3 flex gap-3 justify-end">
+          {isEditing ? (
+            <>
+              <Button
+                disabled={loading}
+                onClick={() => {
+                  setIsEditing(false);
+                  setChangesMade(false);
+                  setImagePath("");
+                }}
+                color="red"
+              >
+                <Translate translations={{ ar: "إالغاء" }}>Cancel</Translate>
+              </Button>
 
-            <Button
-              disabled={loading || !changesMade}
-              color="indigo"
-              className={`${isEditing && "dark:text-gray-300"}`}
-              onClick={handleSaveChanges}
-            >
-              <Translate>Save Changes</Translate>
+              <Button
+                disabled={loading || !changesMade}
+                color="indigo"
+                className={`${isEditing && "dark:text-gray-300"}`}
+                onClick={handleSaveChanges}
+              >
+                <Translate>Save Changes</Translate>
+              </Button>
+            </>
+          ) : (
+            <Button disabled={loading} onClick={() => setIsEditing(true)}>
+              <Translate>Edit Information</Translate>
             </Button>
-          </>
-        ) : (
-          <Button disabled={loading} onClick={() => setIsEditing(true)}>
-            <Translate>Edit Information</Translate>
-          </Button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  </MotionLayout>
+    </MotionLayout>
   );
 };
 

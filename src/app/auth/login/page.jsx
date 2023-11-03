@@ -174,6 +174,7 @@ const Login = () => {
                     <Translate>Remember Me</Translate>
                   </div>
                 }
+                color="green"
                 onChange={(e) => setIsRememberedUser(e.target.checked)}
                 checked={isRememberedUser}
                 value={isRememberedUser || ""}

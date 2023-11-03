@@ -63,7 +63,7 @@ const authOptions = {
     // },
 
     jwt({ token, user, trigger, session }) {
-      console.log(token,user,trigger,session)
+
       if (trigger === "update") {
         return { ...token, ...session };
       }
