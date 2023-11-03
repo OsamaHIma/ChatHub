@@ -137,7 +137,7 @@ const Navbar = () => {
                       className={`my-3 text-center flex items-center gap-3 hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <MessagesSquare className="text-indigo-500" />
-                      <Translate>Sign Out</Translate>  <Translate>Chat</Translate>
+                  <Translate>Chat</Translate>
                     </MenuItem>
                   </Link>
                   <Link href="/account">
@@ -145,21 +145,21 @@ const Navbar = () => {
                       className={`my-3 text-center flex items-center gap-3  hover:!border-0 dark:hover:!bg-gray-100`}
                     >
                       <LucideUserCircle className="text-indigo-500" />
-                      <Translate>Sign Out</Translate> <Translate>Account</Translate>
+                    <Translate>Account</Translate>
                     </MenuItem>
                   </Link>
                   <Button
                     onClick={handleSignOut}
                     variant="gradient"
                     color="indigo"
-                    className=" translation-all flex items-center gap-3  min-w-[5rem] max-w-[7rem]"
+                    className=" translation-all flex items-center gap-3 min-w-[7rem] max-w-[9rem]"
                     disabled={loading}
                   >
                     {loading ? (
                       <Spinner scale={1.7} className="mx-auto" />
                     ) : (
                       <div className="">
-                        <LogOutIcon className="text-indigo-500" />
+                        <LogOutIcon className="text-indigo-50" />
                         <Translate>Sign Out</Translate>
                       </div>
                     )}

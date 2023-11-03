@@ -100,9 +100,8 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
                 </p>
                 <span className="text-indigo-500">|</span>
               </div>
-              <p className="px-3 py-1 bg-gray-100 truncate dark:bg-gray-700 rounded-md dark:text-gray-100">
-                {isRelyingToMessage.message}
-              </p>
+              
+              <div className="px-3 py-1 bg-gray-100 truncate dark:bg-gray-700 rounded-md dark:text-gray-100" dangerouslySetInnerHTML={{ __html: isRelyingToMessage.message }} />
             </div>
             <IconButton className="rounded-full self-end !outline-none" variant="text" onClick={() => setIsRelyingToMessage(null)}>
               <X className="dark:text-slate-50" />

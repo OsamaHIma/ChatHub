@@ -47,7 +47,7 @@ const PreviewUploadedFile = ({ openFile, handleOpenFile, url, file,handelSendFil
                                     </div>
                                 )}
                                 <div className="file-preview-details ml-4">
-                                    <p className="file-preview-name font-bold">{file.name}</p>
+                                    <p className="file-preview-name font-bold truncate max-w-[10rem]">{file.name}</p>
                                     <p className="file-preview-size text-gray-500 text-sm">{formatFileSize(file.size)}</p>
                                 </div>
                             </div>
