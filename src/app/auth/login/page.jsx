@@ -69,7 +69,7 @@ const Login = () => {
       if (!user.error) {
         handleRememberUser();
         toast.success(<Translate>Singed in successfully</Translate>);
-        router.reload();
+        router.refresh();
       } else {
         setError([user.error]);
       }
