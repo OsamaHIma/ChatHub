@@ -176,7 +176,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
                 // other options
               ],
             }}
-            className="!flex-1 max-h-16 z-[100] dark:text-gray-50"
+            className="!flex-1 max-h-16 !overflow-scroll z-[100] dark:text-gray-50"
           />
           <IconButton variant="text" className="rounded-full" type="submit" title="Send message">
             <Send size={23} className=" inline-block dark:text-slate-50" />
