@@ -113,6 +113,7 @@ const ChatInput = ({ handleSendMsg, socket, isRelyingToMessage, currentChat, set
         onSubmit={handleSubmit}
         className={`${isRelyingToMessage ? "mt-1" : " mt-5"} relative flex min-w-[15.5rem] items-center gap-5`}
         noValidate
+        di='ltr'
       >
         <PreviewUploadedFile openFile={openFullFile} url={previewUrl} handleOpenFile={handleOpenFile} file={selectedFile} handelSendFile={handleSubmit} />
         <div className="flex w-full flex-row items-center gap-2 rounded-full border border-gray-900/10 bg-gray-900/5 p-2 dark:border-gray-100/10 dark:bg-gray-800">

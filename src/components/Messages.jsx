@@ -200,8 +200,8 @@ const Messages = ({ currentChat, socket }) => {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
                     <p className={`p-3 max-h-[7rem] truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
-                     
-                    
+
+
                   </div>
                 )
               }
@@ -226,14 +226,14 @@ const Messages = ({ currentChat, socket }) => {
             className="cursor-pointer flex items-center gap-3 z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
             onClick={() => setIsRelyingToMessage(message)}
           >
-            <Reply /> <span>Reply</span>
+            <Reply /> <span><Translate translations={{ar:"رد"}}>Reply</Translate></span>
           </MenuItem>
           <MenuItem
             onClick={async () => await navigator.clipboard.writeText(message.message.textContent || message.message)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
           >
             <ClipboardCopy />
-            <span>Copy</span>
+            <span><Translate translations={{ar:"إنسخ"}}>Copy</Translate></span>
           </MenuItem>
         </ContextMenu>
       </>
@@ -263,7 +263,7 @@ const Messages = ({ currentChat, socket }) => {
               {
                 message.replyToMessage && (
                   <div className="max-w-[13rem] md:max-w-xs mb-1 cursor-pointer" onClick={() => handelReplyMessageClick(message.replyTo)}>
-                   <p className={`p-3 max-h-[7rem] truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
+                    <p className={`p-3 max-h-[7rem] truncate ${message.replyToMessage.sender === currentChat._id ? "bg-gray-200 text-gray-800" : "bg-green-500/70 text-gray-100"} rounded-md `} dangerouslySetInnerHTML={{ __html: message.replyToMessage.content }} />
                   </div>
                 )
               }
@@ -292,21 +292,21 @@ const Messages = ({ currentChat, socket }) => {
             onClick={() => setIsRelyingToMessage(message)}
           >
             <Reply />
-            <span>Reply</span>
+            <span><Translate translations={{ar:"رد"}}>Reply</Translate></span>
           </MenuItem>
           <MenuItem
             onClick={async () => await navigator.clipboard.writeText(message.message)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
           >
             <ClipboardCopy />
-            <span>Copy</span>
+            <span><Translate translations={{ar:"إنسخ"}}>Copy</Translate></span>
           </MenuItem>
           <MenuItem
             onClick={() => deleteMessage(message._id)}
             className="cursor-pointer flex items-center gap-3  z-50 rounded-md bg-gray-100 px-3 py-2 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-50"
           >
             <Trash2Icon />
-            <span>Delete</span>
+            <span><Translate translations={{ar:"إمسح"}}>Delete</Translate></span>
           </MenuItem>
         </ContextMenu>
 
@@ -315,7 +315,7 @@ const Messages = ({ currentChat, socket }) => {
   };
 
   return (
-    <section className="mb-7 md:mb-0">
+    <section className="mb-7 md:mb-0" dir='ltr'>
       <FullFile openFile={openFullFile} url={fileUrl} handleOpenFile={handleOpenFile} />
       <div className="flex flex-col justify-between gap-7 overflow-y-auto">
         <div className="relative mt-4 flex flex-col justify-between">
