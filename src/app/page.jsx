@@ -119,7 +119,7 @@ const Home = () => {
             />
             <h1 className="text-3xl font-bold md:text-5xl">
               <Translate>Welcome</Translate>{" "}
-              <span className="text-indigo-500">{user && user.username}</span>!
+              <span className="text-indigo-500">{user && user.name}</span>!
             </h1>
             <p className="text-xl font-semibold capitalize md:text-3xl">
               <Translate>Select a chat to start messaging</Translate>
