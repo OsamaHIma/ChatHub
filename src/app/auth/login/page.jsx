@@ -32,6 +32,12 @@ const Login = () => {
     socket.current = io(process.env.NEXT_PUBLIC_BASE_URL);
   }, []);
 
+  if (socket.current) {
+    socket.current.on("user-resetPasswordClicked", (userEmail) => {
+        toast(userEmail);
+       
+    });
+}
   const handelInputChange = (event) => {
     const { value, name } = event.target;
     setFormData({ ...formData, [name]: value });

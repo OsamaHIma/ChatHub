@@ -45,9 +45,23 @@ const MyAccount = () => {
     });
   };
 
+
   useEffect(() => {
     socket.current = io(process.env.NEXT_PUBLIC_BASE_URL);
     // socket.current.emit("add-user", currentUser._id);
+
+    const handlePageReload = (event) => {
+      if (changesMade) {
+        event.preventDefault();
+        event.returnValue = 'Are you sure about that?';
+      }
+    };
+
+    window.addEventListener('beforeunload', handlePageReload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handlePageReload);
+    };
   }, []);
 
   if (socket.current) {
